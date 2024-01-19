@@ -1,0 +1,12 @@
+import 'intl';
+import 'intl/locale-data/jsonp/ar';
+import 'intl/locale-data/jsonp/de';
+import 'intl/locale-data/jsonp/en';
+import 'intl/locale-data/jsonp/fr';
+import 'intl/locale-data/jsonp/it';
+import 'intl/locale-data/jsonp/ja';
+import 'intl/locale-data/jsonp/ko';
+import 'intl/locale-data/jsonp/nl';
+import 'intl/locale-data/jsonp/pt';
+import 'intl/locale-data/jsonp/ru-RU';
+import 'intl/locale-data/jsonp/zh';
