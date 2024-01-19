@@ -2,15 +2,14 @@ import React from 'react'
 import {
   Text,
   View,
-  StyleSheet,
   FlatList,
   Image,
   TouchableOpacity,
 } from 'react-native'
 import { useSelector } from 'react-redux'
-import dot from '../../../styles/pages/dot'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
+import tw from 'twrnc'
 
 const CastMovie = ({ route }) => {
   const { title } = route.params
@@ -29,23 +28,23 @@ const CastMovie = ({ route }) => {
           })
         }
       >
-        <View style={styles.renderItemContainer}>
+        <View style={tw`flex flex-row justify-start bg-white my-4 p-4`}>
           {item.profile_path ? (
             <Image
-              style={styles.image}
+              style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
               source={{
                 uri: `https://image.tmdb.org/t/p/original/${item.profile_path}`,
               }}
             />
           ) : (
             <Image
-              style={styles.image}
+              style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
               source={require('../../../assets/image/No_Image_Available.jpg')}
             />
           )}
-          <View style={styles.renderItemDetails}>
-            <Text style={styles.renderItemTitle}>{item.name}</Text>
-            <Text style={styles.renderItemOverview}>{item.character}</Text>
+          <View style={tw`flex-1 w-full`}>
+            <Text style={tw`font-medium text-lg ml-4`}>{item.name}</Text>
+            <Text style={tw`font-medium text-lg p-4 text-justify leading-7`}>{item.character}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -53,8 +52,8 @@ const CastMovie = ({ route }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.seasonTitle}>{t('castOf')} {title}</Text>
+    <View style={tw`flex-1 flex flex-col mt-4`}>
+      <Text style={tw`text-center font-medium text-lg mb-4`}>{t('castOf')} {title}</Text>
       <FlatList
         data={credits?.cast}
         keyExtractor={(item) => item.id.toString()}
@@ -63,15 +62,5 @@ const CastMovie = ({ route }) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: dot.container,
-  image: dot.image,
-  renderItemContainer: dot.renderItemContainer,
-  renderItemTitle: dot.renderItemTitle,
-  renderItemOverview: dot.renderItemOverview,
-  renderItemDetails: dot.renderItemDetails,
-  seasonTitle: dot.seasonTitle,
-})
 
 export default CastMovie

@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { numberWithCommas } from '../../../utils/NumberWithCommas'
-import details from '../../../styles/pages/details'
+import { View, Text } from 'react-native'
+import Utils from '@mod/mobile-common/lib/class/Utils'
 import moment from 'moment'
 import Accordion from '../../../components/Accordion'
 import { useSelector } from 'react-redux'
 import MovieWatchProviders from './MovieWatchProviders'
+import tw from 'twrnc'
 
 const Production = ({ id, movie, t, language }) => {
   moment.locale(language)
@@ -17,11 +17,18 @@ const Production = ({ id, movie, t, language }) => {
     if (!data) return null
     return (
       <Accordion title={t('producers')}>
-        <View style={styles.mainContainer}>
+        <View style={tw`flex flex-col`}>
           {data?.map((item, index) => {
             return (
-              <View key={index} style={styles.flatListViewContainer}>
-                <Text style={styles.tags}>{item.name}</Text>
+              <View key={index} style={tw`flex-col justify-between`}>
+                <Text
+                  style={[
+                    tw`font-medium text-lg rounded-md ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
+                    { color: '#495057', backgroundColor: '#dee2e6' },
+                  ]}
+                >
+                  {item.name}
+                </Text>
               </View>
             )
           })}
@@ -34,11 +41,14 @@ const Production = ({ id, movie, t, language }) => {
     if (!data) return null
     return (
       <Accordion title={t('country')}>
-        <View style={styles.mainContainer}>
+        <View style={tw`flex flex-col`}>
           {data?.map((item, index) => {
             return (
-              <View key={index} style={styles.flatListViewContainer}>
-                <Text style={styles.tags}>{item.name}</Text>
+              <View key={index} style={tw`flex-col justify-between`}>
+                <Text style={[
+                    tw`font-medium text-lg rounded-md ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
+                    { color: '#495057', backgroundColor: '#dee2e6' },
+                  ]}>{item.name}</Text>
               </View>
             )
           })}
@@ -61,20 +71,25 @@ const Production = ({ id, movie, t, language }) => {
       case 'KO':
         language = 'KR'
         break
-          
     }
     return (
       <Accordion title={t('release')}>
-        <View style={styles.mainContainer}>
+        <View style={tw`flex flex-col`}>
           {releaseDates.map((releaseDate, index) => {
             if (releaseDate.iso_3166_1 !== language) return null
             return (
               <View key={index}>
                 {releaseDate.release_dates.map((releaseDate, index) => {
                   return (
-                    <View style={styles.flatListViewContainer} key={index}>
-                      <Text style={styles.tags}>
-                        {moment(releaseDate.release_date).format('L')} {releaseDate.note ? `- ${releaseDate.note}` : `- ${t('nationalRelease')}`}
+                    <View style={tw`flex-col justify-between`} key={index}>
+                      <Text style={[
+                    tw`font-medium text-lg rounded-md ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
+                    { color: '#495057', backgroundColor: '#dee2e6' },
+                  ]}>
+                        {moment(releaseDate.release_date).format('L')}{' '}
+                        {releaseDate.note
+                          ? `- ${releaseDate.note}`
+                          : `- ${t('nationalRelease')}`}
                       </Text>
                     </View>
                   )
@@ -91,9 +106,12 @@ const Production = ({ id, movie, t, language }) => {
     if (!data) return null
     return (
       <Accordion title={t('budget')}>
-        <View style={styles.mainContainer}>
-          <View style={styles.flatListViewContainer}>
-            <Text style={styles.tags}>{numberWithCommas(data)}$</Text>
+        <View style={tw`flex flex-col`}>
+          <View style={tw`flex-col justify-between`}>
+            <Text style={[
+                    tw`font-medium text-lg rounded-md ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
+                    { color: '#495057', backgroundColor: '#dee2e6' },
+                  ]}>{Utils.numberWithCommas(data)}$</Text>
           </View>
         </View>
       </Accordion>
@@ -105,9 +123,12 @@ const Production = ({ id, movie, t, language }) => {
 
     return (
       <Accordion title={t('boxOffice')}>
-        <View style={styles.mainContainer}>
-          <View style={styles.flatListViewContainer}>
-            <Text style={styles.tags}>{numberWithCommas(data)}$</Text>
+        <View style={tw`flex flex-col`}>
+          <View style={tw`flex-col justify-between`}>
+            <Text style={[
+                    tw`font-medium text-lg rounded-md ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
+                    { color: '#495057', backgroundColor: '#dee2e6' },
+                  ]}>{Utils.numberWithCommas(data)}$</Text>
           </View>
         </View>
       </Accordion>
@@ -115,9 +136,9 @@ const Production = ({ id, movie, t, language }) => {
   }
 
   return (
-    <View style={styles.productionViewContainer}>
-      <View style={styles.technicalSheetViewContainer}>
-        <Text style={styles.title}>{t('production')}</Text>
+    <View style={tw`my-4 pb-4`}>
+      <View style={tw`flex flex-row my-2`}>
+        <Text style={tw`font-medium text-lg m-2`}>{t('production')}</Text>
       </View>
       {releaseByCountry(releases, lang)}
       {budget(movie?.budget)}
@@ -128,16 +149,5 @@ const Production = ({ id, movie, t, language }) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  image: details.image,
-  title: details.title,
-  subTitle: details.subTitle,
-  flatListViewContainer: details.flatListViewContainer,
-  tags: details.tags,
-  productionViewContainer: details.productionViewContainer,
-  mainContainer: details.mainContainer,
-  technicalSheetViewContainer: details.technicalSheetViewContainer,
-})
 
 export default Production

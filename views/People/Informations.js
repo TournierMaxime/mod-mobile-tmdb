@@ -1,9 +1,9 @@
 import React from 'react'
-import { View, Text, StyleSheet, Linking, TouchableOpacity } from 'react-native'
-import details from '../../../styles/pages/details'
-import Accordion from '../../../components/Accordion'
+import { View, Text, Linking, TouchableOpacity } from 'react-native'
+import Accordion from '@m'
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons'
-import { moderateScale } from '../../../utils/Responsive'
+import Utils from '@mod/mobile-common/lib/class/Utils'
+import tw from 'twrnc'
 
 const Informations = ({ externalIds, t }) => {
   const socialMedia = (data) => {
@@ -17,11 +17,16 @@ const Informations = ({ externalIds, t }) => {
           <TouchableOpacity
             onPress={() => openLink(`https://twitter.com/${data.twitter_id}`)}
           >
-            <View style={styles.flatListViewContainer}>
-              <Text style={styles.tags}>
+            <View style={tw`flex-col justify-between`}>
+              <Text
+                style={[
+                  tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
+                  { color: '#495057', backgroundColor: '#dee2e6' },
+                ]}
+              >
                 <AntDesign
                   name='twitter'
-                  size={moderateScale(24)}
+                  size={Utils.moderateScale(24)}
                   color='#00acee'
                 />
                 &nbsp;
@@ -36,11 +41,14 @@ const Informations = ({ externalIds, t }) => {
               openLink(`https://www.facebook.com/${data.facebook_id}`)
             }
           >
-            <View style={styles.flatListViewContainer}>
-              <Text style={styles.tags}>
+            <View style={tw`flex-col justify-between`}>
+              <Text style={[
+                  tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
+                  { color: '#495057', backgroundColor: '#dee2e6' },
+                ]}>
                 <AntDesign
                   name='facebook-square'
-                  size={moderateScale(24)}
+                  size={Utils.moderateScale(24)}
                   color='#3b5998'
                 />
                 &nbsp;
@@ -55,11 +63,14 @@ const Informations = ({ externalIds, t }) => {
               openLink(`https://www.instagram.com/${data.instagram_id}`)
             }
           >
-            <View style={styles.flatListViewContainer}>
-              <Text style={styles.tags}>
+            <View style={tw`flex-col justify-between`}>
+              <Text style={[
+                  tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
+                  { color: '#495057', backgroundColor: '#dee2e6' },
+                ]}>
                 <AntDesign
                   name='instagram'
-                  size={moderateScale(24)}
+                  size={Utils.moderateScale(24)}
                   color='#3f729b'
                 />
                 &nbsp;
@@ -70,13 +81,18 @@ const Informations = ({ externalIds, t }) => {
         )}
         {data.tiktok_id && (
           <TouchableOpacity
-            onPress={() => openLink(`https://www.tiktok.com/@${data.tiktok_id}`)}
+            onPress={() =>
+              openLink(`https://www.tiktok.com/@${data.tiktok_id}`)
+            }
           >
-            <View style={styles.flatListViewContainer}>
-              <Text style={styles.tags}>
+            <View style={tw`flex-col justify-between`}>
+              <Text style={[
+                  tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
+                  { color: '#495057', backgroundColor: '#dee2e6' },
+                ]}>
                 <FontAwesome5
                   name='tiktok'
-                  size={moderateScale(24)}
+                  size={Utils.moderateScale(24)}
                   color='#ff0050'
                 />
                 &nbsp;
@@ -91,11 +107,14 @@ const Informations = ({ externalIds, t }) => {
               openLink(`https://www.youtube.com/@${data.youtube_id}`)
             }
           >
-            <View style={styles.flatListViewContainer}>
-              <Text style={styles.tags}>
+            <View style={tw`flex-col justify-between`}>
+              <Text style={[
+                  tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
+                  { color: '#495057', backgroundColor: '#dee2e6' },
+                ]}>
                 <AntDesign
                   name='youtube'
-                  size={moderateScale(24)}
+                  size={Utils.moderateScale(24)}
                   color='#c4302b'
                 />
                 &nbsp;
@@ -109,24 +128,13 @@ const Informations = ({ externalIds, t }) => {
   }
 
   return (
-    <View style={styles.productionViewContainer}>
-      <View style={styles.technicalSheetViewContainer}>
-        <Text style={styles.title}>{t('informations')}</Text>
+    <View style={tw`my-4 pb-4`}>
+      <View style={tw`flex flex-row my-4`}>
+        <Text style={tw`font-medium text-lg m-4`}>{t('informations')}</Text>
       </View>
       {socialMedia(externalIds)}
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  image: details.image,
-  title: details.title,
-  subTitle: details.subTitle,
-  flatListViewContainer: details.flatListViewContainer,
-  tags: details.tags,
-  technicalSheetViewContainer: details.technicalSheetViewContainer,
-  mainContainer: details.mainContainer,
-  productionViewContainer: details.productionViewContainer,
-})
 
 export default Informations

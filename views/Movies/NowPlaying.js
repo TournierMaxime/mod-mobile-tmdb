@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {
-  StyleSheet,
   View,
   Text,
   FlatList,
@@ -13,12 +12,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   nowPlaying,
   resetNowPlaying,
-} from '../../../redux/actions/tmdb/movies'
-import useLoadMore from '../../../utils/LoadMore'
-import { truncateTitle } from '../../../utils/Truncate'
+} from '../../redux/actions/movies'
+import useLoadMore from '@mod/mobile-common/lib/hooks/utils/useLoadMore'
+import Utils from '@mod/mobile-common/lib/class/Utils'
 import { useNavigation } from '@react-navigation/native'
-import list from '../../../styles/components/list'
 import { useTranslation } from 'react-i18next'
+import tw from 'twrnc'
 
 const NowPlaying = () => {
   const dispatch = useDispatch()
@@ -82,7 +81,7 @@ const NowPlaying = () => {
   }, [])
 
   return (
-    <View style={styles.container}>
+    <View style={tw`bg-slate-100 items-center justify-between`}>
       <FlatList
         data={allResults}
         keyExtractor={(item, index) => `${index}`}
@@ -93,7 +92,6 @@ const NowPlaying = () => {
         onEndReached={
           isLoading === true ? (
             <ActivityIndicator
-              style={styles.loader}
               size='large'
               color='#0000ff'
             />
@@ -104,7 +102,7 @@ const NowPlaying = () => {
         onEndReachedThreshold={0.5}
         renderItem={({ item }) => {
           return (
-            <View style={styles.flatListViewContainer}>
+            <View style={tw`flex-col justify-between`}>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('DetailsMovie', {
@@ -114,13 +112,13 @@ const NowPlaying = () => {
                 }
               >
                 <Image
-                  style={styles.image}
+                  style={[tw`w-16 h-26 rounded-md m-4`, { resizeMode: 'cover' }]}
                   source={{
                     uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
                   }}
                 />
-                <Text style={styles.originalTitle}>
-                  {truncateTitle(
+                <Text style={tw`text-center font-medium text-lg`}>
+                  {Utils.truncateTitle(
                     item.title,
                     language === 'zh-cn' ||
                       language === 'ko' ||
@@ -137,13 +135,5 @@ const NowPlaying = () => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: list.container,
-  title: list.title,
-  image: list.image,
-  flatListViewContainer: list.flatListViewContainer,
-  originalTitle: list.originalTitle,
-})
 
 export default NowPlaying

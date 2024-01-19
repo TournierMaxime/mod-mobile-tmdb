@@ -10,7 +10,6 @@ import {
   Text,
   ImageBackground,
   Image,
-  StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native'
@@ -22,26 +21,20 @@ import {
   releaseDates,
   movieWatchProviders,
   resetMovieWatchProviders,
-} from '../../../redux/actions/tmdb/movies'
+} from '../../redux/actions/movies'
 import { LinearGradient } from 'expo-linear-gradient'
-import Runtime from '../../../utils/RunTime'
-import Rate from '../../../utils/Rate'
-import details from '../../../styles/pages/details'
-import Refresh from '../../../utils/Refresh'
-import OverView from '../../../utils/OverView'
-import button from '../../../styles/components/button'
+import Runtime from '../../lib/components/RunTime'
+import Rate from '../../lib/components/Rate'
+import Refresh from '@mod/mobile-common/lib/components/utils/Refresh'
+import OverView from '../../lib/components/OverView'
 import { Entypo } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
-import { moderateScale } from '../../../utils/Responsive'
-import AddToFavorite from '../../../utils/AddToFavorite'
-import Tabs from '../../../components/Tabs'
-//import AddToWatchList from '../../../utils/AddToWatchList'
+import Utils from '@mod/mobile-common/lib/class/Utils'
+import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
 import { resetFavorites } from '../../../redux/actions/favorites'
-import { resetWatchLists } from '../../../redux/actions/watchlists'
-import Trailer from '../../../utils/Trailer'
-import CreatePost from '../../../utils/CreatePost'
-import CreateCritic from '../../../utils/CreateCritic'
+import Trailer from '../../lib/components/Trailer'
+import tw from 'twrnc'
 
 const DetailsMovie = ({ route }) => {
   const dispatch = useDispatch()
@@ -90,7 +83,13 @@ const DetailsMovie = ({ route }) => {
       if (!credit.job === 'Director') return null
       if (credit.job === 'Director') {
         return (
-          <Text key={index} style={styles.directorText}>
+          <Text
+            key={index}
+            style={[
+              tw`font-medium text-lg rounded-sm m-4 px-4 text-center`,
+              { color: '#495057', backgroundColor: '#dee2e6' },
+            ]}
+          >
             {credit.name}
           </Text>
         )
@@ -100,7 +99,13 @@ const DetailsMovie = ({ route }) => {
 
   const genres = useMemo(() => {
     return movie?.genres?.map((genre, index) => (
-      <Text key={index} style={styles.genreText}>
+      <Text
+        key={index}
+        style={[
+          tw`font-medium text-lg rounded-sm m-4 px-4 text-center`,
+          { color: '#495057', backgroundColor: '#dee2e6' },
+        ]}
+      >
         {genre.name}
       </Text>
     ))
@@ -111,28 +116,45 @@ const DetailsMovie = ({ route }) => {
   //const AddToWatchListMemoized = React.memo(AddToWatchList)
 
   return (
-    <View style={{ flex: 1 }}>
-      <Refresh styles={styles.scrollView} onRefresh={onRefresh}>
+    <View style={tw`flex-1`}>
+      <Refresh styles={tw`flex w-full h-full relative`} onRefresh={onRefresh}>
         {loading ? (
           <ActivityIndicator size='large' color='#0000ff' />
         ) : (
           movie && (
             <Fragment>
-              <View style={styles.mainViewContainer}>
+              <View style={tw`flex relative w-full h-60`}>
                 <LinearGradient
                   colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.8)']}
-                  style={styles.linearGradient}
+                  style={tw`w-full h-full relative flex`}
                 />
                 <ImageBackground
-                  style={styles.imageBackground}
+                  style={[
+                    tw`w-full h-full absolute`,
+                    {
+                      resizeMode: 'contain',
+                      opacity: 0.3,
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                    },
+                  ]}
                   source={{
                     uri: `https://image.tmdb.org/t/p/original${movie.backdrop_path}`,
                   }}
                 />
 
-                <View style={styles.titleAndDot}>
+                <View
+                  style={tw`flex flex-row absolute items-center justify-between w-full`}
+                >
                   <View>
-                    <Text style={[styles.headerTitle, { left: 15, top: 5 }]}>
+                    <Text
+                      style={[
+                        tw`font-medium text-lg text-white my-4 w-25`,
+                        { left: 15, top: 5 },
+                      ]}
+                    >
                       {movie.title}
                     </Text>
                   </View>
@@ -146,18 +168,23 @@ const DetailsMovie = ({ route }) => {
                     }
                   >
                     <Entypo
-                      style={styles.threeDots}
+                      style={[tw`p-4`, { right: 0, top: 5 }]}
                       name='dots-three-vertical'
-                      size={moderateScale(25)}
+                      size={Utils.moderateScale(25)}
                       color='white'
                     />
                   </TouchableOpacity>
                 </View>
 
-                <View style={styles.headerViewContainer}>
-                  <View style={styles.posterViewContainer}>
+                <View
+                  style={[
+                    tw`absolute flex-row justify-around items-start flex mt-4`,
+                    { top: '10%', left: 0, right: 0, bottom: 0 },
+                  ]}
+                >
+                  <View style={tw`flex flex-col items-center`}>
                     <Image
-                      style={styles.posterPath}
+                      style={[tw`w-14 h-20 rounded-sm`, { resizeMode: 'cover' }]}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
                       }}
@@ -165,75 +192,47 @@ const DetailsMovie = ({ route }) => {
                     <Rate rate={movie.vote_average} />
                   </View>
 
-                  <View style={styles.infoViewContainer}>
+                  <View style={tw`flex flex-col w-1/2`}>
                     <Runtime time={movie.runtime} isMovie={true} t={t} />
 
-                    <Text style={styles.directorTitle}>{t('genres')}</Text>
+                    <Text style={tw`font-medium text-lg text-white mt-2`}>{t('genres')}</Text>
 
-                    <View style={styles.genresViewContainer}>{genres}</View>
+                    <View style={tw`flex flex-row flex-wrap`}>{genres}</View>
 
-                    <Text style={styles.directorTitle}>{t('direction')}</Text>
+                    <Text style={tw`font-medium text-lg text-white mt-2`}>{t('direction')}</Text>
 
-                    <View style={styles.directorsViewContainer}>
+                    <View style={tw`flex flex-row flex-wrap`}>
                       {directors}
                     </View>
-                    <View style={{flexDirection: 'row'}}>
+                    <View style={tw`flex-row`}>
                       <AddToFavoriteMemoized
                         id={id}
                         title={movie?.title}
                         image={movie?.poster_path}
-                          type={'movie'}
-                          genre={genre}
-                      />
-{/*                       <AddToWatchListMemoized
-                        id={id}
-                        title={movie?.title}
-                        image={movie?.poster_path}
                         type={'movie'}
-                        /> */}
-                        <Trailer movie={movie} id={id} />
+                        genre={genre}
+                      />
+                      <Trailer movie={movie} id={id} />
                     </View>
                   </View>
                 </View>
 
                 <OverViewMemoized content={movie.overview} t={t} />
               </View>
-              <Tabs id={id} movie={movie} t={t} language={language} selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+              <Tabs
+                id={id}
+                movie={movie}
+                t={t}
+                language={language}
+                selectedTab={selectedTab}
+                setSelectedTab={setSelectedTab}
+              />
             </Fragment>
           )
         )}
       </Refresh>
-      {selectedTab === 'posts' && (<CreatePost tmdbId={id} movie={movie} />)}
-      {selectedTab === 'critics' && (<CreateCritic tmdbId={id} movie={movie} />)}
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: details.container,
-  title: details.title,
-  image: details.image,
-  flatListViewContainer: details.flatListViewContainer,
-  originalTitle: details.originalTitle,
-  scrollView: details.scrollView,
-  mainViewContainer: details.mainViewContainer,
-  linearGradient: details.linearGradient,
-  imageBackground: details.imageBackground,
-  titleAndDot: details.titleAndDot,
-  headerTitle: details.headerTitle,
-  headerViewContainer: details.headerViewContainer,
-  posterViewContainer: details.posterViewContainer,
-  posterPath: details.posterPath,
-  releaseDate: details.releaseDate,
-  infoViewContainer: details.infoViewContainer,
-  genresViewContainer: details.genresViewContainer,
-  genreText: details.genreText,
-  directorsViewContainer: details.directorsViewContainer,
-  directorText: details.directorText,
-  directorTitle: details.directorTitle,
-  criticButton: button.criticButton,
-  buttonText: button.buttonText,
-  threeDots: button.threeDots,
-})
 
 export default DetailsMovie

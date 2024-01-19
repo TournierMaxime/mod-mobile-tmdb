@@ -4,15 +4,14 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Image,
-  StyleSheet,
+  Image
 } from 'react-native'
-import dot from '../../../styles/pages/dot'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
-import { peopleCareer, resetPeopleCareer } from '../../../redux/actions/tmdb/people'
+import { peopleCareer, resetPeopleCareer } from '../../redux/actions/people'
+import tw from 'twrnc'
 
 const CastPeople = ({ route }) => {
   const { id, name } = route.params
@@ -40,25 +39,25 @@ const CastPeople = ({ route }) => {
           })
         }
       >
-        <View style={styles.renderItemContainer}>
+        <View style={tw`flex flex-row justify-start bg-white my-4 p-4`}>
           {item.poster_path ? (
             <Image
-              style={styles.image}
+              style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
               source={{
                 uri: `https://image.tmdb.org/t/p/original/${item.poster_path}`,
               }}
             />
           ) : (
             <Image
-              style={styles.image}
+              style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
               source={require('../../../assets/image/No_Image_Available.jpg')}
             />
           )}
-          <View style={styles.renderItemDetails}>
-            <Text style={styles.renderItemTitle}>
+          <View style={tw`flex-1 w-full`}>
+            <Text style={tw`font-medium text-lg ml-4`}>
               {item.title} | {moment(item.release_date).format('YYYY')}{' '}
             </Text>
-            <Text style={styles.renderItemOverview}>{item.character}</Text>
+            <Text style={tw`font-medium text-lg p-4 text-justify leading-7`}>{item.character}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -71,23 +70,23 @@ const CastPeople = ({ route }) => {
           })
         }
       >
-        <View style={styles.renderItemContainer}>
+        <View style={tw`flex flex-row justify-start bg-white my-4 p-4`}>
           {item.poster_path ? (
             <Image
-              style={styles.image}
+              style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
               source={{
                 uri: `https://image.tmdb.org/t/p/original/${item.poster_path}`,
               }}
             />
           ) : (
             <Image
-              style={styles.image}
+              style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
               source={require('../../../assets/image/No_Image_Available.jpg')}
             />
           )}
-          <View style={styles.renderItemDetails}>
-            <Text style={styles.renderItemTitle}>{item.name}</Text>
-            <Text style={styles.renderItemOverview}>{item.character}</Text>
+          <View style={tw`flex-1 w-full`}>
+            <Text style={tw`font-medium text-lg ml-4`}>{item.name}</Text>
+            <Text style={tw`font-medium text-lg p-4 text-justify leading-7`}>{item.character}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -105,8 +104,8 @@ const CastPeople = ({ route }) => {
   }, [])
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.seasonTitle}>{t('filmographyOf')} {name}</Text>
+    <View style={tw`flex-1 flex flex-col mt-4`}>
+      <Text style={tw`text-center font-medium text-lg mb-4`}>{t('filmographyOf')} {name}</Text>
       <FlatList
         data={sortedCareer}
         keyExtractor={(item) => item.credit_id.toString()}
@@ -115,15 +114,5 @@ const CastPeople = ({ route }) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: dot.container,
-  image: dot.image,
-  renderItemContainer: dot.renderItemContainer,
-  renderItemTitle: dot.renderItemTitle,
-  renderItemOverview: dot.renderItemOverview,
-  renderItemDetails: dot.renderItemDetails,
-  seasonTitle: dot.seasonTitle,
-})
 
 export default CastPeople

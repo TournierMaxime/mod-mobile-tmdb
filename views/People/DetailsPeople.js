@@ -3,7 +3,6 @@ import {
   View,
   Text,
   Image,
-  StyleSheet,
   ActivityIndicator,
   Linking,
   TouchableOpacity,
@@ -13,20 +12,17 @@ import {
   peopleDetails,
   resetPeopleDetails,
   peopleExternalIds,
-} from '../../../redux/actions/tmdb/people'
+} from '../../redux/actions/people'
 import { LinearGradient } from 'expo-linear-gradient'
-import details from '../../../styles/pages/details'
-import Refresh from '../../../utils/Refresh'
-import OverView from '../../../utils/OverView'
+import Refresh from '@mod/mobile-common/lib/components/utils/Refresh'
+import OverView from '../../lib/components/OverView'
 import moment from 'moment'
-import SVGImdb from '../../../utils/SVGImdb'
+import SVGImdb from '../../lib/components/SVGImdb'
 import { Entypo } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
-import { moderateScale } from '../../../utils/Responsive'
-import button from '../../../styles/components/button'
 import Informations from './Informations'
-import AddToFavorite from '../../../utils/AddToFavorite'
+import tw from 'twrnc'
 
 const DetailsPeople = ({ route }) => {
   const dispatch = useDispatch()
@@ -46,7 +42,7 @@ const DetailsPeople = ({ route }) => {
     const currentAge = currentYear - yearBirthDay
 
     return (
-      <Text style={styles.headerTitle}>
+      <Text style={tw`font-medium text-lg w-full my-2 text-white`}>
         {t('age')} {currentAge} {t('years')}
       </Text>
     )
@@ -58,7 +54,7 @@ const DetailsPeople = ({ route }) => {
     const ageDeath = yearDeathDay - yearBirthDay
 
     return (
-      <Text style={styles.headerTitle}>
+      <Text style={tw`font-medium text-lg w-full my-2 text-white`}>
         {t('deadAt')} {ageDeath} {t('years')}
       </Text>
     )
@@ -71,13 +67,13 @@ const DetailsPeople = ({ route }) => {
 
     if (gender === 1) {
       return (
-        <Text style={styles.headerTitle}>
+        <Text style={tw`font-medium text-lg w-full my-2 text-white`}>
           {t('born')} {birthDay} {t('at')} {placeOfBirth}
         </Text>
       )
     } else if (gender === 2) {
       return (
-        <Text style={styles.headerTitle}>
+        <Text style={tw`font-medium text-lg w-full my-2 text-white`}>
           {t('born')} {birthDay} {t('at')} {placeOfBirth}
         </Text>
       )
@@ -116,22 +112,29 @@ const DetailsPeople = ({ route }) => {
   const InformationsMemoized = React.memo(Informations)
 
   return (
-    <View style={{ flex: 1 }}>
-      <Refresh styles={styles.scrollView} onRefresh={onRefresh}>
+    <View style={tw`flex-1`}>
+      <Refresh styles={tw`w-full h-full flex relative`} onRefresh={onRefresh}>
         {loading ? (
           <ActivityIndicator size='large' color='#0000ff' />
         ) : (
           people && (
             <Fragment>
-              <View style={styles.mainViewContainer}>
+              <View style={tw`flex relative w-full h-60`}>
                 <LinearGradient
                   colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.8)']}
-                  style={styles.linearGradient}
+                  style={tw`w-full h-full relative flex`}
                 />
 
-                <View style={styles.titleAndDot}>
+                <View
+                  style={tw`flex flex-row absolute items-center justify-between w-full`}
+                >
                   <View>
-                    <Text style={[styles.headerTitle, { left: 15, top: 5 }]}>
+                    <Text
+                      style={[
+                        tw`font-medium text-lg w-full my-2 text-white`,
+                        { left: 15, top: 5 },
+                      ]}
+                    >
                       {people.name}
                     </Text>
                   </View>
@@ -145,7 +148,7 @@ const DetailsPeople = ({ route }) => {
                     }
                   >
                     <Entypo
-                      style={styles.threeDots}
+                      style={[tw`p-4`, { right: 0, top: 5 }]}
                       name='dots-three-vertical'
                       size={moderateScale(25)}
                       color='white'
@@ -153,16 +156,21 @@ const DetailsPeople = ({ route }) => {
                   </TouchableOpacity>
                 </View>
 
-                <View style={styles.headerViewContainer}>
-                  <View style={styles.posterViewContainer}>
+                <View
+                  style={[
+                    tw`absolute flex-row justify-between items-start flex mt-4`,
+                    { top: '10%', left: 0, right: 0, bottom: 0 },
+                  ]}
+                >
+                  <View style={tw`flex flex-col items-center`}>
                     <Image
-                      style={styles.posterPath}
+                      style={[tw`w-14 h-20 rounded-sm`, { resizeMode: 'cover' }]}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${people.profile_path}`,
                       }}
                     />
                   </View>
-                  <View style={styles.infoViewContainer}>
+                  <View style={tw`flex flex-col w-1/2`}>
                     {birth()}
 
                     {people.deathday ? null : currentAge()}
@@ -194,25 +202,5 @@ const DetailsPeople = ({ route }) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  scrollView: details.scrollView,
-  mainViewContainer: details.mainViewContainer,
-  linearGradient: details.linearGradient,
-  headerViewContainer: details.headerViewContainer,
-  posterViewContainer: details.posterViewContainer,
-  posterPath: details.posterPath,
-  infoViewContainer: details.infoViewContainer,
-  viewOverviewContainer: details.viewOverviewContainer,
-  headerTitle: {
-    fontSize: moderateScale(20),
-    color: 'white',
-    marginVertical: 5,
-    width: '100%',
-  },
-  textOverview: details.textOverview,
-  titleAndDot: details.titleAndDot,
-  threeDots: button.threeDots,
-})
 
 export default DetailsPeople

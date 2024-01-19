@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
 import { useSelector } from 'react-redux'
-import { Text, View, StyleSheet } from 'react-native'
-import dot from '../../../styles/pages/dot'
-import Accordion from '../../../components/Accordion'
+import { Text, View } from 'react-native'
+import Accordion from '@mod/mobile-common/lib/components/utils/Accordion'
+import tw from 'twrnc'
 
 const MovieWatchProviders = ({ language, t }) => {
   const providers = useSelector(
@@ -33,11 +33,16 @@ const MovieWatchProviders = ({ language, t }) => {
 
     return (
       <View>
-        <Text style={styles.renderItemTitle}>{t('flatrate')}</Text>
+        <Text style={tw`font-medium text-lg ml-4`}>{t('flatrate')}</Text>
         {providers?.[language]?.flatrate?.map((provider, index) => {
           return (
-            <View key={index} style={styles.flatListViewContainer}>
-              <Text style={styles.renderItemTags}>
+            <View key={index} style={tw`flex-col justify-between`}>
+              <Text
+                style={[
+                  tw`font-medium text-lg py-2 px-4 text-justify leading-7 rounded-md ml-4 mr-auto my-2 w-auto`,
+                  { color: '#495057', backgroundColor: '#dee2e6' },
+                ]}
+              >
                 {provider.provider_name}
               </Text>
             </View>
@@ -70,11 +75,16 @@ const MovieWatchProviders = ({ language, t }) => {
 
     return (
       <View>
-        <Text style={styles.renderItemTitle}>{t('buy')}</Text>
+        <Text style={tw`font-medium text-lg ml-4`}>{t('buy')}</Text>
         {providers?.[language]?.buy?.map((provider, index) => {
           return (
-            <View key={index} style={styles.flatListViewContainer}>
-              <Text style={styles.renderItemTags}>
+            <View key={index} style={tw`flex-col justify-between`}>
+              <Text
+                style={[
+                  tw`font-medium text-lg py-2 px-4 text-justify leading-7 rounded-md ml-4 mr-auto my-2 w-auto`,
+                  { color: '#495057', backgroundColor: '#dee2e6' },
+                ]}
+              >
                 {provider.provider_name}
               </Text>
             </View>
@@ -107,11 +117,16 @@ const MovieWatchProviders = ({ language, t }) => {
 
     return (
       <View>
-        <Text style={styles.renderItemTitle}>{t('rent')}</Text>
+        <Text style={tw`font-medium text-lg ml-4`}>{t('rent')}</Text>
         {providers?.[language]?.buy?.map((provider, index) => {
           return (
-            <View key={index} style={styles.flatListViewContainer}>
-              <Text style={styles.renderItemTags}>
+            <View key={index} style={tw`flex-col justify-between`}>
+              <Text
+                style={[
+                  tw`font-medium text-lg py-2 px-4 text-justify leading-7 rounded-md ml-4 mr-auto my-2 w-auto`,
+                  { color: '#495057', backgroundColor: '#dee2e6' },
+                ]}
+              >
                 {provider.provider_name}
               </Text>
             </View>
@@ -122,7 +137,6 @@ const MovieWatchProviders = ({ language, t }) => {
   }
 
   const providersByCountry = (providers, language) => {
-
     switch (language) {
       case 'EN-GB':
         language = 'US'
@@ -149,8 +163,8 @@ const MovieWatchProviders = ({ language, t }) => {
 
   return (
     <Accordion title={t('available')}>
-      <View style={styles.mainContainer}>
-        <Text style={[styles.renderItemTitle, { marginBottom: 15 }]}>
+      <View style={tw`flex flex-col`}>
+        <Text style={tw`font-medium text-lg ml-4 mb-4`}>
           {t('contentPoweredByJustWatch')}
         </Text>
         <View>{providersByCountry(providers, language)}</View>
@@ -158,15 +172,5 @@ const MovieWatchProviders = ({ language, t }) => {
     </Accordion>
   )
 }
-
-const styles = StyleSheet.create({
-  image: dot.image,
-  renderItemContainer: dot.renderItemContainer,
-  renderItemTitle: dot.renderItemTitle,
-  renderItemOverview: dot.renderItemOverview,
-  renderItemTags: dot.renderItemTags,
-  renderItemDetails: dot.renderItemDetails,
-  seasonTitle: dot.seasonTitle,
-})
 
 export default MovieWatchProviders
