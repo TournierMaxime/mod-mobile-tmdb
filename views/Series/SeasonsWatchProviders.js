@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   updateSeasonWatchProviders,
   resetSeasonWatchProviders,
-} from '../../../redux/actions/tmdb/series'
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+} from '../../redux/actions/series'
+import { Text, View, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import Rate from '../../../utils/Rate'
-import dot from '../../../styles/pages/dot'
+import Rate from '../../lib/components/Rate'
 import moment from 'moment'
+import tw from 'twrnc'
 
 const SeasonsWatchProviders = ({ id, item, language, t }) => {
   const dispatch = useDispatch()
@@ -44,11 +44,11 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
     if (providers.seasonNumber !== seasonNumber) return null
     return (
       <View>
-        <Text style={styles.renderItemTitle}>{t('flatrate')}</Text>
+        <Text style={tw`font-medium text-lg ml-4`}>{t('flatrate')}</Text>
         {providers.watchProviders.results[language]?.flatrate?.map(
           (provider, index) => {
             return (
-              <Text style={styles.renderItemTags} key={index}>
+              <Text style={[tw`font-medium text-lg py-2 px-4 text-justify leading-7 rounded-md ml-4 mr-auto my-2 w-auto`, { color: '#495057', backgroundColor: '#dee2e6' }]} key={index}>
                 {provider.provider_name}
               </Text>
             )
@@ -81,11 +81,11 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
     if (providers.seasonNumber !== seasonNumber) return null
     return (
       <View>
-        <Text style={styles.renderItemTitle}>{t('buy')}</Text>
+        <Text style={tw`font-medium text-lg ml-4`}>{t('buy')}</Text>
         {providers.watchProviders.results[language]?.buy?.map(
           (provider, index) => {
             return (
-              <Text style={styles.renderItemTags} key={index}>
+              <Text style={[tw`font-medium text-lg py-2 px-4 text-justify leading-7 rounded-md ml-4 mr-auto my-2 w-auto`, { color: '#495057', backgroundColor: '#dee2e6' }]} key={index}>
                 {provider.provider_name}
               </Text>
             )
@@ -142,32 +142,32 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
         })
       }
     >
-      <View style={styles.renderItemContainer}>
-        <View style={{ alignItems: 'center' }}>
+      <View style={tw`flex flex-row justify-start bg-white my-2 p-2`}>
+        <View style={tw`items-center`}>
           {item.poster_path ? (
             <Image
-              style={styles.image}
+              style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
               source={{
                 uri: `https://image.tmdb.org/t/p/original/${item.poster_path}`,
               }}
             />
           ) : (
             <Image
-              style={styles.image}
+              style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
               source={require('../../../assets/image/No_Image_Available.jpg')}
             />
           )}
           <Rate rate={item.vote_average} />
         </View>
-        <View style={styles.renderItemDetails}>
-          <Text style={styles.renderItemTitle}>
+        <View style={tw`flex-1 w-full`}>
+          <Text style={tw`font-medium text-lg ml-4`}>
             {item.name} | {item.episode_count} {t('episodes')}
           </Text>
-          <Text style={styles.renderItemTitle}>
+          <Text style={tw`font-medium text-lg ml-4`}>
             {moment(item.air_date).format('LL')}
           </Text>
-          <Text style={styles.renderItemOverview}>{item.overview}</Text>
-          <Text style={[styles.renderItemTitle, { marginBottom: 15 }]}>
+          <Text style={tw`font-medium text-lg p-4 text-justify leading-7`}>{item.overview}</Text>
+          <Text style={[tw`font-medium text-lg ml-4`, { marginBottom: 15 }]}>
             {t('contentPoweredByJustWatch')}
           </Text>
           <View>{providersByCountry(lang)}</View>
@@ -176,15 +176,5 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
     </TouchableOpacity>
   )
 }
-
-const styles = StyleSheet.create({
-  image: dot.image,
-  renderItemContainer: dot.renderItemContainer,
-  renderItemTitle: dot.renderItemTitle,
-  renderItemOverview: dot.renderItemOverview,
-  renderItemTags: dot.renderItemTags,
-  renderItemDetails: dot.renderItemDetails,
-  seasonTitle: dot.seasonTitle,
-})
 
 export default SeasonsWatchProviders

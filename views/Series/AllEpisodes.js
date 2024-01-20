@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
-import { Text, View, StyleSheet, FlatList, Image } from 'react-native'
+import { Text, View, FlatList, Image } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import moment from 'moment/moment'
-import dot from '../../../styles/pages/dot'
-import { seasonDetails, resetSeasonDetails } from '../../../redux/actions/tmdb/series'
+import moment from 'moment'
+import { seasonDetails, resetSeasonDetails } from '../../redux/actions/series'
 import { useTranslation } from 'react-i18next'
+import tw from 'twrnc'
 
 const AllEpisodes = ({ route }) => {
   const { id, seasonNumber } = route.params
@@ -26,37 +26,37 @@ const AllEpisodes = ({ route }) => {
 
   const renderItem = (item) => {
     return (
-      <View style={styles.renderItemContainer}>
+      <View style={tw`flex flex-row justify-start bg-white my-4 p-4`}>
         {item.still_path ? (
           <Image
-            style={styles.image}
+            style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
             source={{
               uri: `https://image.tmdb.org/t/p/original/${item.still_path}`,
             }}
           />
         ) : (
           <Image
-            style={styles.image}
+            style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
             source={require('../../../assets/image/No_Image_Available.jpg')}
           />
         )}
 
-        <View style={styles.renderItemDetails}>
-          <Text style={styles.renderItemTitle}>
+        <View style={tw`flex-1 w-full`}>
+          <Text style={tw`font-medium text-lg ml-4`}>
             {item.name} | {t('episode')} {item.episode_number}
           </Text>
-          <Text style={styles.renderItemTitle}>
+          <Text style={tw`font-medium text-lg ml-4`}>
             {moment(item.air_date).format('LL')}
           </Text>
-          <Text style={styles.renderItemOverview}>{item.overview}</Text>
+          <Text style={tw`font-medium text-lg p-4 text-justify leading-7`}>{item.overview}</Text>
         </View>
       </View>
     )
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.seasonTitle}>{t('Episodes')}</Text>
+    <View style={tw`flex-1 flex flex-col mt-4`}>
+      <Text style={tw`text-center font-medium text-lg mb-4`}>{t('Episodes')}</Text>
       <FlatList
         data={season?.episodes}
         keyExtractor={(item) => item.id.toString()}
@@ -65,15 +65,5 @@ const AllEpisodes = ({ route }) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: dot.container,
-  image: dot.image,
-  renderItemContainer: dot.renderItemContainer,
-  renderItemTitle: dot.renderItemTitle,
-  renderItemOverview: dot.renderItemOverview,
-  renderItemDetails: dot.renderItemDetails,
-  seasonTitle: dot.seasonTitle,
-})
 
 export default AllEpisodes

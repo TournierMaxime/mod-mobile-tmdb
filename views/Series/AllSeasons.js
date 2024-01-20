@@ -2,14 +2,13 @@ import React from 'react'
 import {
   Text,
   View,
-  StyleSheet,
   FlatList
 } from 'react-native'
 import { useSelector } from 'react-redux'
-import moment from 'moment/moment'
-import dot from '../../../styles/pages/dot'
+import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import SeasonsWatchProviders from './SeasonsWatchProviders'
+import tw from 'twrnc'
  
 const AllSeasons = ({ route }) => {
   const { title, id } = route.params
@@ -20,8 +19,8 @@ const AllSeasons = ({ route }) => {
   moment.locale(language)
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.seasonTitle}>
+    <View style={tw`flex-1 flex flex-col mt-4`}>
+      <Text style={tw`text-center font-medium text-lg mb-4`}>
         {t('seasonsOf')} {title}
       </Text>
       <FlatList
@@ -32,15 +31,5 @@ const AllSeasons = ({ route }) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: dot.container,
-  image: dot.image,
-  renderItemContainer: dot.renderItemContainer,
-  renderItemTitle: dot.renderItemTitle,
-  renderItemOverview: dot.renderItemOverview,
-  renderItemDetails: dot.renderItemDetails,
-  seasonTitle: dot.seasonTitle,
-})
 
 export default AllSeasons

@@ -1,8 +1,7 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import details from '../../../styles/pages/details'
-// import moment from 'moment'
-import Accordion from '../../../components/Accordion'
+import { View, Text } from 'react-native'
+import Accordion from '@mod/mobile-common/lib/components/utils/Accordion'
+import tw from 'twrnc'
 
 const Production = ({ serie, t }) => {
   const status = (data) => {
@@ -11,16 +10,16 @@ const Production = ({ serie, t }) => {
     const statusSerie = () => {
       switch (data) {
         case 'Returning Series':
-          return <Text style={styles.tags}>{t('returningSeries')}</Text>
+          return <Text style={[tw`font-medium text-lg rounded-md ml-4 mr-auto w-auto py-2 px-4 text-center leading-7`, { color: '#495057', backgroundColor: '#dee2e6' }]}>{t('returningSeries')}</Text>
         case 'Ended':
-          return <Text style={styles.tags}>{t('ended')}</Text>
+          return <Text style={[tw`font-medium text-lg rounded-md ml-4 mr-auto w-auto py-2 px-4 text-center leading-7`, { color: '#495057', backgroundColor: '#dee2e6' }]}>{t('ended')}</Text>
       }
     }
 
     return (
       <Accordion title={t('status')}>
-        <View style={styles.mainContainer}>
-          <View style={styles.flatListViewContainer}>{statusSerie()}</View>
+        <View style={tw`flex flex-col`}>
+          <View style={tw`flex-col justify-between`}>{statusSerie()}</View>
         </View>
       </Accordion>
     )
@@ -33,8 +32,8 @@ const Production = ({ serie, t }) => {
       <Accordion title={t('diffusers')}>
         {data?.map((item, index) => {
           return (
-            <View key={index} style={styles.flatListViewContainer}>
-              <Text style={styles.tags}>{item.name}</Text>
+            <View key={index} style={tw`flex-col justify-between`}>
+              <Text style={[tw`font-medium text-lg rounded-md ml-4 mr-auto w-auto py-2 px-4 text-center leading-7`, { color: '#495057', backgroundColor: '#dee2e6' }]}>{item.name}</Text>
             </View>
           )
         })}
@@ -49,8 +48,8 @@ const Production = ({ serie, t }) => {
       <Accordion title={t('producers')}>
         {data?.map((item, index) => {
           return (
-            <View key={index} style={styles.flatListViewContainer}>
-              <Text style={styles.tags}>{item.name}</Text>
+            <View key={index} style={tw`flex-col justify-between`}>
+              <Text style={[tw`font-medium text-lg rounded-md ml-4 mr-auto w-auto py-2 px-4 text-center leading-7`, { color: '#495057', backgroundColor: '#dee2e6' }]}>{item.name}</Text>
             </View>
           )
         })}
@@ -65,8 +64,8 @@ const Production = ({ serie, t }) => {
       <Accordion title={t('country')}>
         {data?.map((item, index) => {
           return (
-            <View key={index} style={styles.flatListViewContainer}>
-              <Text style={styles.tags}>{item.name}</Text>
+            <View key={index} style={tw`flex-col justify-between`}>
+              <Text style={[tw`font-medium text-lg rounded-md ml-4 mr-auto w-auto py-2 px-4 text-center leading-7`, { color: '#495057', backgroundColor: '#dee2e6' }]}>{item.name}</Text>
             </View>
           )
         })}
@@ -75,9 +74,9 @@ const Production = ({ serie, t }) => {
   }
 
   return (
-    <View style={styles.productionViewContainer}>
-      <View style={styles.technicalSheetViewContainer}>
-        <Text style={styles.title}>{t('production')}</Text>
+    <View style={tw`my-4 pb-4`}>
+      <View style={tw`flex flex-row my-2`}>
+        <Text style={tw`font-medium text-lg m-2`}>{t('production')}</Text>
       </View>
       {status(serie?.status)}
       {networks(serie?.networks)}
@@ -86,16 +85,5 @@ const Production = ({ serie, t }) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  image: details.image,
-  title: details.title,
-  subTitle: details.subTitle,
-  flatListViewContainer: details.flatListViewContainer,
-  tags: details.tags,
-  technicalSheetViewContainer: details.technicalSheetViewContainer,
-  mainContainer: details.mainContainer,
-  productionViewContainer: details.productionViewContainer,
-})
 
 export default Production

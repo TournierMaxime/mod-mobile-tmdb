@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {StyleSheet, View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { popular, resetPopular } from '../../../redux/actions/tmdb/series'
-import useLoadMore from '../../../utils/LoadMore';
-import { truncateTitle } from '../../../utils/Truncate'
-import {useNavigation} from '@react-navigation/native';
-import list from '../../../styles/components/list';
+import { popular, resetPopular } from '../../redux/actions/series'
+import useLoadMore from '@mod/mobile-common/lib/hooks/utils/useLoadMore';
+import Utils from '@mod/mobile-common/lib/class/Utils'
+import { useNavigation } from '@react-navigation/native';
+import tw from 'twrnc'
 
 const Popular = () => {
     const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const Popular = () => {
   }, [])
 
   return (
-    <View style={styles.container}>
+    <View style={tw`bg-slate-100 items-center justify-between`}>
         <FlatList 
           data={allResults}
           keyExtractor={(item, index) => `${index}`}
@@ -45,10 +45,10 @@ const Popular = () => {
           onEndReachedThreshold={0.5}
           renderItem={({item}) => {
             return (
-              <View style={styles.flatListViewContainer}>
+              <View style={tw`flex-col justify-between`}>
                 <TouchableOpacity onPress={() => navigation.navigate('DetailsSerie', {id: item.id, title: item.original_name})}>
-                  <Image style={styles.image} source={{uri: `https://image.tmdb.org/t/p/original${item.poster_path}`}} />
-                  <Text style={styles.originalTitle}>{truncateTitle(item.original_name, 15)}</Text>
+                  <Image style={[tw`w-16 h-26 rounded-md m-4`, { resizeMode: 'cover' }]} source={{uri: `https://image.tmdb.org/t/p/original${item.poster_path}`}} />
+                  <Text style={tw`text-center font-medium text-lg`}>{Utils.truncateTitle(item.original_name, 15)}</Text>
                 </TouchableOpacity>
               </View>
             )
@@ -57,13 +57,5 @@ const Popular = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: list.container,
-  title: list.title, 
-  image: list.image,
-  flatListViewContainer: list.flatListViewContainer,
-  originalTitle: list.originalTitle
-});
 
 export default Popular;
