@@ -7,7 +7,7 @@ import {
   SerieCrew,
   SerieTrailer,
   TrendingTV,
-} from '../../../services/tmdb'
+} from '../../services/tmdb'
 
 const seasonDetails = (id, seasonNumber, language) => async (dispatch) => {
   try {

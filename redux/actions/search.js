@@ -1,5 +1,5 @@
 
-import { Search } from '../../../services/tmdb'
+import { Search } from '../../services/tmdb'
   
 export const search = (page, query, language) => async (dispatch) => {
   try {

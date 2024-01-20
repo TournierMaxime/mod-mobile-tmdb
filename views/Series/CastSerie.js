@@ -39,7 +39,7 @@ const CastSerie = ({ route }) => {
           ) : (
             <Image
               style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
-              source={require('../../../assets/image/No_Image_Available.jpg')}
+              source={require('../../assets/images/No_Image_Available.jpg')}
             />
           )}
           <View style={tw`flex-1 w-full`}>

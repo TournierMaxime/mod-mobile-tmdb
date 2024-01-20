@@ -6,6 +6,7 @@
   "license": "ISC",
   "exports": {
     "./lib/*": "./lib/*.js",
+    "./loacales/*": "./loacales/*.json",
     "./redux/*": "./redux/*.js",
     "./services/*": "./services/*.js",
     "./views/*": "./views/*.js"

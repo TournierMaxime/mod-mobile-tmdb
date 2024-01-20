@@ -7,7 +7,7 @@ import {
   MovieTrailer,
   Trending,
   Upcoming,
-} from '../../../services/tmdb'
+} from '../../services/tmdb'
 
 const movieDetails = (id, language) => async (dispatch) => {
   try {

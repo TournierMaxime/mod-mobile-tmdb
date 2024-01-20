@@ -32,7 +32,6 @@ import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import Utils from '@mod/mobile-common/lib/class/Utils'
 import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
-import { resetFavorites } from '../../../redux/actions/favorites'
 import Trailer from '../../lib/components/Trailer'
 import tw from 'twrnc'
 
@@ -73,8 +72,6 @@ const DetailsMovie = ({ route }) => {
     return () => {
       dispatch(resetMovieDetails())
       dispatch(resetMovieWatchProviders())
-      dispatch(resetFavorites())
-      dispatch(resetWatchLists())
     }
   }, [])
 

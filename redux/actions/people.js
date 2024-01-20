@@ -2,7 +2,7 @@ import {
   PeopleCareer,
   PeopleDetails,
   PeopleExternalIds,
-} from '../../../services/tmdb'
+} from '../../services/tmdb'
 
 const peopleCareer = (id, language) => async (dispatch) => {
   try {
