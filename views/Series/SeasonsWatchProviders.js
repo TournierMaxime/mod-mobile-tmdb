@@ -6,7 +6,7 @@ import {
 } from '../../redux/actions/series'
 import { Text, View, Image, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import Rate from '../../../../lib/components/utils/Rate'
+import Rate from '../../lib/components/Rate'
 import moment from 'moment'
 import tw from 'twrnc'
 import Series from '../../lib/class/Series'

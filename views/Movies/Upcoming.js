@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { upcoming, resetUpcoming } from '../../redux/actions/movies'
-import useLoadMore from '../../../../lib/hooks/utils/useLoadMore'
+import useLoadMore from '@mod/mobile-common/lib/hooks/utils/useLoadMore'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import tw from 'twrnc'

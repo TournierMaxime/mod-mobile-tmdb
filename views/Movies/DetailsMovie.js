@@ -20,14 +20,14 @@ import {
   movieWatchProviders,
 } from '../../redux/actions/movies'
 import { LinearGradient } from 'expo-linear-gradient'
-import Runtime from '../../../../lib/components/utils/RunTime'
-import Rate from '../../../../lib/components/utils/Rate'
-import Refresh from '../../../../lib/components/utils/Refresh'
-import OverView from '../../../../lib/components/utils/OverView'
+import Runtime from '../../lib/components/RunTime'
+import Rate from '../../lib/components/Rate'
+import Refresh from '@mod/mobile-common/lib/components/utils/Refresh'
+import OverView from '../../lib/components/OverView'
 import { useTranslation } from 'react-i18next'
 import Utils from '@mod/mobile-common/lib/class/Utils'
-import Tabs from '../../../../lib/components/utils/Tabs'
-import Trailer from '../../../../lib/components/utils/Trailer'
+import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
+import Trailer from '../../lib/components/Trailer'
 import tw from 'twrnc'
 
 const DetailsMovie = ({ route }) => {

@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import { View, Text, Linking, TouchableOpacity } from 'react-native'
-import Accordion from '../../../../lib/components/utils/Accordion'
+import Accordion from '@mod/mobile-common/lib/components/utils/Accordion'
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons'
 import Utils from '@mod/mobile-common/lib/class/Utils'
 import tw from 'twrnc'

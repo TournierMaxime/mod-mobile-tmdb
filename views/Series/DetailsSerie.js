@@ -18,14 +18,14 @@ import {
   serieCrew,
 } from '../../redux/actions/series'
 import { LinearGradient } from 'expo-linear-gradient'
-import Runtime from '../../../../lib/components/utils/RunTime'
-import Rate from '../../../../lib/components/utils/Rate'
-import Tabs from '../../../../lib/components/utils/Tabs'
-import Refresh from '../../../../lib/components/utils/Refresh'
-import OverView from '../../../../lib/components/utils/OverView'
+import Runtime from '@mod/mobile-tmdb/lib/components/RunTime'
+import Rate from '@mod/mobile-tmdb/lib/components/Rate'
+import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
+import Refresh from '@mod/mobile-common/lib/components/utils/Refresh'
+import OverView from '@mod/mobile-tmdb/lib/components/OverView'
 import { useTranslation } from 'react-i18next'
 import Utils from '@mod/mobile-common/lib/class/Utils'
-import Trailer from '../../../../lib/components/utils/Trailer'
+import Trailer from '@mod/mobile-tmdb/lib/components/Trailer'
 import tw from 'twrnc'
 
 const DetailsSerie = ({ route }) => {

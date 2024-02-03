@@ -13,14 +13,14 @@ import {
   peopleCareer
 } from '../../redux/actions/people'
 import { LinearGradient } from 'expo-linear-gradient'
-import Refresh from '../../../../lib/components/utils/Refresh'
-import OverView from '../../../../lib/components/utils/OverView'
+import Refresh from '@mod/mobile-common/lib/components/utils/Refresh'
+import OverView from '@mod/mobile-tmdb/lib/components/OverView'
 import moment from 'moment'
-import SVGImdb from '../../../../lib/components/utils/SVGImdb'
+import SVGImdb from '../../lib/components/SVGImdb'
 import { useTranslation } from 'react-i18next'
 import tw from 'twrnc'
 import Utils from '@mod/mobile-common/lib/class/Utils'
-import Tabs from '../../../../lib/components/utils/Tabs'
+import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
 import People from '../../lib/class/People'
 
 const DetailsPeople = ({ route }) => {
