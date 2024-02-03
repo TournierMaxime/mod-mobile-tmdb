@@ -7,10 +7,11 @@ import {
   MovieTrailer,
   Trending,
   Upcoming,
-} from '../../services/tmdb'
+} from '../../../../services/tmdb'
 
 const movieDetails = (id, language) => async (dispatch) => {
   try {
+    dispatch({type: 'MOVIE_DETAILS_REQUEST'})
     const response = await MovieDetails(id, language)
     dispatch({ type: 'MOVIE_DETAILS_SUCCESS', payload: response.data })
     return response.data
@@ -27,6 +28,7 @@ const resetMovieDetails = () => ({
 
 const movieCrew = (id, language) => async (dispatch) => {
   try {
+    dispatch({type: 'MOVIE_CREW_REQUEST'})
     const response = await MovieCrew(id, language)
     dispatch({ type: 'MOVIE_CREW_SUCCESS', payload: response.data })
     return response.data
@@ -43,6 +45,7 @@ const resetMovieCrew = () => ({
 
 const movieWatchProviders = (id) => async (dispatch) => {
   try {
+    dispatch({type: 'MOVIE_WATCH_PROVIDERS_REQUEST'})
     const response = await MovieWatchProviders(id)
     dispatch({
       type: 'MOVIE_WATCH_PROVIDERS_SUCCESS',
@@ -84,6 +87,7 @@ const resetNowPlaying = () => ({
 
 const releaseDates = (id) => async (dispatch) => {
   try {
+    dispatch({type: 'RELEASE_DATES_REQUEST'})
     const response = await ReleaseDates(id)
     dispatch({ type: 'RELEASE_DATES_SUCCESS', payload: response.data })
     return response.data
@@ -100,6 +104,7 @@ const resetReleaseDates = () => ({
 
 const movieTrailer = (id, language) => async (dispatch) => {
   try {
+    dispatch({type: 'MOVIE_TRAILER_REQUEST'})
     const response = await MovieTrailer(id, language)
     dispatch({ type: 'MOVIE_TRAILER_SUCCESS', payload: response.data })
     return response.data

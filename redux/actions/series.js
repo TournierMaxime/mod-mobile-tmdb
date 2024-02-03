@@ -7,10 +7,11 @@ import {
   SerieCrew,
   SerieTrailer,
   TrendingTV,
-} from '../../services/tmdb'
+} from '../../../../services/tmdb'
 
 const seasonDetails = (id, seasonNumber, language) => async (dispatch) => {
   try {
+    dispatch({type: 'SEASON_DETAILS_REQUEST'})
     const response = await SeasonDetails(id, seasonNumber, language)
     dispatch({ type: 'SEASON_DETAILS_SUCCESS', payload: response.data })
     return response.data
@@ -27,6 +28,7 @@ const resetSeasonDetails = () => ({
 
 const serieDetails = (id, language) => async (dispatch) => {
   try {
+    dispatch({type: 'SERIE_DETAILS_REQUEST'})
     const response = await SerieDetails(id, language)
     dispatch({ type: 'SERIE_DETAILS_SUCCESS', payload: response.data })
     return response.data
@@ -45,6 +47,7 @@ const onTheAir =
   (page, target = 'onTheAir', language) =>
   async (dispatch) => {
     try {
+      dispatch({type: 'ON_THE_AIR_REQUEST', target})
       const response = await OnTheAir(page, language)
       dispatch({ type: 'ON_THE_AIR_SUCCESS', payload: response.data, target })
       return response.data
@@ -63,6 +66,7 @@ const popular =
   (page, target = 'popular', language) =>
   async (dispatch) => {
     try {
+      dispatch({type: 'POPULAR_REQUEST', target})
       const response = await Popular(page, language)
       dispatch({ type: 'POPULAR_SUCCESS', payload: response.data, target })
       return response.data
@@ -80,6 +84,7 @@ const resetPopular = () => ({
 const seasonWatchProviders =
   (id, seasonNumber, language) => async (dispatch) => {
     try {
+      dispatch({type: 'SEASON_WATCH_PROVIDERS_REQUEST'})
       const response = await SeasonWatchProviders(id, seasonNumber, language)
       dispatch({
         type: 'SEASON_WATCH_PROVIDERS_SUCCESS',
@@ -99,6 +104,7 @@ const seasonWatchProviders =
 const updateSeasonWatchProviders =
   (id, seasonNumber, language) => async (dispatch) => {
     try {
+      dispatch({type: 'UPDATE_SEASON_WATCH_REQUEST'})
       const response = await SeasonWatchProviders(id, seasonNumber, language)
       dispatch({
         type: 'UPDATE_SEASON_WATCH_PROVIDERS',
@@ -123,6 +129,7 @@ const resetSeasonWatchProviders = () => ({
 
 const serieCrew = (id, language) => async (dispatch) => {
   try {
+    dispatch({type: 'SERIE_CREW_REQUEST'})
     const response = await SerieCrew(id, language)
     dispatch({ type: 'SERIE_CREW_SUCCESS', payload: response.data })
     return response.data
@@ -139,6 +146,7 @@ const resetSerieCrew = () => ({
 
 const serieTrailer = (id, language) => async (dispatch) => {
   try {
+    dispatch({type: 'SERIE_TRAILER_REQUEST'})
     const response = await SerieTrailer(id, language)
     dispatch({ type: 'SERIE_TRAILER_SUCCESS', payload: response.data })
     return response.data

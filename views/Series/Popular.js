@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { popular, resetPopular } from '../../redux/actions/series'
-import useLoadMore from '@mod/mobile-common/lib/hooks/utils/useLoadMore';
+import useLoadMore from '../../../../lib/hooks/utils/useLoadMore';
 import Utils from '@mod/mobile-common/lib/class/Utils'
 import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc'

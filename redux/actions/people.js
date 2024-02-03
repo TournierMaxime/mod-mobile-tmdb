@@ -2,10 +2,11 @@ import {
   PeopleCareer,
   PeopleDetails,
   PeopleExternalIds,
-} from '../../services/tmdb'
+} from '../../../../services/tmdb'
 
 const peopleCareer = (id, language) => async (dispatch) => {
   try {
+    dispatch({type: 'PEOPLE_CAREER_REQUEST'})
     const response = await PeopleCareer(id, language)
     dispatch({ type: 'PEOPLE_CAREER_SUCCESS', payload: response.data })
     return response.data
@@ -22,6 +23,7 @@ const resetPeopleCareer = () => ({
 
 const peopleDetails = (id, language) => async (dispatch) => {
   try {
+    dispatch({type: 'PEOPLE_DETAILS_REQUEST'})
     const response = await PeopleDetails(id, language)
     dispatch({ type: 'PEOPLE_DETAILS_SUCCESS', payload: response.data })
     return response.data
@@ -38,6 +40,7 @@ const resetPeopleDetails = () => ({
 
 const peopleExternalIds = (id) => async (dispatch) => {
   try {
+    dispatch({type: 'PEOPLE_EXTERNAL_IDS_REQUEST'})
     const response = await PeopleExternalIds(id)
     dispatch({ type: 'PEOPLE_EXTERNAL_IDS_SUCCESS', payload: response.data })
     return response.data

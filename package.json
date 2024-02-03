@@ -5,14 +5,9 @@
   "author": "",
   "license": "ISC",
   "exports": {
-    "./assets/*": "./assets/*.jpg",
-    "./lib/*": "./lib/*.js",
-    "./loacales/*": "./loacales/*.json",
-    "./redux/*": "./redux/*.js",
-    "./services/*": "./services/*.js",
     "./views/*": "./views/*.js",
-    "./i18n": "./i18n.js",
-    "./polyfill": "./polyfill.js"
+    "./redux/*": "./redux/*.js",
+    "./lib/*": "./lib/*.js"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",

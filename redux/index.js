@@ -1,4 +1,3 @@
-import searchReducer from './reducers/search'
 import {
   nowPlayingReducer,
   movideDetailsReducer,
@@ -9,7 +8,6 @@ import {
   movieWatchProvidersReducer,
   trendingReducer,
 } from './reducers/movies'
-
 import {
   detailsPeopleReducer,
   peopleCareerReducer,
@@ -25,28 +23,38 @@ import {
   trendingTVReducer,
   seasonDetailsReducer,
 } from './reducers/series'
+import searchReducer from './reducers/search'
 
-const tmdbReducer = {
+const movieTmdbReducer = {
   nowPlaying: nowPlayingReducer,
   upcoming: upcomingReducer,
-  onTheAir: onTheAirReducer,
-  popular: popularReducer,
-  peopleDetails: detailsPeopleReducer,
-  search: searchReducer,
   movieDetails: movideDetailsReducer,
-  serieDetails: serieDetailsReducer,
   movieCrew: movieCrewReducer,
   movieTrailer: movieTrailerReducer,
-  serieCrew: serieCrewReducer,
-  serieTrailer: serieTrailerReducer,
-  peopleCareer: peopleCareerReducer,
   trending: trendingReducer,
-  seasonDetails: seasonDetailsReducer,
   releaseDates: releaseDatesReducer,
-  seasonWatchProviders: seasonWatchProvidersReducer,
   movieWatchProviders: movieWatchProvidersReducer,
-  peopleExternalIds: peopleExternalIdsReducer,
-  trendingTV: trendingTVReducer
 }
 
-export default tmdbReducer
+const serieTmdbReducer = {
+  onTheAir: onTheAirReducer,
+  popular: popularReducer,
+  serieDetails: serieDetailsReducer,
+  serieCrew: serieCrewReducer,
+  serieTrailer: serieTrailerReducer,
+  seasonDetails: seasonDetailsReducer,
+  seasonWatchProviders: seasonWatchProvidersReducer,
+  trendingTV: trendingTVReducer,
+}
+
+const peopleTmdbReducer = {
+  peopleExternalIds: peopleExternalIdsReducer,
+  peopleDetails: detailsPeopleReducer,
+  peopleCareer: peopleCareerReducer,
+}
+
+const searchTmdbReducer = {
+  search: searchReducer,
+}
+
+export { movieTmdbReducer, serieTmdbReducer, peopleTmdbReducer, searchTmdbReducer }

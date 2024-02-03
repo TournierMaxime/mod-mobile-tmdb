@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { View, Text, Linking, TouchableOpacity } from 'react-native'
-import Accordion from '@mod/mobile-common/lib/components/utils/Accordion'
+import Accordion from '../../../../lib/components/utils/Accordion'
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons'
 import Utils from '@mod/mobile-common/lib/class/Utils'
 import tw from 'twrnc'
@@ -12,7 +12,8 @@ const Informations = ({ externalIds, t }) => {
     }
 
     return (
-      <Accordion title={t('socialMedias')}>
+      <View style={[tw`border-slate-100`, { borderTopWidth: 2 }]}>
+      <Accordion title={t('utils.socialMedias')}>
         {data.twitter_id && (
           <TouchableOpacity
             onPress={() => openLink(`https://twitter.com/${data.twitter_id}`)}
@@ -123,18 +124,16 @@ const Informations = ({ externalIds, t }) => {
             </View>
           </TouchableOpacity>
         )}
-      </Accordion>
+        </Accordion>
+        </View>
     )
   }
 
   return (
-    <View style={tw`my-4 pb-4`}>
-      <View style={tw`flex flex-row my-4`}>
-        <Text style={tw`font-medium text-lg m-4`}>{t('informations')}</Text>
-      </View>
+    <View style={tw`pb-4 h-full bg-white`}>
       {socialMedia(externalIds)}
     </View>
   )
 }
 
-export default Informations
+export default memo(Informations)

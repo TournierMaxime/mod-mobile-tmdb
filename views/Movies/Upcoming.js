@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
   View,
-  Text,
   FlatList,
   Image,
   TouchableOpacity,
@@ -9,8 +8,7 @@ import {
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { upcoming, resetUpcoming } from '../../redux/actions/movies'
-import useLoadMore from '@mod/mobile-common/lib/hooks/utils/useLoadMore'
-import Utils from '@mod/mobile-common/lib/class/Utils'
+import useLoadMore from '../../../../lib/hooks/utils/useLoadMore'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import tw from 'twrnc'
@@ -88,14 +86,11 @@ const Upcoming = () => {
                 }
               >
                 <Image
-                  style={[tw`w-16 h-26 rounded-md m-4`, { resizeMode: 'cover' }]}
+                  style={[tw`w-40 h-60 rounded-md m-4`, { resizeMode: 'cover' }]}
                   source={{
                     uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
                   }}
                 />
-                <Text style={tw`text-center font-medium text-lg`}>
-                  {Utils.truncateTitle(item.original_title, 15)}
-                </Text>
               </TouchableOpacity>
             </View>
           )

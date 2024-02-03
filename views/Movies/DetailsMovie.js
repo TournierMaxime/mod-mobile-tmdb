@@ -10,51 +10,42 @@ import {
   Text,
   ImageBackground,
   Image,
-  ActivityIndicator,
-  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   movieDetails,
-  resetMovieDetails,
   movieCrew,
   releaseDates,
   movieWatchProviders,
-  resetMovieWatchProviders,
 } from '../../redux/actions/movies'
 import { LinearGradient } from 'expo-linear-gradient'
-import Runtime from '../../lib/components/RunTime'
-import Rate from '../../lib/components/Rate'
-import Refresh from '@mod/mobile-common/lib/components/utils/Refresh'
-import OverView from '../../lib/components/OverView'
-import { Entypo } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import Runtime from '../../../../lib/components/utils/RunTime'
+import Rate from '../../../../lib/components/utils/Rate'
+import Refresh from '../../../../lib/components/utils/Refresh'
+import OverView from '../../../../lib/components/utils/OverView'
 import { useTranslation } from 'react-i18next'
 import Utils from '@mod/mobile-common/lib/class/Utils'
-import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
-import Trailer from '../../lib/components/Trailer'
+import Tabs from '../../../../lib/components/utils/Tabs'
+import Trailer from '../../../../lib/components/utils/Trailer'
 import tw from 'twrnc'
 
 const DetailsMovie = ({ route }) => {
   const dispatch = useDispatch()
-  const navigation = useNavigation()
   const movie = useSelector((state) => state.movieDetails.data)
   const credits = useSelector((state) => state.movieCrew.data)
+  const loading = useSelector((state) => state.movieDetails.loading)
   const { id } = route.params
-  const [loading, setLoading] = useState(false)
   const [selectedTab, setSelectedTab] = useState('about')
-  const genre = movie?.genres?.find((item) => item.name)
 
   const { i18n, t } = useTranslation()
   const language = i18n.language
 
   const fetchData = useCallback(async () => {
-    setLoading(true)
     await dispatch(movieDetails(id, language))
     await dispatch(movieCrew(id, language))
     await dispatch(releaseDates(id))
     await dispatch(movieWatchProviders(id))
-    setLoading(false)
   }, [dispatch, id, language])
 
   const onRefresh = useCallback(async () => {
@@ -68,13 +59,6 @@ const DetailsMovie = ({ route }) => {
     fetchData()
   }, [fetchData])
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetMovieDetails())
-      dispatch(resetMovieWatchProviders())
-    }
-  }, [])
-
   const directors = useMemo(() => {
     return credits?.crew?.map((credit, index) => {
       if (!credit.job === 'Director') return null
@@ -83,7 +67,7 @@ const DetailsMovie = ({ route }) => {
           <Text
             key={index}
             style={[
-              tw`font-medium text-lg rounded-sm m-4 px-4 text-center`,
+              tw`font-medium text-lg rounded-sm m-1 px-4 text-center`,
               { color: '#495057', backgroundColor: '#dee2e6' },
             ]}
           >
@@ -99,7 +83,7 @@ const DetailsMovie = ({ route }) => {
       <Text
         key={index}
         style={[
-          tw`font-medium text-lg rounded-sm m-4 px-4 text-center`,
+          tw`font-medium text-lg rounded-sm m-1  px-4 text-center`,
           { color: '#495057', backgroundColor: '#dee2e6' },
         ]}
       >
@@ -107,10 +91,6 @@ const DetailsMovie = ({ route }) => {
       </Text>
     ))
   })
-
-  const OverViewMemoized = React.memo(OverView)
-  const AddToFavoriteMemoized = React.memo(AddToFavorite)
-  //const AddToWatchListMemoized = React.memo(AddToWatchList)
 
   return (
     <View style={tw`flex-1`}>
@@ -120,7 +100,7 @@ const DetailsMovie = ({ route }) => {
         ) : (
           movie && (
             <Fragment>
-              <View style={tw`flex relative w-full h-60`}>
+              <View style={[tw`flex relative w-full`, { height: Utils.moderateScale(550) }]}>
                 <LinearGradient
                   colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.8)']}
                   style={tw`w-full h-full relative flex`}
@@ -148,29 +128,13 @@ const DetailsMovie = ({ route }) => {
                   <View>
                     <Text
                       style={[
-                        tw`font-medium text-lg text-white my-4 w-25`,
+                        tw`font-medium text-lg text-white my-4 w-full`,
                         { left: 15, top: 5 },
                       ]}
                     >
                       {movie.title}
                     </Text>
                   </View>
-
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('DotDetails', {
-                        id,
-                        title: movie?.title,
-                      })
-                    }
-                  >
-                    <Entypo
-                      style={[tw`p-4`, { right: 0, top: 5 }]}
-                      name='dots-three-vertical'
-                      size={Utils.moderateScale(25)}
-                      color='white'
-                    />
-                  </TouchableOpacity>
                 </View>
 
                 <View
@@ -181,7 +145,7 @@ const DetailsMovie = ({ route }) => {
                 >
                   <View style={tw`flex flex-col items-center`}>
                     <Image
-                      style={[tw`w-14 h-20 rounded-sm`, { resizeMode: 'cover' }]}
+                      style={[tw`w-30 h-50 rounded-md`, { resizeMode: 'cover' }]}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
                       }}
@@ -192,29 +156,22 @@ const DetailsMovie = ({ route }) => {
                   <View style={tw`flex flex-col w-1/2`}>
                     <Runtime time={movie.runtime} isMovie={true} t={t} />
 
-                    <Text style={tw`font-medium text-lg text-white mt-2`}>{t('genres')}</Text>
+                    <Text style={tw`font-medium text-lg text-white my-2`}>{t('utils.genres')}</Text>
 
                     <View style={tw`flex flex-row flex-wrap`}>{genres}</View>
 
-                    <Text style={tw`font-medium text-lg text-white mt-2`}>{t('direction')}</Text>
+                    <Text style={tw`font-medium text-lg text-white my-2`}>{t('utils.direction')}</Text>
 
                     <View style={tw`flex flex-row flex-wrap`}>
                       {directors}
                     </View>
                     <View style={tw`flex-row`}>
-                      <AddToFavoriteMemoized
-                        id={id}
-                        title={movie?.title}
-                        image={movie?.poster_path}
-                        type={'movie'}
-                        genre={genre}
-                      />
                       <Trailer movie={movie} id={id} />
                     </View>
                   </View>
                 </View>
 
-                <OverViewMemoized content={movie.overview} t={t} />
+                <OverView content={movie.overview} t={t} />
               </View>
               <Tabs
                 id={id}

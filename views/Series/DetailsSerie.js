@@ -10,44 +10,37 @@ import {
   Text,
   ImageBackground,
   Image,
-  ActivityIndicator,
-  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   serieDetails,
-  resetSerieDetails,
   serieCrew,
 } from '../../redux/actions/series'
 import { LinearGradient } from 'expo-linear-gradient'
-import Runtime from '../../lib/components/RunTime'
-import Rate from '../../lib/components/Rate'
-import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
-import Refresh from '@mod/mobile-common/lib/components/utils/Refresh'
-import OverView from '../../lib/components/OverView'
-import { Entypo } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import Runtime from '../../../../lib/components/utils/RunTime'
+import Rate from '../../../../lib/components/utils/Rate'
+import Tabs from '../../../../lib/components/utils/Tabs'
+import Refresh from '../../../../lib/components/utils/Refresh'
+import OverView from '../../../../lib/components/utils/OverView'
 import { useTranslation } from 'react-i18next'
 import Utils from '@mod/mobile-common/lib/class/Utils'
-import Trailer from '../../lib/components/Trailer'
+import Trailer from '../../../../lib/components/utils/Trailer'
 import tw from 'twrnc'
 
 const DetailsSerie = ({ route }) => {
   const dispatch = useDispatch()
-  const navigation = useNavigation()
   const serie = useSelector((state) => state.serieDetails.data)
+  const loading = useSelector((state) => state.serieDetails.loading)
   const { id } = route.params
-  const [loading, setLoading] = useState(false)
   const [selectedTab, setSelectedTab] = useState('about')
 
   const { i18n, t } = useTranslation()
   const language = i18n.language
 
   const fetchData = useCallback(async () => {
-    setLoading(true)
     await dispatch(serieDetails(id, language))
     await dispatch(serieCrew(id, language))
-    setLoading(false)
   }, [dispatch, id, language])
 
   const onRefresh = useCallback(async () => {
@@ -59,14 +52,6 @@ const DetailsSerie = ({ route }) => {
     fetchData()
   }, [fetchData])
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetSerieDetails())
-      dispatch(resetFavorites())
-      dispatch(resetWatchLists())
-    }
-  }, [])
-
   const creators = useMemo(() => {
     return serie?.created_by?.map((credit, index) => {
       if (!credit.name) return null
@@ -74,7 +59,7 @@ const DetailsSerie = ({ route }) => {
         <Text
           key={index}
           style={[
-            tw`font-medium text-lg rounded-sm m-2 px-2 text-center`,
+            tw`font-medium text-lg rounded-sm m-1 px-4 text-center`,
             { color: '#495057', backgroundColor: '#dee2e6' },
           ]}
         >
@@ -89,7 +74,7 @@ const DetailsSerie = ({ route }) => {
       <Text
         key={index}
         style={[
-          tw`font-medium text-lg rounded-sm m-2 px-2 text-center`,
+          tw`font-medium text-lg rounded-sm m-1 px-4 text-center`,
           { color: '#495057', backgroundColor: '#dee2e6' },
         ]}
       >
@@ -97,8 +82,6 @@ const DetailsSerie = ({ route }) => {
       </Text>
     ))
   })
-
-  const OverViewMemoized = React.memo(OverView)
 
   return (
     <View style={tw`flex-1`}>
@@ -108,7 +91,7 @@ const DetailsSerie = ({ route }) => {
         ) : (
           serie && (
             <Fragment>
-              <View style={tw`flex relative w-full h-60`}>
+              <View style={[tw`flex relative w-full`, { height: Utils.moderateScale(550) }]}>
                 <LinearGradient
                   colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.8)']}
                   style={tw`flex w-full h-full relative`}
@@ -136,7 +119,7 @@ const DetailsSerie = ({ route }) => {
                   <View>
                     <Text
                       style={[
-                        tw`font-medium text-lg text-white my-2 w-25`,
+                        tw`font-medium text-lg text-white my-4 w-full`,
                         { left: 15, top: 5 },
                       ]}
                     >
@@ -144,21 +127,6 @@ const DetailsSerie = ({ route }) => {
                     </Text>
                   </View>
 
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('DotDetails', {
-                        id,
-                        title: serie?.name,
-                      })
-                    }
-                  >
-                    <Entypo
-                      style={[tw`p-4`, { right: 0, top: 5 }]}
-                      name='dots-three-vertical'
-                      size={Utils.moderateScale(25)}
-                      color='white'
-                    />
-                  </TouchableOpacity>
                 </View>
 
                 <View
@@ -169,7 +137,7 @@ const DetailsSerie = ({ route }) => {
                 >
                   <View style={tw`flex flex-col items-center`}>
                     <Image
-                      style={[tw`w-14 h-20 rounded-sm`, { resizeMode: 'cover' }]}
+                      style={[tw`w-30 h-50 rounded-md`, { resizeMode: 'cover' }]}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${serie?.poster_path}`,
                       }}
@@ -184,11 +152,11 @@ const DetailsSerie = ({ route }) => {
                       t={t}
                     />
 
-                    <Text style={tw`font-medium text-lg text-white mt-2`}>{t('genres')}</Text>
+                    <Text style={tw`font-medium text-lg text-white my-2`}>{t('utils.genres')}</Text>
 
                     <View style={tw`flex flex-row flex-wrap`}>{genres}</View>
 
-                    <Text style={tw`font-medium text-lg text-white mt-2`}>{t('direction')}</Text>
+                    <Text style={tw`font-medium text-lg text-white my-2`}>{t('utils.direction')}</Text>
 
                     <View style={tw`flex flex-row flex-wrap`}>
                       {creators}
@@ -199,7 +167,7 @@ const DetailsSerie = ({ route }) => {
                   </View>
                 </View>
 
-                <OverViewMemoized content={serie.overview} t={t} />
+                <OverView content={serie.overview} t={t} />
               </View>
               <Tabs
                 serie={serie}
