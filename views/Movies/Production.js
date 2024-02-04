@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { View } from 'react-native'
 import moment from 'moment'
 import { useSelector } from 'react-redux'
@@ -27,4 +27,4 @@ const Production = ({ movie, t, language }) => {
   )
 }
 
-export default Production
+export default memo(Production)

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState, memo } from 'react'
 import {
   View,
   FlatList,
@@ -137,4 +137,4 @@ const Trending = () => {
   )
 }
 
-export default Trending
+export default memo(Trending)

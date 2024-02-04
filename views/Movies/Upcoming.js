@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, memo } from 'react'
 import {
   View,
   FlatList,
@@ -100,4 +100,4 @@ const Upcoming = () => {
   )
 }
 
-export default Upcoming
+export default memo(Upcoming)

@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   peopleDetails,
   peopleExternalIds,
-  peopleCareer
+  peopleCareer,
 } from '../../redux/actions/people'
 import { LinearGradient } from 'expo-linear-gradient'
 import Refresh from '@mod/mobile-common/lib/components/utils/Refresh'
@@ -22,6 +22,8 @@ import tw from 'twrnc'
 import Utils from '@mod/mobile-common/lib/class/Utils'
 import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
 import People from '../../lib/class/People'
+import useHandleFavorites from '@mod/mobile-common/lib/hooks/utils/useHandleFavorites'
+import AddToFavorite from '../../lib/components/AddToFavorite'
 
 const DetailsPeople = ({ route }) => {
   const dispatch = useDispatch()
@@ -29,6 +31,19 @@ const DetailsPeople = ({ route }) => {
   const people = useSelector((state) => state.peopleDetails.data)
   const externalIds = useSelector((state) => state.peopleExternalIds.data)
   const loading = useSelector((state) => state.peopleDetails.loading)
+
+  const favorites = useSelector((state) => state.favorites.data)
+
+  const { name, profile_path } = people
+
+  const { setItem, handleFavorite, isFavorite } = useHandleFavorites({
+    favorites,
+    data: { id, name, image: profile_path, type: 'people' },
+  })
+
+  useEffect(() => {
+    setItem()
+  }, [favorites])
 
   const [selectedTab, setSelectedTab] = useState('people')
 
@@ -59,7 +74,12 @@ const DetailsPeople = ({ route }) => {
         ) : (
           people && (
             <Fragment>
-              <View style={[tw`flex relative w-full`, { height: Utils.moderateScale(550) }]}>
+              <View
+                style={[
+                  tw`flex relative w-full`,
+                  { height: Utils.moderateScale(550) },
+                ]}
+              >
                 <LinearGradient
                   colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.8)']}
                   style={tw`w-full h-full relative flex`}
@@ -88,7 +108,10 @@ const DetailsPeople = ({ route }) => {
                 >
                   <View style={tw`flex flex-col items-center`}>
                     <Image
-                      style={[tw`w-30 h-50 rounded-md`, { resizeMode: 'cover' }]}
+                      style={[
+                        tw`w-30 h-50 rounded-md`,
+                        { resizeMode: 'cover' },
+                      ]}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${people.profile_path}`,
                       }}
@@ -101,18 +124,33 @@ const DetailsPeople = ({ route }) => {
 
                     {people.deathday ? People.ageDeath(people, t) : null}
 
-                    <TouchableOpacity onPress={() => People.imdb(people)}>
-                      <SVGImdb />
-                    </TouchableOpacity>
+                    <View style={tw`flex-row`}>
+                      <View style={tw`mt-4`}>
+                        <TouchableOpacity
+                          style={tw`mr-2 items-center justify-center`}
+                          onPress={() => People.imdb(people)}
+                        >
+                          <SVGImdb />
+                        </TouchableOpacity>
+                      </View>
+                      <AddToFavorite
+                        isFavorite={isFavorite}
+                        handleFavorite={handleFavorite}
+                      />
+                    </View>
                   </View>
                 </View>
-                <OverView
-                  isBiography={true}
-                  content={people.biography}
-                  t={t}
-                />
+                <OverView isBiography={true} content={people.biography} t={t} />
               </View>
-              <Tabs people={people} t={t} language={language} id={id} selectedTab={selectedTab} setSelectedTab={setSelectedTab} externalIds={externalIds} />
+              <Tabs
+                people={people}
+                t={t}
+                language={language}
+                id={id}
+                selectedTab={selectedTab}
+                setSelectedTab={setSelectedTab}
+                externalIds={externalIds}
+              />
             </Fragment>
           )
         )}

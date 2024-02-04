@@ -4,6 +4,7 @@ import React, {
   useState,
   useCallback,
   useMemo,
+  memo,
 } from 'react'
 import {
   View,
@@ -29,6 +30,8 @@ import Utils from '@mod/mobile-common/lib/class/Utils'
 import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
 import Trailer from '../../lib/components/Trailer'
 import tw from 'twrnc'
+import useHandleFavorites from '@mod/mobile-common/lib/hooks/utils/useHandleFavorites'
+import AddToFavorite from '../../lib/components/AddToFavorite'
 
 const DetailsMovie = ({ route }) => {
   const dispatch = useDispatch()
@@ -37,6 +40,19 @@ const DetailsMovie = ({ route }) => {
   const loading = useSelector((state) => state.movieDetails.loading)
   const { id } = route.params
   const [selectedTab, setSelectedTab] = useState('about')
+
+  const favorites = useSelector((state) => state.favorites.data)
+
+  const { original_title, poster_path } = movie
+
+  const { setItem, handleFavorite, isFavorite } = useHandleFavorites({
+    favorites,
+    data: { id, name: original_title, image: poster_path, type: "movie" },
+  })
+
+  useEffect(() => {
+    setItem()
+  }, [favorites])
 
   const { i18n, t } = useTranslation()
   const language = i18n.language
@@ -100,7 +116,12 @@ const DetailsMovie = ({ route }) => {
         ) : (
           movie && (
             <Fragment>
-              <View style={[tw`flex relative w-full`, { height: Utils.moderateScale(550) }]}>
+              <View
+                style={[
+                  tw`flex relative w-full`,
+                  { height: Utils.moderateScale(550) },
+                ]}
+              >
                 <LinearGradient
                   colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.8)']}
                   style={tw`w-full h-full relative flex`}
@@ -145,7 +166,10 @@ const DetailsMovie = ({ route }) => {
                 >
                   <View style={tw`flex flex-col items-center`}>
                     <Image
-                      style={[tw`w-30 h-50 rounded-md`, { resizeMode: 'cover' }]}
+                      style={[
+                        tw`w-30 h-50 rounded-md`,
+                        { resizeMode: 'cover' },
+                      ]}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
                       }}
@@ -156,17 +180,20 @@ const DetailsMovie = ({ route }) => {
                   <View style={tw`flex flex-col w-1/2`}>
                     <Runtime time={movie.runtime} isMovie={true} t={t} />
 
-                    <Text style={tw`font-medium text-lg text-white my-2`}>{t('utils.genres')}</Text>
+                    <Text style={tw`font-medium text-lg text-white my-2`}>
+                      {t('utils.genres')}
+                    </Text>
 
                     <View style={tw`flex flex-row flex-wrap`}>{genres}</View>
 
-                    <Text style={tw`font-medium text-lg text-white my-2`}>{t('utils.direction')}</Text>
+                    <Text style={tw`font-medium text-lg text-white my-2`}>
+                      {t('utils.direction')}
+                    </Text>
 
-                    <View style={tw`flex flex-row flex-wrap`}>
-                      {directors}
-                    </View>
+                    <View style={tw`flex flex-row flex-wrap`}>{directors}</View>
                     <View style={tw`flex-row`}>
                       <Trailer movie={movie} id={id} />
+                      <AddToFavorite isFavorite={isFavorite} handleFavorite={handleFavorite} />
                     </View>
                   </View>
                 </View>
@@ -189,4 +216,4 @@ const DetailsMovie = ({ route }) => {
   )
 }
 
-export default DetailsMovie
+export default memo(DetailsMovie)

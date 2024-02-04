@@ -10,13 +10,10 @@ import {
   Text,
   ImageBackground,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  serieDetails,
-  serieCrew,
-} from '../../redux/actions/series'
+import { serieDetails, serieCrew } from '../../redux/actions/series'
 import { LinearGradient } from 'expo-linear-gradient'
 import Runtime from '@mod/mobile-tmdb/lib/components/RunTime'
 import Rate from '@mod/mobile-tmdb/lib/components/Rate'
@@ -27,6 +24,8 @@ import { useTranslation } from 'react-i18next'
 import Utils from '@mod/mobile-common/lib/class/Utils'
 import Trailer from '@mod/mobile-tmdb/lib/components/Trailer'
 import tw from 'twrnc'
+import useHandleFavorites from '@mod/mobile-common/lib/hooks/utils/useHandleFavorites'
+import AddToFavorite from '../../lib/components/AddToFavorite'
 
 const DetailsSerie = ({ route }) => {
   const dispatch = useDispatch()
@@ -34,6 +33,19 @@ const DetailsSerie = ({ route }) => {
   const loading = useSelector((state) => state.serieDetails.loading)
   const { id } = route.params
   const [selectedTab, setSelectedTab] = useState('about')
+
+  const favorites = useSelector((state) => state.favorites.data)
+
+  const { original_name, poster_path } = serie
+
+  const { setItem, handleFavorite, isFavorite } = useHandleFavorites({
+    favorites,
+    data: { id, name: original_name, image: poster_path, type: 'serie' },
+  })
+
+  useEffect(() => {
+    setItem()
+  }, [favorites])
 
   const { i18n, t } = useTranslation()
   const language = i18n.language
@@ -91,7 +103,12 @@ const DetailsSerie = ({ route }) => {
         ) : (
           serie && (
             <Fragment>
-              <View style={[tw`flex relative w-full`, { height: Utils.moderateScale(550) }]}>
+              <View
+                style={[
+                  tw`flex relative w-full`,
+                  { height: Utils.moderateScale(550) },
+                ]}
+              >
                 <LinearGradient
                   colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.8)']}
                   style={tw`flex w-full h-full relative`}
@@ -126,7 +143,6 @@ const DetailsSerie = ({ route }) => {
                       {serie.name}
                     </Text>
                   </View>
-
                 </View>
 
                 <View
@@ -137,7 +153,10 @@ const DetailsSerie = ({ route }) => {
                 >
                   <View style={tw`flex flex-col items-center`}>
                     <Image
-                      style={[tw`w-30 h-50 rounded-md`, { resizeMode: 'cover' }]}
+                      style={[
+                        tw`w-30 h-50 rounded-md`,
+                        { resizeMode: 'cover' },
+                      ]}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${serie?.poster_path}`,
                       }}
@@ -152,17 +171,23 @@ const DetailsSerie = ({ route }) => {
                       t={t}
                     />
 
-                    <Text style={tw`font-medium text-lg text-white my-2`}>{t('utils.genres')}</Text>
+                    <Text style={tw`font-medium text-lg text-white my-2`}>
+                      {t('utils.genres')}
+                    </Text>
 
                     <View style={tw`flex flex-row flex-wrap`}>{genres}</View>
 
-                    <Text style={tw`font-medium text-lg text-white my-2`}>{t('utils.direction')}</Text>
+                    <Text style={tw`font-medium text-lg text-white my-2`}>
+                      {t('utils.direction')}
+                    </Text>
 
-                    <View style={tw`flex flex-row flex-wrap`}>
-                      {creators}
-                    </View>
+                    <View style={tw`flex flex-row flex-wrap`}>{creators}</View>
                     <View style={tw`flex-row`}>
                       <Trailer serie={serie} id={id} />
+                      <AddToFavorite
+                        isFavorite={isFavorite}
+                        handleFavorite={handleFavorite}
+                      />
                     </View>
                   </View>
                 </View>
