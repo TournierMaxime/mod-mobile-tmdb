@@ -1,17 +1,14 @@
 import React, { memo } from 'react'
 import { View } from 'react-native'
-import { useSelector } from 'react-redux'
 import tw from 'twrnc'
 import TMDB from '../../lib/class/TMDB'
 
-const CrewMovie = () => {
-  const credits = useSelector((state) => state.movieCrew.data)
-
+const CrewMovie = ({ credits }) => {
   return (
     <View
       style={[tw`flex-1 flex flex-col border-slate-100`, { borderTopWidth: 2 }]}
     >
-      {credits?.crew?.map((item, idx) => TMDB.renderItemCastCrew(item, idx))}
+      {credits?.crew?.map((item, idx) => TMDB.renderItemCastCrew(item, idx)).slice(0, 20)}
     </View>
   )
 }

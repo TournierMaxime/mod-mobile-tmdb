@@ -1,29 +1,16 @@
-import React, {
-  Fragment,
-  useEffect,
-  useState,
-  useCallback,
-  useMemo,
-  memo,
-} from 'react'
+import React, { Fragment, useEffect, useState, useMemo, memo } from 'react'
 import {
   View,
   Text,
   ImageBackground,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  ScrollView,
 } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  movieDetails,
-  movieCrew,
-  releaseDates,
-  movieWatchProviders,
-} from '../../redux/actions/movies'
+import { useSelector } from 'react-redux'
 import { LinearGradient } from 'expo-linear-gradient'
 import Runtime from '../../lib/components/RunTime'
 import Rate from '../../lib/components/Rate'
-import Refresh from '@mod/mobile-common/lib/components/utils/Refresh'
 import OverView from '../../lib/components/OverView'
 import { useTranslation } from 'react-i18next'
 import Utils from '@mod/mobile-common/lib/class/Utils'
@@ -32,48 +19,22 @@ import Trailer from '../../lib/components/Trailer'
 import tw from 'twrnc'
 import useHandleFavorites from '@mod/mobile-common/lib/hooks/utils/useHandleFavorites'
 import AddToFavorite from '../../lib/components/AddToFavorite'
+import { movieDetails, movieCrew } from '../../../../react-query/movies'
+import { useQuery } from 'react-query'
 
 const DetailsMovie = ({ route }) => {
-  const dispatch = useDispatch()
-  const movie = useSelector((state) => state.movieDetails.data)
-  const credits = useSelector((state) => state.movieCrew.data)
-  const loading = useSelector((state) => state.movieDetails.loading)
   const { id } = route.params
   const [selectedTab, setSelectedTab] = useState('about')
-
-  const favorites = useSelector((state) => state.favorites.data)
-
-  const { original_title, poster_path } = movie
-
-  const { setItem, handleFavorite, isFavorite } = useHandleFavorites({
-    favorites,
-    data: { id, name: original_title, image: poster_path, type: "movie" },
-  })
-
-  useEffect(() => {
-    setItem()
-  }, [favorites])
 
   const { i18n, t } = useTranslation()
   const language = i18n.language
 
-  const fetchData = useCallback(async () => {
-    await dispatch(movieDetails(id, language))
-    await dispatch(movieCrew(id, language))
-    await dispatch(releaseDates(id))
-    await dispatch(movieWatchProviders(id))
-  }, [dispatch, id, language])
-
-  const onRefresh = useCallback(async () => {
-    await dispatch(movieDetails(id, language))
-    await dispatch(movieCrew(id, language))
-    await dispatch(releaseDates(id))
-    await dispatch(movieWatchProviders(id))
-  })
-
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
+  const { data: movie, isLoading } = useQuery(['movie', id, language], () =>
+    movieDetails(id, language)
+  )
+  const { data: credits } = useQuery(['credits', id, language], () =>
+    movieCrew(id, language)
+  )
 
   const directors = useMemo(() => {
     return credits?.crew?.map((credit, index) => {
@@ -108,111 +69,126 @@ const DetailsMovie = ({ route }) => {
     ))
   })
 
+  const favorites = useSelector((state) => state.favorites.data)
+
+  const { setItem, handleFavorite, isFavorite } = useHandleFavorites({
+    favorites,
+    data: {
+      id,
+      name: movie?.original_title,
+      image: movie?.poster_path,
+      type: 'movie',
+    },
+  })
+
+  useEffect(() => {
+    setItem()
+  }, [favorites])
+
   return (
-    <View style={tw`flex-1`}>
-      <Refresh styles={tw`flex w-full h-full relative`} onRefresh={onRefresh}>
-        {loading ? (
-          <ActivityIndicator size='large' color='#0000ff' />
-        ) : (
-          movie && (
-            <Fragment>
+    <ScrollView style={tw`flex-1`}>
+      {isLoading ? (
+        <ActivityIndicator size='large' color='#0000ff' />
+      ) : (
+        movie && (
+          <Fragment>
+            <View
+              style={[
+                tw`flex relative w-full`,
+                { height: Utils.moderateScale(550) },
+              ]}
+            >
+              <LinearGradient
+                colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.8)']}
+                style={tw`w-full h-full relative flex`}
+              />
+              <ImageBackground
+                style={[
+                  tw`w-full h-full absolute`,
+                  {
+                    resizeMode: 'contain',
+                    opacity: 0.3,
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                  },
+                ]}
+                source={{
+                  uri: `https://image.tmdb.org/t/p/original${movie.backdrop_path}`,
+                }}
+              />
+
+              <View
+                style={tw`flex flex-row absolute items-center justify-between w-full`}
+              >
+                <View>
+                  <Text
+                    style={[
+                      tw`font-medium text-lg text-white my-4 w-full`,
+                      { left: 15, top: 5 },
+                    ]}
+                  >
+                    {movie.title}
+                  </Text>
+                </View>
+              </View>
+
               <View
                 style={[
-                  tw`flex relative w-full`,
-                  { height: Utils.moderateScale(550) },
+                  tw`absolute flex-row justify-around items-start flex mt-4`,
+                  { top: '10%', left: 0, right: 0, bottom: 0 },
                 ]}
               >
-                <LinearGradient
-                  colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.8)']}
-                  style={tw`w-full h-full relative flex`}
-                />
-                <ImageBackground
-                  style={[
-                    tw`w-full h-full absolute`,
-                    {
-                      resizeMode: 'contain',
-                      opacity: 0.3,
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                    },
-                  ]}
-                  source={{
-                    uri: `https://image.tmdb.org/t/p/original${movie.backdrop_path}`,
-                  }}
-                />
-
-                <View
-                  style={tw`flex flex-row absolute items-center justify-between w-full`}
-                >
-                  <View>
-                    <Text
-                      style={[
-                        tw`font-medium text-lg text-white my-4 w-full`,
-                        { left: 15, top: 5 },
-                      ]}
-                    >
-                      {movie.title}
-                    </Text>
-                  </View>
+                <View style={tw`flex flex-col items-center`}>
+                  <Image
+                    style={[tw`w-30 h-50 rounded-md`, { resizeMode: 'cover' }]}
+                    source={{
+                      uri: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
+                    }}
+                  />
+                  <Rate rate={movie.vote_average} />
                 </View>
 
-                <View
-                  style={[
-                    tw`absolute flex-row justify-around items-start flex mt-4`,
-                    { top: '10%', left: 0, right: 0, bottom: 0 },
-                  ]}
-                >
-                  <View style={tw`flex flex-col items-center`}>
-                    <Image
-                      style={[
-                        tw`w-30 h-50 rounded-md`,
-                        { resizeMode: 'cover' },
-                      ]}
-                      source={{
-                        uri: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
-                      }}
+                <View style={tw`flex flex-col w-1/2`}>
+                  <Runtime time={movie.runtime} isMovie={true} t={t} />
+
+                  <Text style={tw`font-medium text-lg text-white my-2`}>
+                    {t('utils.genres')}
+                  </Text>
+
+                  <View style={tw`flex flex-row flex-wrap`}>{genres}</View>
+
+                  <Text style={tw`font-medium text-lg text-white my-2`}>
+                    {t('utils.direction')}
+                  </Text>
+
+                  <View style={tw`flex flex-row flex-wrap`}>{directors}</View>
+                  <View style={tw`flex-row`}>
+                    <Trailer movie={movie} id={id} />
+                    <AddToFavorite
+                      isFavorite={isFavorite}
+                      handleFavorite={handleFavorite}
                     />
-                    <Rate rate={movie.vote_average} />
-                  </View>
-
-                  <View style={tw`flex flex-col w-1/2`}>
-                    <Runtime time={movie.runtime} isMovie={true} t={t} />
-
-                    <Text style={tw`font-medium text-lg text-white my-2`}>
-                      {t('utils.genres')}
-                    </Text>
-
-                    <View style={tw`flex flex-row flex-wrap`}>{genres}</View>
-
-                    <Text style={tw`font-medium text-lg text-white my-2`}>
-                      {t('utils.direction')}
-                    </Text>
-
-                    <View style={tw`flex flex-row flex-wrap`}>{directors}</View>
-                    <View style={tw`flex-row`}>
-                      <Trailer movie={movie} id={id} />
-                      <AddToFavorite isFavorite={isFavorite} handleFavorite={handleFavorite} />
-                    </View>
                   </View>
                 </View>
-
-                <OverView content={movie.overview} t={t} />
               </View>
-              <Tabs
-                id={id}
-                movie={movie}
-                t={t}
-                language={language}
-                selectedTab={selectedTab}
-                setSelectedTab={setSelectedTab}
-              />
-            </Fragment>
-          )
-        )}
-      </Refresh>
-    </View>
+
+              <OverView content={movie.overview} t={t} />
+            </View>
+            <Tabs
+              id={id}
+              movie={movie}
+              credits={credits}
+              t={t}
+              language={language}
+              selectedTab={selectedTab}
+              setSelectedTab={setSelectedTab}
+            />
+          </Fragment>
+        )
+      )}
+    </ScrollView>
   )
 }
 

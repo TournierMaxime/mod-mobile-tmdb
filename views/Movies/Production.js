@@ -1,28 +1,37 @@
 import React, { memo } from 'react'
 import { View } from 'react-native'
 import moment from 'moment'
-import { useSelector } from 'react-redux'
 import tw from 'twrnc'
 import Movies from '../../lib/class/Movies'
+import {
+  movieWatchProviders,
+  releaseDates,
+} from '../../../../react-query/movies'
+import { useQuery } from 'react-query'
 
 const Production = ({ movie, t, language }) => {
   moment.locale(language)
   const lang = language.toUpperCase()
 
-  const releases = useSelector((state) => state.releaseDates.data.results)
+  const { id, budget, revenue, production_companies, production_countries } = movie
 
-    const providers = useSelector(
-    (state) => state.movieWatchProviders.data.results
-    )
+  const { data: releases } = useQuery(['releases', id], () =>
+    releaseDates(id)
+  )
+  const { data: providers } = useQuery(['providers', id], () =>
+    movieWatchProviders(id)
+  )
+
+  console.log("releases", releases);
 
   return (
     <View style={tw`pb-4 bg-white h-full`}>
       {Movies.releaseByCountry(releases, lang, t)}
-      {Movies.budget(movie?.budget, t)}
-      {Movies.revenue(movie?.revenue, t)}
+      {Movies.budget(budget, t)}
+      {Movies.revenue(revenue, t)}
       {Movies.providersByCountry(providers, lang, t)}
-      {Movies.productionCompanies(movie?.production_companies, t)}
-      {Movies.productionCountries(movie?.production_countries, t)}
+      {Movies.productionCompanies(production_companies, t)}
+      {Movies.productionCountries(production_countries, t)}
     </View>
   )
 }
