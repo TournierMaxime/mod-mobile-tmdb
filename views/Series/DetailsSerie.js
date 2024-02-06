@@ -36,6 +36,7 @@ const DetailsSerie = ({ route }) => {
   const { data: credits } = useQuery(['serieCrew', id, language], () =>
     serieCrew(id, language)
   )
+
   const [selectedTab, setSelectedTab] = useState('about')
 
   const favorites = useSelector((state) => state.favorites.data)

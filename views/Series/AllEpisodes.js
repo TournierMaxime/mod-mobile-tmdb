@@ -26,7 +26,7 @@ const AllEpisodes = ({ route }) => {
 
   const renderItem = (item) => {
     return (
-      <View style={tw`flex flex-row justify-start bg-white my-4 p-4`}>
+      <View style={[tw`flex flex-row justify-start bg-white p-4 border-slate-100`, { borderBottomWidth: 2 }]}>
         {item.still_path ? (
           <Image
             style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
@@ -55,8 +55,7 @@ const AllEpisodes = ({ route }) => {
   }
 
   return (
-    <View style={tw`flex-1 flex flex-col mt-4`}>
-      <Text style={tw`text-center font-medium text-lg mb-4`}>{t('Episodes')}</Text>
+    <View style={[tw`flex-1 flex flex-col border-slate-100`, { borderTopWidth: 2 }]}>
       <FlatList
         data={season?.episodes}
         keyExtractor={(item) => item.id.toString()}

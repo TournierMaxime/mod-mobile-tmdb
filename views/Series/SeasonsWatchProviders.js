@@ -1,35 +1,28 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { Fragment } from 'react'
+import { updateSeasonWatchProviders } from '../../../../react-query/series'
 import {
-  updateSeasonWatchProviders,
-  resetSeasonWatchProviders,
-} from '../../redux/actions/series'
-import { Text, View, Image, TouchableOpacity } from 'react-native'
+  Text,
+  View,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import Rate from '../../lib/components/Rate'
 import moment from 'moment'
 import tw from 'twrnc'
 import Series from '../../lib/class/Series'
+import { useQuery } from 'react-query'
 
 const SeasonsWatchProviders = ({ id, item, language, t }) => {
-  const dispatch = useDispatch()
   const navigation = useNavigation()
-  const providers = useSelector(
-    (state) => state.seasonWatchProviders.seasonWatchProviders
-  )
-
-  const seasonNumber = item.season_number
   const lang = language.toUpperCase()
 
-  useEffect(() => {
-    dispatch(updateSeasonWatchProviders(id, item.season_number, language))
-  }, [dispatch, id, seasonNumber, language])
+  const seasonNumber = item.season_number
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetSeasonWatchProviders())
-    }
-  }, [])
+  const { data: providers } = useQuery(
+    ['providers', id, seasonNumber, lang],
+    () => updateSeasonWatchProviders(id, seasonNumber, lang)
+  )
 
   return (
     <TouchableOpacity
@@ -40,22 +33,35 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
         })
       }
     >
-      <View style={tw`flex flex-row justify-start bg-white my-2 p-2`}>
+      <View style={tw`flex flex-row justify-start bg-white p-2`}>
         <View style={tw`items-center`}>
           {item.poster_path ? (
-            <Image
-              style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
-              source={{
-                uri: `https://image.tmdb.org/t/p/original/${item.poster_path}`,
-              }}
-            />
+            <Fragment>
+              <ImageBackground
+                style={[
+                  tw`w-20 h-30 rounded-md ml-4 mb-2`,
+                  { resizeMode: 'cover' },
+                ]}
+                source={{
+                  uri: `https://image.tmdb.org/t/p/original/${item.poster_path}`,
+                }}
+              >
+                <Rate size={true} rate={item.vote_average} />
+              </ImageBackground>
+            </Fragment>
           ) : (
-            <Image
-              style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
-              source={require('../../../../assets/images/No_Image_Available.jpg')}
-            />
+            <Fragment>
+              <ImageBackground
+                style={[
+                  tw`w-20 h-30 rounded-md ml-4 mb-2`,
+                  { resizeMode: 'cover' },
+                ]}
+                source={require('../../../../assets/images/No_Image_Available.jpg')}
+              >
+                <Rate size={true} rate={item.vote_average} />
+              </ImageBackground>
+            </Fragment>
           )}
-          <Rate rate={item.vote_average} />
         </View>
         <View style={tw`flex-1 w-full`}>
           <Text style={tw`font-medium text-lg ml-4`}>
@@ -64,11 +70,13 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
           <Text style={tw`font-medium text-lg ml-4`}>
             {moment(item.air_date).format('LL')}
           </Text>
-          <Text style={tw`font-medium text-lg p-4 text-justify leading-7`}>{item.overview}</Text>
-          <Text style={[tw`font-medium text-lg ml-4`, { marginBottom: 15 }]}>
-            {t('contentPoweredByJustWatch')}
+          <Text style={tw`font-medium text-lg p-4 text-justify leading-7`}>
+            {item.overview}
           </Text>
-          {Series.providersByCountry(providers, lang)}
+          <Text style={[tw`font-medium text-lg ml-4`, { marginBottom: 15 }]}>
+            {t('utils.contentPoweredByJustWatch')}
+          </Text>
+          {Series.providersByCountry(providers?.[lang], lang, t)}
         </View>
       </View>
     </TouchableOpacity>

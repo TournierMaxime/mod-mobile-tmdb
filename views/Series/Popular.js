@@ -1,14 +1,12 @@
 import React from 'react'
 import {
   View,
-  Text,
   FlatList,
   Image,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native'
 import { popular } from '../../../../react-query/series'
-import Utils from '@mod/mobile-common/lib/class/Utils'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import tw from 'twrnc'
@@ -61,16 +59,13 @@ const Popular = () => {
               >
                 <Image
                   style={[
-                    tw`w-16 h-26 rounded-md m-4`,
+                    tw`w-40 h-60 rounded-md m-4`,
                     { resizeMode: 'cover' },
                   ]}
                   source={{
                     uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
                   }}
                 />
-                <Text style={tw`text-center font-medium text-lg`}>
-                  {Utils.truncateTitle(item.original_name, 15)}
-                </Text>
               </TouchableOpacity>
             </View>
           )
