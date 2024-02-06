@@ -1,94 +1,51 @@
-import React, { Fragment, useEffect, useState, memo } from 'react'
+import React, { Fragment, memo } from 'react'
 import {
   View,
   FlatList,
   Image,
   TouchableOpacity,
   ActivityIndicator,
-  RefreshControl,
 } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  trending,
-  resetTrending,
-} from '../../redux/actions/movies'
-import useLoadMore from '@mod/mobile-common/lib/hooks/utils/useLoadMore'
+import { trending } from '../../../../react-query/movies'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import tw from 'twrnc'
+import { useInfiniteQuery } from 'react-query'
 
 const Trending = () => {
-  const dispatch = useDispatch()
   const navigation = useNavigation()
-  const trendingData = useSelector((state) => state.trending.paginationData)
-  const trendingResults = useSelector(
-    (state) => state.trending.paginationData.results
-  )
-  const { currentPage, loadMore } = useLoadMore(
-    trendingData.page,
-    trendingData.total_pages
-  )
-  const [allResults, setAllResults] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [refreshing, setRefreshing] = useState(false)
 
   const { i18n } = useTranslation()
   const language = i18n.language
-  const initialPage = 1
 
-  const onRefresh = async () => {
-    setRefreshing(true)
-    await dispatch(trending(initialPage, 'trendingPagination', language))
-    setRefreshing(false)
-  }
-
-  useEffect(() => {
-    setIsLoading(true)
-    dispatch(trending(currentPage, 'trendingPagination', language))
-      .then(() => {
-        setIsLoading(false)
-      })
-      .catch(() => {
-        setIsLoading(false)
-      })
-  }, [dispatch, currentPage, language])
-
-  useEffect(() => {
-    if (trendingResults?.length > 0) {
-      if (currentPage > 1) {
-        setAllResults((prevResults) => [...prevResults, ...trendingResults])
-      } else {
-        setAllResults(trendingResults)
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery(
+      ['trending', language],
+      ({ pageParam = 1 }) => trending(pageParam, language),
+      {
+        getNextPageParam: (lastPage) => lastPage.page + 1,
       }
-    }
-  }, [trendingResults])
+    )
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetTrending())
-    }
-  }, [])
+  const allResults = data?.pages.flatMap((page) => page.results) || []
 
   return (
     <View style={tw`bg-slate-100 items-center justify-between`}>
       <FlatList
         data={allResults}
-        keyExtractor={(item, index) => `${index}`}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
         numColumns={2}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        onEndReached={
-          isLoading === true ? (
-            <ActivityIndicator
-              size='large'
-              color='#0000ff'
-            />
-          ) : (
-            loadMore
-          )
-        }
+        onEndReached={() => {
+          if (!isFetchingNextPage && hasNextPage) {
+            fetchNextPage()
+          }
+        }}
         onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          isLoading || isFetchingNextPage ? (
+            <ActivityIndicator size='large' color='#0000ff' />
+          ) : null
+        }
         renderItem={({ item }) => {
           return (
             <Fragment>
@@ -103,7 +60,10 @@ const Trending = () => {
                     }
                   >
                     <Image
-                      style={[tw`w-40 h-60 rounded-md m-4`, { resizeMode: 'cover' }]}
+                      style={[
+                        tw`w-40 h-60 rounded-md m-4`,
+                        { resizeMode: 'cover' },
+                      ]}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
                       }}
@@ -121,7 +81,10 @@ const Trending = () => {
                     }
                   >
                     <Image
-                      style={[tw`w-40 h-60 rounded-md m-4`, { resizeMode: 'cover' }]}
+                      style={[
+                        tw`w-40 h-60 rounded-md m-4`,
+                        { resizeMode: 'cover' },
+                      ]}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
                       }}

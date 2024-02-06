@@ -1,76 +1,51 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
   View,
   FlatList,
   Image,
   TouchableOpacity,
-  RefreshControl,
+  ActivityIndicator,
 } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  onTheAir,
-  resetOnTheAir,
-} from '../../redux/actions/series'
-import useLoadMore from '@mod/mobile-common/lib/hooks/utils/useLoadMore'
+import { onTheAir } from '../../../../react-query/series'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import tw from 'twrnc'
+import { useInfiniteQuery } from 'react-query'
 
 const OnTheAir = () => {
-  const dispatch = useDispatch()
   const navigation = useNavigation()
-  const onTheAirData = useSelector((state) => state.onTheAir.paginationData)
-  const onTheAirResults = useSelector(
-    (state) => state.onTheAir.paginationData.results
-  )
-  const { currentPage, loadMore } = useLoadMore(
-    onTheAirData.page,
-    onTheAirData.total_pages
-  )
-  const [allResults, setAllResults] = useState([])
-  const [refreshing, setRefreshing] = useState(false)
 
   const { i18n } = useTranslation()
   const language = i18n.language
-  const initialPage = 1
 
-  const onRefresh = async () => {
-    setRefreshing(true)
-    await dispatch(onTheAir(initialPage, 'onTheAirPagination', language))
-    setRefreshing(false)
-  }
-
-  useEffect(() => {
-    dispatch(onTheAir(currentPage, 'onTheAirPagination', language))
-  }, [dispatch, currentPage, language])
-
-  useEffect(() => {
-    if (onTheAirResults?.length > 0) {
-      if (currentPage > 1) {
-        setAllResults((prevResults) => [...prevResults, ...onTheAirResults])
-      } else {
-        setAllResults(onTheAirResults)
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery(
+      ['onTheAir', language],
+      ({ pageParam = 1 }) => onTheAir(pageParam, language),
+      {
+        getNextPageParam: (lastPage) => lastPage.page + 1,
       }
-    }
-  }, [onTheAirResults])
+    )
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetOnTheAir())
-    }
-  }, [])
+  const allResults = data?.pages.flatMap((page) => page.results) || []
 
   return (
     <View style={tw`bg-slate-100 items-center justify-between`}>
       <FlatList
         data={allResults}
-        keyExtractor={(item, index) => `${index}`}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
         numColumns={2}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        onEndReached={loadMore}
+        onEndReached={() => {
+          if (!isFetchingNextPage && hasNextPage) {
+            fetchNextPage()
+          }
+        }}
         onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          isLoading || isFetchingNextPage ? (
+            <ActivityIndicator size='large' color='#0000ff' />
+          ) : null
+        }
         renderItem={({ item }) => {
           return (
             <View style={tw`flex-col justify-between`}>
@@ -83,7 +58,10 @@ const OnTheAir = () => {
                 }
               >
                 <Image
-                  style={[tw`w-40 h-60 rounded-md m-4`, { resizeMode: 'cover' }]}
+                  style={[
+                    tw`w-40 h-60 rounded-md m-4`,
+                    { resizeMode: 'cover' },
+                  ]}
                   source={{
                     uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
                   }}

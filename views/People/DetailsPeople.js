@@ -1,19 +1,14 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import {
   View,
   Text,
   Image,
   ActivityIndicator,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  peopleDetails,
-  peopleExternalIds,
-  peopleCareer,
-} from '../../redux/actions/people'
+import { useSelector } from 'react-redux'
 import { LinearGradient } from 'expo-linear-gradient'
-import Refresh from '@mod/mobile-common/lib/components/utils/Refresh'
 import OverView from '@mod/mobile-tmdb/lib/components/OverView'
 import moment from 'moment'
 import SVGImdb from '../../lib/components/SVGImdb'
@@ -24,21 +19,40 @@ import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
 import People from '../../lib/class/People'
 import useHandleFavorites from '@mod/mobile-common/lib/hooks/utils/useHandleFavorites'
 import AddToFavorite from '../../lib/components/AddToFavorite'
+import { useQuery } from 'react-query'
+import {
+  peopleCareer,
+  peopleDetails,
+  peopleExternalIds,
+} from '../../../../react-query/people'
 
 const DetailsPeople = ({ route }) => {
-  const dispatch = useDispatch()
   const { id } = route.params
-  const people = useSelector((state) => state.peopleDetails.data)
-  const externalIds = useSelector((state) => state.peopleExternalIds.data)
-  const loading = useSelector((state) => state.peopleDetails.loading)
+
+  const { i18n, t } = useTranslation()
+  const language = i18n.language
+  moment.locale(language)
+
+  const { data: people, isLoading } = useQuery(['people', id, language], () =>
+    peopleDetails(id, language)
+  )
+  const { data: career } = useQuery(['career', id, language], () =>
+    peopleCareer(id, language)
+  )
+  const { data: externalIds } = useQuery(['externalIds', id, language], () =>
+    peopleExternalIds(id, language)
+  )
 
   const favorites = useSelector((state) => state.favorites.data)
 
-  const { name, profile_path } = people
-
   const { setItem, handleFavorite, isFavorite } = useHandleFavorites({
     favorites,
-    data: { id, name, image: profile_path, type: 'people' },
+    data: {
+      id,
+      name: people?.name,
+      image: people?.profile_path,
+      type: 'people',
+    },
   })
 
   useEffect(() => {
@@ -47,29 +61,10 @@ const DetailsPeople = ({ route }) => {
 
   const [selectedTab, setSelectedTab] = useState('people')
 
-  const { i18n, t } = useTranslation()
-  const language = i18n.language
-  moment.locale(language)
-
-  const fetchData = useCallback(async () => {
-    await dispatch(peopleDetails(id, language))
-    await dispatch(peopleExternalIds(id))
-    await dispatch(peopleCareer(id, language))
-  }, [dispatch, id, language])
-
-  const onRefresh = useCallback(async () => {
-    await dispatch(peopleDetails(id, language))
-    await dispatch(peopleCareer(id, language))
-  })
-
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
-
   return (
     <View style={tw`flex-1`}>
-      <Refresh styles={tw`w-full h-full flex relative`} onRefresh={onRefresh}>
-        {loading ? (
+      <ScrollView styles={tw`w-full h-full flex relative`}>
+        {isLoading ? (
           <ActivityIndicator size='large' color='#0000ff' />
         ) : (
           people && (
@@ -144,6 +139,7 @@ const DetailsPeople = ({ route }) => {
               </View>
               <Tabs
                 people={people}
+                career={career}
                 t={t}
                 language={language}
                 id={id}
@@ -154,7 +150,7 @@ const DetailsPeople = ({ route }) => {
             </Fragment>
           )
         )}
-      </Refresh>
+      </ScrollView>
     </View>
   )
 }

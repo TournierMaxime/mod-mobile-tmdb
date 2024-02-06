@@ -22,8 +22,6 @@ const Production = ({ movie, t, language }) => {
     movieWatchProviders(id)
   )
 
-  console.log("releases", releases);
-
   return (
     <View style={tw`pb-4 bg-white h-full`}>
       {Movies.releaseByCountry(releases, lang, t)}

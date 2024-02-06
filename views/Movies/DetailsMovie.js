@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useMemo, memo } from 'react'
+import React, { Fragment, useEffect, useState, memo } from 'react'
 import {
   View,
   Text,
@@ -15,12 +15,13 @@ import OverView from '../../lib/components/OverView'
 import { useTranslation } from 'react-i18next'
 import Utils from '@mod/mobile-common/lib/class/Utils'
 import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
-import Trailer from '../../lib/components/Trailer'
+import MovieTrailer from './MovieTrailer'
 import tw from 'twrnc'
 import useHandleFavorites from '@mod/mobile-common/lib/hooks/utils/useHandleFavorites'
 import AddToFavorite from '../../lib/components/AddToFavorite'
 import { movieDetails, movieCrew } from '../../../../react-query/movies'
 import { useQuery } from 'react-query'
+import Movies from '../../lib/class/Movies'
 
 const DetailsMovie = ({ route }) => {
   const { id } = route.params
@@ -35,39 +36,6 @@ const DetailsMovie = ({ route }) => {
   const { data: credits } = useQuery(['credits', id, language], () =>
     movieCrew(id, language)
   )
-
-  const directors = useMemo(() => {
-    return credits?.crew?.map((credit, index) => {
-      if (!credit.job === 'Director') return null
-      if (credit.job === 'Director') {
-        return (
-          <Text
-            key={index}
-            style={[
-              tw`font-medium text-lg rounded-sm m-1 px-4 text-center`,
-              { color: '#495057', backgroundColor: '#dee2e6' },
-            ]}
-          >
-            {credit.name}
-          </Text>
-        )
-      }
-    })
-  })
-
-  const genres = useMemo(() => {
-    return movie?.genres?.map((genre, index) => (
-      <Text
-        key={index}
-        style={[
-          tw`font-medium text-lg rounded-sm m-1  px-4 text-center`,
-          { color: '#495057', backgroundColor: '#dee2e6' },
-        ]}
-      >
-        {genre.name}
-      </Text>
-    ))
-  })
 
   const favorites = useSelector((state) => state.favorites.data)
 
@@ -125,7 +93,7 @@ const DetailsMovie = ({ route }) => {
                 <View>
                   <Text
                     style={[
-                      tw`font-medium text-lg text-white my-4 w-full`,
+                      tw`font-medium text-xl text-white my-4 w-full`,
                       { left: 15, top: 5 },
                     ]}
                   >
@@ -153,19 +121,19 @@ const DetailsMovie = ({ route }) => {
                 <View style={tw`flex flex-col w-1/2`}>
                   <Runtime time={movie.runtime} isMovie={true} t={t} />
 
-                  <Text style={tw`font-medium text-lg text-white my-2`}>
+                  <Text style={tw`font-medium text-xl text-white my-2`}>
                     {t('utils.genres')}
                   </Text>
 
-                  <View style={tw`flex flex-row flex-wrap`}>{genres}</View>
+                  <View style={tw`flex flex-row flex-wrap`}>{Movies.genres(movie)}</View>
 
-                  <Text style={tw`font-medium text-lg text-white my-2`}>
+                  <Text style={tw`font-medium text-xl text-white my-2`}>
                     {t('utils.direction')}
                   </Text>
 
-                  <View style={tw`flex flex-row flex-wrap`}>{directors}</View>
+                  <View style={tw`flex flex-row flex-wrap`}>{Movies.directors(credits)}</View>
                   <View style={tw`flex-row`}>
-                    <Trailer movie={movie} id={id} />
+                    <MovieTrailer id={id} />
                     <AddToFavorite
                       isFavorite={isFavorite}
                       handleFavorite={handleFavorite}

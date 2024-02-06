@@ -14,7 +14,7 @@ const Informations = ({ externalIds, t }) => {
     return (
       <View style={[tw`border-slate-100`, { borderTopWidth: 2 }]}>
       <Accordion title={t('utils.socialMedias')}>
-        {data.twitter_id && (
+        {data?.twitter_id && (
           <TouchableOpacity
             onPress={() => openLink(`https://twitter.com/${data.twitter_id}`)}
           >
@@ -36,7 +36,7 @@ const Informations = ({ externalIds, t }) => {
             </View>
           </TouchableOpacity>
         )}
-        {data.facebook_id && (
+        {data?.facebook_id && (
           <TouchableOpacity
             onPress={() =>
               openLink(`https://www.facebook.com/${data.facebook_id}`)
@@ -58,7 +58,7 @@ const Informations = ({ externalIds, t }) => {
             </View>
           </TouchableOpacity>
         )}
-        {data.instagram_id && (
+        {data?.instagram_id && (
           <TouchableOpacity
             onPress={() =>
               openLink(`https://www.instagram.com/${data.instagram_id}`)
@@ -80,7 +80,7 @@ const Informations = ({ externalIds, t }) => {
             </View>
           </TouchableOpacity>
         )}
-        {data.tiktok_id && (
+        {data?.tiktok_id && (
           <TouchableOpacity
             onPress={() =>
               openLink(`https://www.tiktok.com/@${data.tiktok_id}`)
@@ -102,7 +102,7 @@ const Informations = ({ externalIds, t }) => {
             </View>
           </TouchableOpacity>
         )}
-        {data.youtube_id && (
+        {data?.youtube_id && (
           <TouchableOpacity
             onPress={() =>
               openLink(`https://www.youtube.com/@${data.youtube_id}`)

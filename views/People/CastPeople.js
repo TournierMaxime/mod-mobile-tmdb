@@ -1,17 +1,10 @@
 import React, { memo } from 'react'
 import { View } from 'react-native'
-import { useSelector } from 'react-redux'
 import moment from 'moment'
-import { useTranslation } from 'react-i18next'
 import tw from 'twrnc'
 import TMDB from '../../lib/class/TMDB'
 
-const CastPeople = () => {
-  const career = useSelector((state) => state.peopleCareer.data)
-
-  const { i18n } = useTranslation()
-  const language = i18n.language
-  moment.locale(language)
+const CastPeople = ({ career }) => {
 
   const sortedCareer = career?.cast?.sort((a, b) => {
     const dateA = moment(a.release_date || a.first_air_date)

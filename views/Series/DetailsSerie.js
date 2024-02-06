@@ -1,104 +1,57 @@
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import {
   View,
   Text,
   ImageBackground,
   Image,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import { serieDetails, serieCrew } from '../../redux/actions/series'
+import { useSelector } from 'react-redux'
+import { serieDetails, serieCrew } from '../../../../react-query/series'
 import { LinearGradient } from 'expo-linear-gradient'
 import Runtime from '@mod/mobile-tmdb/lib/components/RunTime'
 import Rate from '@mod/mobile-tmdb/lib/components/Rate'
 import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
-import Refresh from '@mod/mobile-common/lib/components/utils/Refresh'
 import OverView from '@mod/mobile-tmdb/lib/components/OverView'
 import { useTranslation } from 'react-i18next'
 import Utils from '@mod/mobile-common/lib/class/Utils'
-import Trailer from '@mod/mobile-tmdb/lib/components/Trailer'
 import tw from 'twrnc'
 import useHandleFavorites from '@mod/mobile-common/lib/hooks/utils/useHandleFavorites'
 import AddToFavorite from '../../lib/components/AddToFavorite'
+import { useQuery } from 'react-query'
+import Series from '../../lib/class/Series'
+import SerieTrailer from './SerieTrailer'
 
 const DetailsSerie = ({ route }) => {
-  const dispatch = useDispatch()
-  const serie = useSelector((state) => state.serieDetails.data)
-  const loading = useSelector((state) => state.serieDetails.loading)
   const { id } = route.params
+
+  const { i18n, t } = useTranslation()
+  const language = i18n.language
+
+  const { data: serie, isLoading } = useQuery(['serie', id, language], () =>
+    serieDetails(id, language)
+  )
+
+  const { data: credits } = useQuery(['serieCrew', id, language], () =>
+    serieCrew(id, language)
+  )
   const [selectedTab, setSelectedTab] = useState('about')
 
   const favorites = useSelector((state) => state.favorites.data)
 
-  const { original_name, poster_path } = serie
-
   const { setItem, handleFavorite, isFavorite } = useHandleFavorites({
     favorites,
-    data: { id, name: original_name, image: poster_path, type: 'serie' },
+    data: { id, name: serie?.original_name, image: serie?.poster_path, type: 'serie' },
   })
 
   useEffect(() => {
     setItem()
   }, [favorites])
 
-  const { i18n, t } = useTranslation()
-  const language = i18n.language
-
-  const fetchData = useCallback(async () => {
-    await dispatch(serieDetails(id, language))
-    await dispatch(serieCrew(id, language))
-  }, [dispatch, id, language])
-
-  const onRefresh = useCallback(async () => {
-    await dispatch(serieDetails(id, language))
-    await dispatch(serieCrew(id, language))
-  })
-
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
-
-  const creators = useMemo(() => {
-    return serie?.created_by?.map((credit, index) => {
-      if (!credit.name) return null
-      return (
-        <Text
-          key={index}
-          style={[
-            tw`font-medium text-lg rounded-sm m-1 px-4 text-center`,
-            { color: '#495057', backgroundColor: '#dee2e6' },
-          ]}
-        >
-          {credit.name}
-        </Text>
-      )
-    })
-  })
-
-  const genres = useMemo(() => {
-    return serie?.genres?.map((genre, index) => (
-      <Text
-        key={index}
-        style={[
-          tw`font-medium text-lg rounded-sm m-1 px-4 text-center`,
-          { color: '#495057', backgroundColor: '#dee2e6' },
-        ]}
-      >
-        {genre.name}
-      </Text>
-    ))
-  })
-
   return (
-    <View style={tw`flex-1`}>
-      <Refresh styles={tw`flex w-full h-full relative`} onRefresh={onRefresh}>
-        {loading ? (
+    <ScrollView style={tw`flex-1`}>
+        {isLoading ? (
           <ActivityIndicator size='large' color='#0000ff' />
         ) : (
           serie && (
@@ -175,15 +128,15 @@ const DetailsSerie = ({ route }) => {
                       {t('utils.genres')}
                     </Text>
 
-                    <View style={tw`flex flex-row flex-wrap`}>{genres}</View>
+                    <View style={tw`flex flex-row flex-wrap`}>{Series.genres(serie)}</View>
 
                     <Text style={tw`font-medium text-lg text-white my-2`}>
                       {t('utils.direction')}
                     </Text>
 
-                    <View style={tw`flex flex-row flex-wrap`}>{creators}</View>
+                    <View style={tw`flex flex-row flex-wrap`}>{Series.creators(serie)}</View>
                     <View style={tw`flex-row`}>
-                      <Trailer serie={serie} id={id} />
+                      <SerieTrailer id={id} />
                       <AddToFavorite
                         isFavorite={isFavorite}
                         handleFavorite={handleFavorite}
@@ -196,6 +149,7 @@ const DetailsSerie = ({ route }) => {
               </View>
               <Tabs
                 serie={serie}
+                credits={credits}
                 t={t}
                 language={language}
                 id={id}
@@ -205,8 +159,7 @@ const DetailsSerie = ({ route }) => {
             </Fragment>
           )
         )}
-      </Refresh>
-    </View>
+    </ScrollView>
   )
 }
 
