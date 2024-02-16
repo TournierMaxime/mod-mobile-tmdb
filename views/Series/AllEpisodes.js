@@ -18,44 +18,59 @@ const AllEpisodes = ({ route }) => {
     dispatch(seasonDetails(id, seasonNumber, language))
   }, [id, seasonNumber])
 
-    useEffect(() => {
+  useEffect(() => {
     return () => {
       dispatch(resetSeasonDetails())
     }
-    }, [])
+  }, [])
 
   const renderItem = (item) => {
     return (
-      <View style={[tw`flex flex-row justify-start bg-white p-4 border-slate-100`, { borderBottomWidth: 2 }]}>
-        {item.still_path ? (
-          <Image
-            style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
-            source={{
-              uri: `https://image.tmdb.org/t/p/original/${item.still_path}`,
-            }}
-          />
-        ) : (
-          <Image
-            style={[tw`w-20 h-30 rounded-md ml-4 mb-2`, { resizeMode: 'cover' }]}
-            source={require('../../../../assets/images/No_Image_Available.jpg')}
-          />
-        )}
+      <View style={[tw`border-slate-100`, { borderBottomWidth: 2 }]}>
+        <View style={tw`flex flex-row justify-start bg-white p-4`}>
+          {item.still_path ? (
+            <Image
+              style={[
+                tw`w-20 h-30 rounded-md ml-4 mb-2`,
+                { resizeMode: 'cover' },
+              ]}
+              source={{
+                uri: `https://image.tmdb.org/t/p/original/${item.still_path}`,
+              }}
+            />
+          ) : (
+            <Image
+              style={[
+                tw`w-20 h-30 rounded-md ml-4 mb-2`,
+                { resizeMode: 'cover' },
+              ]}
+              source={require('../../../../assets/images/No_Image_Available.jpg')}
+            />
+          )}
 
-        <View style={tw`flex-1 w-full`}>
-          <Text style={tw`font-medium text-lg ml-4`}>
-            {item.name} | {t('episode')} {item.episode_number}
-          </Text>
-          <Text style={tw`font-medium text-lg ml-4`}>
-            {moment(item.air_date).format('LL')}
-          </Text>
-          <Text style={tw`font-medium text-lg p-4 text-justify leading-7`}>{item.overview}</Text>
+          <View style={tw`flex-1 w-full`}>
+            <Text style={tw`font-medium text-lg ml-4`}>
+              {t('Episode')} {item.episode_number}
+            </Text>
+            <Text style={tw`font-medium text-base ml-4`}>
+              {item.name}
+            </Text>
+            <Text style={tw`font-medium text-base ml-4`}>
+              {moment(item.air_date).format('LL')}
+            </Text>
+          </View>
         </View>
+        <Text style={tw`font-medium text-lg p-4 text-justify leading-7`}>
+          {item.overview}
+        </Text>
       </View>
     )
   }
 
   return (
-    <View style={[tw`flex-1 flex flex-col border-slate-100`, { borderTopWidth: 2 }]}>
+    <View
+      style={[tw`flex-1 flex flex-col border-slate-100`, { borderTopWidth: 2 }]}
+    >
       <FlatList
         data={season?.episodes}
         keyExtractor={(item) => item.id.toString()}
