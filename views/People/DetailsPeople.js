@@ -24,7 +24,7 @@ import {
   peopleCareer,
   peopleDetails,
   peopleExternalIds,
-} from '../../../../react-query/people'
+} from '../../react-query/people'
 
 const DetailsPeople = ({ route }) => {
   const { id } = route.params

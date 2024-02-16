@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native'
 import { useSelector } from 'react-redux'
-import { serieDetails, serieCrew } from '../../../../react-query/series'
+import { serieDetails, serieCrew } from '../../react-query/series'
 import { LinearGradient } from 'expo-linear-gradient'
 import Runtime from '@mod/mobile-tmdb/lib/components/RunTime'
 import Rate from '@mod/mobile-tmdb/lib/components/Rate'

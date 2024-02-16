@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import tw from 'twrnc'
 import { useInfiniteQuery } from 'react-query'
-import { upcoming } from '../../../../react-query/movies'
+import { upcoming } from '../../react-query/movies'
 
 const Upcoming = () => {
   const navigation = useNavigation()

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { movieTrailer } from '../../../../react-query/movies'
+import { movieTrailer } from '../../react-query/movies'
 import { Linking, TouchableOpacity, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { Feather } from '@expo/vector-icons'

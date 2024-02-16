@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { updateSeasonWatchProviders } from '../../../../react-query/series'
+import { updateSeasonWatchProviders } from '../../react-query/series'
 import {
   Text,
   View,

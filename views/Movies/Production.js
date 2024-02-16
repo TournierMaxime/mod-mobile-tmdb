@@ -6,7 +6,7 @@ import Movies from '../../lib/class/Movies'
 import {
   movieWatchProviders,
   releaseDates,
-} from '../../../../react-query/movies'
+} from '../../react-query/movies'
 import { useQuery } from 'react-query'
 
 const Production = ({ movie, t, language }) => {

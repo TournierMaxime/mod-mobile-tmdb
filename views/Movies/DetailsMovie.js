@@ -19,7 +19,7 @@ import MovieTrailer from './MovieTrailer'
 import tw from 'twrnc'
 import useHandleFavorites from '@mod/mobile-common/lib/hooks/utils/useHandleFavorites'
 import AddToFavorite from '../../lib/components/AddToFavorite'
-import { movieDetails, movieCrew } from '../../../../react-query/movies'
+import { movieDetails, movieCrew } from '../../react-query/movies'
 import { useQuery } from 'react-query'
 import Movies from '../../lib/class/Movies'
 
