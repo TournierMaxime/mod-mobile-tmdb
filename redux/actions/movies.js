@@ -7,7 +7,31 @@ import {
   MovieTrailer,
   Trending,
   Upcoming,
+  RecommendationMovie
 } from '../../../../services/tmdb'
+
+const movieRecommendation = (id) => async (dispatch) => {
+  try {
+    dispatch({type: 'MOVIE_RECOMMENDATION_REQUEST'})
+    const response = await RecommendationMovie(id)
+    dispatch({
+      type: 'MOVIE_RECOMMENDATION_SUCCESS',
+      payload: response.data,
+    })
+    return response.data
+  } catch (error) {
+    dispatch({
+      type: 'MOVIE_RECOMMENDATION_FAILURE',
+      payload: error.message,
+    })
+    console.log(error)
+    throw error
+  }
+}
+
+const resetRecommendation = () => ({
+  type: 'RESET_RECOMMENDATION',
+})
 
 const movieDetails = (id, language) => async (dispatch) => {
   try {
@@ -169,4 +193,6 @@ export {
   resetTrending,
   upcoming,
   resetUpcoming,
+  movieRecommendation,
+  resetRecommendation
 }

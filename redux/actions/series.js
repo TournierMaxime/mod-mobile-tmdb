@@ -7,7 +7,31 @@ import {
   SerieCrew,
   SerieTrailer,
   TrendingTV,
+  RecommendationSerie
 } from '../../../../services/tmdb'
+
+const serieRecommendation = (id) => async (dispatch) => {
+  try {
+    dispatch({type: 'SERIE_RECOMMENDATION_REQUEST'})
+    const response = await RecommendationSerie(id)
+    dispatch({
+      type: 'SERIE_RECOMMENDATION_SUCCESS',
+      payload: response.data,
+    })
+    return response.data
+  } catch (error) {
+    dispatch({
+      type: 'SERIE_RECOMMENDATION_FAILURE',
+      payload: error.message,
+    })
+    console.log(error)
+    throw error
+  }
+}
+
+const resetRecommendation = () => ({
+  type: 'RESET_RECOMMENDATION',
+})
 
 const seasonDetails = (id, seasonNumber, language) => async (dispatch) => {
   try {
@@ -193,4 +217,6 @@ export {
   serieTrailer,
   trendingTV,
   resetTrending,
+  serieRecommendation,
+  resetRecommendation
 }

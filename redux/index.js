@@ -7,6 +7,7 @@ import {
   releaseDatesReducer,
   movieWatchProvidersReducer,
   trendingReducer,
+  movieRecommendationReducer
 } from './reducers/movies'
 import {
   detailsPeopleReducer,
@@ -22,6 +23,7 @@ import {
   seasonWatchProvidersReducer,
   trendingTVReducer,
   seasonDetailsReducer,
+  serieRecommendationReducer
 } from './reducers/series'
 import searchReducer from './reducers/search'
 
@@ -34,6 +36,7 @@ const movieTmdbReducer = {
   trending: trendingReducer,
   releaseDates: releaseDatesReducer,
   movieWatchProviders: movieWatchProvidersReducer,
+  movieRecommendation: movieRecommendationReducer
 }
 
 const serieTmdbReducer = {
@@ -45,6 +48,7 @@ const serieTmdbReducer = {
   seasonDetails: seasonDetailsReducer,
   seasonWatchProviders: seasonWatchProvidersReducer,
   trendingTV: trendingTVReducer,
+  serieRecommendation: serieRecommendationReducer
 }
 
 const peopleTmdbReducer = {

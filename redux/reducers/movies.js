@@ -19,6 +19,33 @@ const initialState = {
   error: null,
 }
 
+const movieRecommendationReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'MOVIE_RECOMMENDATION_REQUEST':
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      }
+    case 'MOVIE_RECOMMENDATION_SUCCESS':
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+      }
+    case 'MOVIE_RECOMMENDATION_FAILURE':
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      }
+    case 'RESET_RECOMMENDATION':
+      return initialState
+    default:
+      return state
+  }
+}
+
 const movideDetailsReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'MOVIE_DETAILS_REQUEST':
@@ -393,4 +420,5 @@ export {
   movieTrailerReducer,
   trendingReducer,
   upcomingReducer,
+  movieRecommendationReducer
 }

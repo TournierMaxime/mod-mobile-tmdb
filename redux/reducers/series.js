@@ -18,6 +18,33 @@ const initialState = {
   error: null,
 }
 
+const serieRecommendationReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'SERIE_RECOMMENDATION_REQUEST':
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      }
+    case 'SERIE_RECOMMENDATION_SUCCESS':
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+      }
+    case 'SERIE_RECOMMENDATION_FAILURE':
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      }
+    case 'RESET_RECOMMENDATION':
+      return initialState
+    default:
+      return state
+  }
+}
+
 const seasonDetailsReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SEASON_DETAILS_REQUEST':
@@ -396,4 +423,5 @@ export {
   serieCrewReducer,
   serieTrailerReducer,
   trendingTVReducer,
+  serieRecommendationReducer
 }

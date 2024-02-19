@@ -46,6 +46,7 @@ const DetailsMovie = ({ route }) => {
       name: movie?.original_title,
       image: movie?.poster_path,
       type: 'movie',
+      recommendationId: ""
     },
   })
 
