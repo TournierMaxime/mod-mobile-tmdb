@@ -30,7 +30,7 @@ const TrendingTV = () => {
   const allResults = data?.pages.flatMap((page) => page.results) || []
 
   return (
-    <View style={tw`bg-slate-100 items-center justify-center`}>
+    <View style={tw`bg-white items-center justify-center`}>
       <FlatList
         data={allResults}
         keyExtractor={(item, index) => `${item.id}-${index}`}

@@ -30,7 +30,7 @@ const OnTheAir = () => {
   const allResults = data?.pages.flatMap((page) => page.results) || []
 
   return (
-    <View style={tw`bg-slate-100 items-center justify-between`}>
+    <View style={tw`bg-white items-center justify-between`}>
       <FlatList
         data={allResults}
         keyExtractor={(item, index) => `${item.id}-${index}`}
