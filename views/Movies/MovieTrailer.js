@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
 import { movieTrailer } from '../../react-query/movies'
-import { Linking, TouchableOpacity, View } from 'react-native'
+import { Linking, TouchableOpacity } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { Feather } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import Utils from '@mod/mobile-common/lib/class/Utils'
 import tw from 'twrnc'
 import { useQuery } from 'react-query'
@@ -37,19 +37,16 @@ const Trailer = ({ id }) => {
   return (
     <Fragment>
       {mvTrailer?.results?.length > 0 ? (
-        <View style={tw`mt-4`}>
-          <TouchableOpacity
-            style={tw`mr-2 items-center justify-center`}
-            onPress={() => handleLinkToMovieTrailer()}
-          >
-            <Feather
-              style={tw`items-center justify-center`}
-              name='video'
-              size={Utils.moderateScale(35)}
-              color='white'
-            />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={tw`mr-2 items-center justify-center`}
+          onPress={() => handleLinkToMovieTrailer()}
+        >
+          <MaterialIcons
+            name='videocam'
+            size={Utils.moderateScale(30)}
+            color='black'
+          />
+        </TouchableOpacity>
       ) : null}
     </Fragment>
   )

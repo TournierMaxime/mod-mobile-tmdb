@@ -6,7 +6,8 @@ import Series from '../../lib/class/Series'
 const Production = ({ serie, t }) => {
 
   return (
-    <View style={tw`pb-4 bg-white h-full`}>
+    <View style={tw`bg-white h-full`}>
+      {Series.plot(serie?.overview, t)}
       {Series.status(serie?.status, t)}
       {Series.networks(serie?.networks, t)}
       {Series.productionCompanies(serie?.production_companies, t)}

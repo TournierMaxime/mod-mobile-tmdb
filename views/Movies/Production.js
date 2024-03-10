@@ -23,7 +23,8 @@ const Production = ({ movie, t, language }) => {
   )
 
   return (
-    <View style={tw`pb-4 bg-white h-full`}>
+    <View style={tw`bg-white h-full`}>
+      {Movies.plot(movie?.overview, t)}
       {Movies.releaseByCountry(releases, lang, t)}
       {Movies.budget(budget, t)}
       {Movies.revenue(revenue, t)}

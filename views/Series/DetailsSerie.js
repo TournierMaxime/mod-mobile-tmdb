@@ -3,7 +3,6 @@ import {
   View,
   Text,
   ImageBackground,
-  Image,
   ActivityIndicator,
   ScrollView,
 } from 'react-native'
@@ -11,17 +10,13 @@ import { useSelector } from 'react-redux'
 import { serieDetails, serieCrew } from '../../react-query/series'
 import { LinearGradient } from 'expo-linear-gradient'
 import Runtime from '@mod/mobile-tmdb/lib/components/RunTime'
-import Rate from '@mod/mobile-tmdb/lib/components/Rate'
 import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
-import OverView from '@mod/mobile-tmdb/lib/components/OverView'
 import { useTranslation } from 'react-i18next'
-import Utils from '@mod/mobile-common/lib/class/Utils'
 import tw from 'twrnc'
 import useHandleFavorites from '@mod/mobile-common/lib/hooks/utils/useHandleFavorites'
 import AddToFavorite from '../../lib/components/AddToFavorite'
 import { useQuery } from 'react-query'
 import Series from '../../lib/class/Series'
-import SerieTrailer from './SerieTrailer'
 
 const DetailsSerie = ({ route }) => {
   const { id } = route.params
@@ -63,22 +58,17 @@ const DetailsSerie = ({ route }) => {
       ) : (
         serie && (
           <Fragment>
-            <View
-              style={[
-                tw`flex relative w-full`,
-                { height: Utils.moderateScale(550) },
-              ]}
-            >
+            <View style={tw`flex relative w-full h-50`}>
               <LinearGradient
                 colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.8)']}
                 style={tw`flex w-full h-full relative`}
               />
               <ImageBackground
                 style={[
-                  tw`w-full h-full absolute`,
+                  tw`w-full h-auto absolute`,
                   {
                     resizeMode: 'contain',
-                    opacity: 0.3,
+                    opacity: 0.4,
                     top: 0,
                     left: 0,
                     right: 0,
@@ -90,70 +80,34 @@ const DetailsSerie = ({ route }) => {
                 }}
               />
 
-              <View
-                style={tw`flex flex-row absolute items-center justify-between w-full`}
-              >
-                <View>
-                  <Text
-                    style={[
-                      tw`font-medium text-lg text-white my-4 w-full`,
-                      { left: 15, top: 5 },
-                    ]}
-                  >
-                    {serie.name}
-                  </Text>
+              <View style={[tw`absolute`, { top: 0, right: 0 }]}>
+                <View style={tw`flex-row`}>
+                  <AddToFavorite
+                    isFavorite={isFavorite}
+                    handleFavorite={handleFavorite}
+                  />
                 </View>
               </View>
 
               <View
                 style={[
-                  tw`absolute flex-row justify-around items-start flex mt-4`,
-                  { top: '10%', left: 0, right: 0, bottom: 0 },
+                  tw`absolute flex flex-row flex-wrap flex mt-4`,
+                  { bottom: 10 },
                 ]}
               >
-                <View style={tw`flex flex-col items-center`}>
-                  <Image
-                    style={[tw`w-30 h-50 rounded-md`, { resizeMode: 'cover' }]}
-                    source={{
-                      uri: `https://image.tmdb.org/t/p/original${serie?.poster_path}`,
-                    }}
-                  />
-                  <Rate rate={serie.vote_average} />
-                </View>
-
-                <View style={tw`flex flex-col w-1/2`}>
+                <Text style={tw`font-medium text-lg text-white py-2 px-4 w-full`}>
+                  {serie.name}
                   <Runtime
-                    time={serie.episode_run_time}
+                    time={serie?.episode_run_time}
                     isMovie={false}
                     t={t}
                   />
-
-                  <Text style={tw`font-medium text-lg text-white my-2`}>
-                    {t('utils.genres')}
-                  </Text>
-
-                  <View style={tw`flex flex-row flex-wrap`}>
-                    {Series.genres(serie)}
-                  </View>
-
-                  <Text style={tw`font-medium text-lg text-white my-2`}>
-                    {t('utils.direction')}
-                  </Text>
-
-                  <View style={tw`flex flex-row flex-wrap`}>
-                    {Series.creators(serie)}
-                  </View>
-                  <View style={tw`flex-row`}>
-                    <SerieTrailer id={id} />
-                    <AddToFavorite
-                      isFavorite={isFavorite}
-                      handleFavorite={handleFavorite}
-                    />
-                  </View>
-                </View>
+                  {' • '}
+                  {Series.genres(serie)}
+                  {' • '}
+                  {Series.creators(serie)}
+                </Text>
               </View>
-
-              <OverView content={serie.overview} t={t} />
             </View>
             <Tabs
               serie={serie}

@@ -21,7 +21,7 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
 
   return (
     <TouchableOpacity
-      style={[tw`border-slate-100`, { borderBottomWidth: 2 }]}
+      style={[tw`border-slate-200 ${seasonNumber % 2 ? 'bg-white' : 'bg-slate-50' }`, { borderBottomWidth: 2 }]}
       onPress={() =>
         navigation.navigate('AllEpisodes', {
           id,
@@ -29,7 +29,7 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
         })
       }
     >
-      <View style={tw`flex flex-row justify-start bg-white p-2`}>
+      <View style={tw`flex flex-row justify-start p-2`}>
         <View style={tw`items-center`}>
           {item.poster_path ? (
             <ImageBackground
@@ -40,9 +40,7 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
               source={{
                 uri: `https://image.tmdb.org/t/p/original/${item.poster_path}`,
               }}
-            >
-              <Rate size={true} rate={item.vote_average} />
-            </ImageBackground>
+            />
           ) : (
             <ImageBackground
               style={[
@@ -50,9 +48,7 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
                 { resizeMode: 'cover' },
               ]}
               source={require('../../../../assets/images/No_Image_Available.jpg')}
-            >
-              <Rate size={true} rate={item.vote_average} />
-            </ImageBackground>
+            />
           )}
         </View>
         <View style={tw`flex-1 w-full`}>
@@ -63,6 +59,9 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
           <Text style={tw`font-medium text-base ml-4`}>
             {moment(item.air_date).format('LL')}
           </Text>
+          <View style={tw`ml-4 mt-2`}>
+            <Rate size={true} rate={item.vote_average} />
+          </View>
         </View>
       </View>
       <Text style={tw`font-medium text-lg p-4 text-justify leading-7`}>

@@ -12,7 +12,7 @@ const AllSeasons = ({ serie }) => {
 
   return (
     <View
-      style={[tw`flex-1 flex flex-col border-slate-100`, { borderTopWidth: 2 }]}
+      style={[tw`flex-1 flex flex-col border-slate-200`, { borderTopWidth: 2 }]}
     >
       {serie?.seasons?.map((item, idx) => (
         <SeasonsWatchProviders

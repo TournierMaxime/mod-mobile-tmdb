@@ -5,14 +5,13 @@ import { AntDesign, FontAwesome5 } from '@expo/vector-icons'
 import Utils from '@mod/mobile-common/lib/class/Utils'
 import tw from 'twrnc'
 
-const Informations = ({ externalIds, t }) => {
+const Informations = ({ externalIds, t, people }) => {
   const socialMedia = (data) => {
     const openLink = (url) => {
       Linking.openURL(url)
     }
 
     return (
-      <View style={[tw`border-slate-100`, { borderTopWidth: 2 }]}>
       <Accordion title={t('utils.socialMedias')}>
         {data?.twitter_id && (
           <TouchableOpacity
@@ -43,10 +42,12 @@ const Informations = ({ externalIds, t }) => {
             }
           >
             <View style={tw`flex-col justify-between`}>
-              <Text style={[
+              <Text
+                style={[
                   tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
                   { color: '#495057', backgroundColor: '#dee2e6' },
-                ]}>
+                ]}
+              >
                 <AntDesign
                   name='facebook-square'
                   size={Utils.moderateScale(24)}
@@ -65,10 +66,12 @@ const Informations = ({ externalIds, t }) => {
             }
           >
             <View style={tw`flex-col justify-between`}>
-              <Text style={[
+              <Text
+                style={[
                   tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
                   { color: '#495057', backgroundColor: '#dee2e6' },
-                ]}>
+                ]}
+              >
                 <AntDesign
                   name='instagram'
                   size={Utils.moderateScale(24)}
@@ -87,10 +90,12 @@ const Informations = ({ externalIds, t }) => {
             }
           >
             <View style={tw`flex-col justify-between`}>
-              <Text style={[
+              <Text
+                style={[
                   tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
                   { color: '#495057', backgroundColor: '#dee2e6' },
-                ]}>
+                ]}
+              >
                 <FontAwesome5
                   name='tiktok'
                   size={Utils.moderateScale(24)}
@@ -109,10 +114,12 @@ const Informations = ({ externalIds, t }) => {
             }
           >
             <View style={tw`flex-col justify-between`}>
-              <Text style={[
+              <Text
+                style={[
                   tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
                   { color: '#495057', backgroundColor: '#dee2e6' },
-                ]}>
+                ]}
+              >
                 <AntDesign
                   name='youtube'
                   size={Utils.moderateScale(24)}
@@ -124,13 +131,31 @@ const Informations = ({ externalIds, t }) => {
             </View>
           </TouchableOpacity>
         )}
+      </Accordion>
+    )
+  }
+
+  const plot = (data) => {
+    return (
+      <View style={[tw`border-slate-100`, { borderTopWidth: 2 }]}>
+        <Accordion title={t('utils.biography')}>
+          <View style={tw`flex flex-col`}>
+            <View style={tw`flex-col justify-between`}>
+              <Text
+                style={tw`font-medium text-lg rounded-md ml-4 mr-auto my-2 w-auto py-2 px-4 text-justify leading-7`}
+              >
+                {data}
+              </Text>
+            </View>
+          </View>
         </Accordion>
-        </View>
+      </View>
     )
   }
 
   return (
     <View style={tw`pb-4 h-full bg-white`}>
+      {plot(people?.biography)}
       {socialMedia(externalIds)}
     </View>
   )
