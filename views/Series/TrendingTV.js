@@ -11,12 +11,17 @@ import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import tw from 'twrnc'
 import { useInfiniteQuery } from 'react-query'
+import { useSelector } from 'react-redux'
+import { useDynamicThemeStyles } from '@mod/mobile-common/styles/theme'
 
 const TrendingTV = () => {
   const navigation = useNavigation()
 
   const { i18n } = useTranslation()
   const language = i18n.language
+
+  const darkMode = useSelector((state) => state.theme.darkMode)
+  const { background } = useDynamicThemeStyles(darkMode)
 
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery(
@@ -30,7 +35,7 @@ const TrendingTV = () => {
   const allResults = data?.pages.flatMap((page) => page.results) || []
 
   return (
-    <View style={tw`bg-white items-center justify-center`}>
+    <View style={tw`${background} items-center justify-center`}>
       <FlatList
         data={allResults}
         keyExtractor={(item, index) => `${item.id}-${index}`}
