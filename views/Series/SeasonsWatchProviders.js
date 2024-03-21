@@ -1,12 +1,14 @@
-import React from 'react'
-import { updateSeasonWatchProviders } from '../../react-query/series'
-import { Text, View, TouchableOpacity, ImageBackground } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import Rate from '../../lib/components/Rate'
-import moment from 'moment'
-import tw from 'twrnc'
-import Series from '../../lib/class/Series'
-import { useQuery } from 'react-query'
+import React from "react"
+import { updateSeasonWatchProviders } from "../../react-query/series"
+import { Text, View, TouchableOpacity, ImageBackground } from "react-native"
+import { useNavigation } from "@react-navigation/native"
+import Rate from "../../lib/components/Rate"
+import moment from "moment"
+import tw from "twrnc"
+import Series from "../../lib/class/Series"
+import { useQuery } from "react-query"
+import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
+import { useSelector } from "react-redux"
 
 const SeasonsWatchProviders = ({ id, item, language, t }) => {
   const navigation = useNavigation()
@@ -15,15 +17,18 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
   const seasonNumber = item.season_number
 
   const { data: providers } = useQuery(
-    ['providers', id, seasonNumber, lang],
-    () => updateSeasonWatchProviders(id, seasonNumber, lang)
+    ["providers", id, seasonNumber, lang],
+    () => updateSeasonWatchProviders(id, seasonNumber, lang),
   )
+
+  const darkMode = useSelector((state) => state.theme.darkMode)
+  const { background, text, borderColor } = useDynamicThemeStyles(darkMode)
 
   return (
     <TouchableOpacity
-      style={[tw`border-slate-200 ${seasonNumber % 2 ? 'bg-white' : 'bg-slate-50' }`, { borderBottomWidth: 2 }]}
+      style={[tw`${borderColor} ${background}`, { borderBottomWidth: 2 }]}
       onPress={() =>
-        navigation.navigate('AllEpisodes', {
+        navigation.navigate("AllEpisodes", {
           id,
           seasonNumber,
         })
@@ -35,7 +40,7 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
             <ImageBackground
               style={[
                 tw`w-20 h-30 rounded-md ml-4 mb-2`,
-                { resizeMode: 'cover' },
+                { resizeMode: "cover" },
               ]}
               source={{
                 uri: `https://image.tmdb.org/t/p/original/${item.poster_path}`,
@@ -45,29 +50,29 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
             <ImageBackground
               style={[
                 tw`w-20 h-30 rounded-md ml-4 mb-2`,
-                { resizeMode: 'cover' },
+                { resizeMode: "cover" },
               ]}
-              source={require('../../../../assets/images/No_Image_Available.jpg')}
+              source={require("../../../../assets/images/No_Image_Available.jpg")}
             />
           )}
         </View>
         <View style={tw`flex-1 w-full`}>
-          <Text style={tw`font-medium text-lg ml-4`}>{item.name}</Text>
-          <Text style={tw`font-medium text-base ml-4`}>
-            {item.episode_count} {t('episodes')}
+          <Text style={tw`font-medium text-lg ml-4 ${text}`}>{item.name}</Text>
+          <Text style={tw`font-medium text-base ml-4 ${text}`}>
+            {item.episode_count} {t("episodes")}
           </Text>
-          <Text style={tw`font-medium text-base ml-4`}>
-            {moment(item.air_date).format('LL')}
+          <Text style={tw`font-medium text-base ml-4 ${text}`}>
+            {moment(item.air_date).format("LL")}
           </Text>
           <View style={tw`ml-4 mt-2`}>
             <Rate size={true} rate={item.vote_average} />
           </View>
         </View>
       </View>
-      <Text style={tw`font-medium text-lg p-4 text-justify leading-7`}>
+      <Text style={tw`font-medium text-lg p-4 text-justify leading-7 ${text}`}>
         {item.overview}
       </Text>
-      {Series.providersByCountry(providers?.[lang], lang, t)}
+      {Series.providersByCountry(providers?.[lang], lang, t, text)}
     </TouchableOpacity>
   )
 }

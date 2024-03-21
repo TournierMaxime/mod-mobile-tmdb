@@ -1,26 +1,27 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from "react"
 import {
   View,
   Text,
   ImageBackground,
   ActivityIndicator,
   ScrollView,
-} from 'react-native'
-import { useSelector } from 'react-redux'
-import { LinearGradient } from 'expo-linear-gradient'
-import moment from 'moment'
-import { useTranslation } from 'react-i18next'
-import tw from 'twrnc'
-import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
-import People from '../../lib/class/People'
-import useHandleFavorites from '@mod/mobile-common/lib/hooks/utils/useHandleFavorites'
-import AddToFavorite from '../../lib/components/AddToFavorite'
-import { useQuery } from 'react-query'
+} from "react-native"
+import { useSelector } from "react-redux"
+import { LinearGradient } from "expo-linear-gradient"
+import moment from "moment"
+import { useTranslation } from "react-i18next"
+import tw from "twrnc"
+import Tabs from "@mod/mobile-common/lib/components/utils/Tabs"
+import People from "../../lib/class/People"
+import useHandleFavorites from "@mod/mobile-common/lib/hooks/utils/useHandleFavorites"
+import AddToFavorite from "../../lib/components/AddToFavorite"
+import { useQuery } from "react-query"
 import {
   peopleCareer,
   peopleDetails,
   peopleExternalIds,
-} from '../../react-query/people'
+} from "../../react-query/people"
+import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
 
 const DetailsPeople = ({ route }) => {
   const { id } = route.params
@@ -29,14 +30,14 @@ const DetailsPeople = ({ route }) => {
   const language = i18n.language
   moment.locale(language)
 
-  const { data: people, isLoading } = useQuery(['people', id, language], () =>
-    peopleDetails(id, language)
+  const { data: people, isLoading } = useQuery(["people", id, language], () =>
+    peopleDetails(id, language),
   )
-  const { data: career } = useQuery(['career', id, language], () =>
-    peopleCareer(id, language)
+  const { data: career } = useQuery(["career", id, language], () =>
+    peopleCareer(id, language),
   )
-  const { data: externalIds } = useQuery(['externalIds', id, language], () =>
-    peopleExternalIds(id, language)
+  const { data: externalIds } = useQuery(["externalIds", id, language], () =>
+    peopleExternalIds(id, language),
   )
 
   const favorites = useSelector((state) => state.favorites.data)
@@ -47,26 +48,29 @@ const DetailsPeople = ({ route }) => {
       id,
       name: people?.name,
       image: people?.profile_path,
-      type: 'people',
+      type: "people",
     },
   })
+
+  const darkMode = useSelector((state) => state.theme.darkMode)
+  const { background } = useDynamicThemeStyles(darkMode)
 
   useEffect(() => {
     setItem()
   }, [favorites])
 
-  const [selectedTab, setSelectedTab] = useState('about')
+  const [selectedTab, setSelectedTab] = useState("about")
 
   return (
-    <ScrollView style={tw`flex-1`}>
+    <ScrollView style={tw`flex-1 ${background}`}>
       {isLoading ? (
-        <ActivityIndicator size='large' color='#0000ff' />
+        <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         people && (
           <Fragment>
             <View style={tw`flex relative w-full h-50`}>
               <LinearGradient
-                colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.8)']}
+                colors={["rgba(0,0,0,0.8)", "rgba(0,0,0,0.8)"]}
                 style={tw`w-full h-full relative flex`}
               />
 
@@ -74,7 +78,7 @@ const DetailsPeople = ({ route }) => {
                 style={[
                   tw`w-full h-auto absolute`,
                   {
-                    resizeMode: 'contain',
+                    resizeMode: "contain",
                     opacity: 0.4,
                     top: 0,
                     left: 0,

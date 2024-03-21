@@ -1,35 +1,36 @@
-import React, { Fragment, useEffect, useState, memo } from 'react'
+import React, { Fragment, useEffect, useState, memo } from "react"
 import {
   View,
   Text,
   ImageBackground,
   ActivityIndicator,
   ScrollView,
-} from 'react-native'
-import { useSelector } from 'react-redux'
-import { LinearGradient } from 'expo-linear-gradient'
-import Runtime from '../../lib/components/RunTime'
-import { useTranslation } from 'react-i18next'
-import Tabs from '@mod/mobile-common/lib/components/utils/Tabs'
-import tw from 'twrnc'
-import useHandleFavorites from '@mod/mobile-common/lib/hooks/utils/useHandleFavorites'
-import AddToFavorite from '../../lib/components/AddToFavorite'
-import { movieDetails, movieCrew } from '../../react-query/movies'
-import { useQuery } from 'react-query'
-import Movies from '../../lib/class/Movies'
+} from "react-native"
+import { useSelector } from "react-redux"
+import { LinearGradient } from "expo-linear-gradient"
+import Runtime from "../../lib/components/RunTime"
+import { useTranslation } from "react-i18next"
+import Tabs from "@mod/mobile-common/lib/components/utils/Tabs"
+import tw from "twrnc"
+import useHandleFavorites from "@mod/mobile-common/lib/hooks/utils/useHandleFavorites"
+import AddToFavorite from "../../lib/components/AddToFavorite"
+import { movieDetails, movieCrew } from "../../react-query/movies"
+import { useQuery } from "react-query"
+import Movies from "../../lib/class/Movies"
+import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
 
 const DetailsMovie = ({ route }) => {
   const { id } = route.params
-  const [selectedTab, setSelectedTab] = useState('about')
+  const [selectedTab, setSelectedTab] = useState("about")
 
   const { i18n, t } = useTranslation()
   const language = i18n.language
 
-  const { data: movie, isLoading } = useQuery(['movie', id, language], () =>
-    movieDetails(id, language)
+  const { data: movie, isLoading } = useQuery(["movie", id, language], () =>
+    movieDetails(id, language),
   )
-  const { data: credits } = useQuery(['credits', id, language], () =>
-    movieCrew(id, language)
+  const { data: credits } = useQuery(["credits", id, language], () =>
+    movieCrew(id, language),
   )
 
   const favorites = useSelector((state) => state.favorites.data)
@@ -40,32 +41,35 @@ const DetailsMovie = ({ route }) => {
       id,
       name: movie?.original_title,
       image: movie?.poster_path,
-      type: 'movie',
-      recommendationId: '',
+      type: "movie",
+      recommendationId: "",
     },
   })
+
+  const darkMode = useSelector((state) => state.theme.darkMode)
+  const { background } = useDynamicThemeStyles(darkMode)
 
   useEffect(() => {
     setItem()
   }, [favorites])
 
   return (
-    <ScrollView style={tw`flex-1`}>
+    <ScrollView style={tw`flex-1 ${background}`}>
       {isLoading ? (
-        <ActivityIndicator size='large' color='#0000ff' />
+        <ActivityIndicator size="large" color="#0000ff" />
       ) : (
         movie && (
           <Fragment>
             <View style={tw`flex relative w-full h-50`}>
               <LinearGradient
-                colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.8)']}
+                colors={["rgba(0,0,0,0.8)", "rgba(0,0,0,0.8)"]}
                 style={tw`w-full h-full relative flex`}
               />
               <ImageBackground
                 style={[
                   tw`w-full h-auto absolute`,
                   {
-                    resizeMode: 'contain',
+                    resizeMode: "contain",
                     opacity: 0.4,
                     top: 0,
                     left: 0,
@@ -93,11 +97,13 @@ const DetailsMovie = ({ route }) => {
                   { bottom: 10 },
                 ]}
               >
-                <Text style={tw`font-medium text-lg text-white py-2 px-4 w-full`}>
+                <Text
+                  style={tw`font-medium text-lg text-white py-2 px-4 w-full`}
+                >
                   {movie.title}
                   <Runtime time={movie?.runtime} isMovie={true} t={t} />
-                    {Movies.genres(movie)}
-                    {Movies.directors(credits)}
+                  {Movies.genres(movie)}
+                  {Movies.directors(credits)}
                 </Text>
               </View>
             </View>
