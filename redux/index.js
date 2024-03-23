@@ -7,13 +7,13 @@ import {
   releaseDatesReducer,
   movieWatchProvidersReducer,
   trendingReducer,
-  movieRecommendationReducer
-} from './reducers/movies'
+  movieRecommendationReducer,
+} from "./reducers/movies"
 import {
   detailsPeopleReducer,
   peopleCareerReducer,
   peopleExternalIdsReducer,
-} from './reducers/people'
+} from "./reducers/people"
 import {
   onTheAirReducer,
   popularReducer,
@@ -23,9 +23,10 @@ import {
   seasonWatchProvidersReducer,
   trendingTVReducer,
   seasonDetailsReducer,
-  serieRecommendationReducer
-} from './reducers/series'
-import searchReducer from './reducers/search'
+  serieRecommendationReducer,
+} from "./reducers/series"
+import searchReducer from "./reducers/search"
+import { searchFeedsReducer } from "./reducers/feeds"
 
 const movieTmdbReducer = {
   nowPlaying: nowPlayingReducer,
@@ -36,7 +37,7 @@ const movieTmdbReducer = {
   trending: trendingReducer,
   releaseDates: releaseDatesReducer,
   movieWatchProviders: movieWatchProvidersReducer,
-  movieRecommendation: movieRecommendationReducer
+  movieRecommendation: movieRecommendationReducer,
 }
 
 const serieTmdbReducer = {
@@ -48,7 +49,7 @@ const serieTmdbReducer = {
   seasonDetails: seasonDetailsReducer,
   seasonWatchProviders: seasonWatchProvidersReducer,
   trendingTV: trendingTVReducer,
-  serieRecommendation: serieRecommendationReducer
+  serieRecommendation: serieRecommendationReducer,
 }
 
 const peopleTmdbReducer = {
@@ -61,4 +62,14 @@ const searchTmdbReducer = {
   search: searchReducer,
 }
 
-export { movieTmdbReducer, serieTmdbReducer, peopleTmdbReducer, searchTmdbReducer }
+const feedsReducer = {
+  searchFeeds: searchFeedsReducer,
+}
+
+export {
+  movieTmdbReducer,
+  serieTmdbReducer,
+  peopleTmdbReducer,
+  searchTmdbReducer,
+  feedsReducer,
+}
