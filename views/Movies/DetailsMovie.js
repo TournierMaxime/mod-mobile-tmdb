@@ -18,9 +18,12 @@ import { movieDetails, movieCrew } from "../../react-query/movies"
 import { useQuery } from "react-query"
 import Movies from "../../lib/class/Movies"
 import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
+import { useIsFocused } from "@react-navigation/native"
 
 const DetailsMovie = ({ route }) => {
   const { id } = route.params
+  const isFocused = useIsFocused()
+
   const [selectedTab, setSelectedTab] = useState("about")
 
   const { i18n, t } = useTranslation()
@@ -52,6 +55,12 @@ const DetailsMovie = ({ route }) => {
   useEffect(() => {
     setItem()
   }, [favorites])
+
+  useEffect(() => {
+    if (!isFocused) {
+      setSelectedTab("about")
+    }
+  }, [isFocused])
 
   return (
     <ScrollView style={tw`flex-1 ${background}`}>

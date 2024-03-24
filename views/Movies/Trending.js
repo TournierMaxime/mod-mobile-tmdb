@@ -1,18 +1,18 @@
-import React, { Fragment, memo } from 'react'
+import React, { Fragment, memo } from "react"
 import {
   View,
   FlatList,
   Image,
   TouchableOpacity,
   ActivityIndicator,
-} from 'react-native'
-import { trending } from '../../react-query/movies'
-import { useNavigation } from '@react-navigation/native'
-import { useTranslation } from 'react-i18next'
-import tw from 'twrnc'
-import { useInfiniteQuery } from 'react-query'
-import { useDynamicThemeStyles } from '@mod/mobile-common/styles/theme'
-import { useSelector } from 'react-redux'
+} from "react-native"
+import { trending } from "../../react-query/movies"
+import { useNavigation } from "@react-navigation/native"
+import { useTranslation } from "react-i18next"
+import tw from "twrnc"
+import { useInfiniteQuery } from "react-query"
+import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
+import { useSelector } from "react-redux"
 
 const Trending = () => {
   const navigation = useNavigation()
@@ -25,11 +25,11 @@ const Trending = () => {
 
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery(
-      ['trending', language],
+      ["trending", language],
       ({ pageParam = 1 }) => trending(pageParam, language),
       {
         getNextPageParam: (lastPage) => lastPage.page + 1,
-      }
+      },
     )
 
   const allResults = data?.pages.flatMap((page) => page.results) || []
@@ -48,26 +48,26 @@ const Trending = () => {
         onEndReachedThreshold={0.5}
         ListFooterComponent={
           isLoading || isFetchingNextPage ? (
-            <ActivityIndicator size='large' color='#0000ff' />
+            <ActivityIndicator size="large" color="#0000ff" />
           ) : null
         }
         renderItem={({ item }) => {
           return (
             <Fragment>
-              {item.media_type === 'movie' ? (
+              {item.media_type === "movie" ? (
                 <View style={tw`flex-col justify-between`}>
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate('DetailsMovie', {
-                        id: item.id,
-                        title: item.original_title,
+                      navigation.navigate("MoviesTab", {
+                        screen: "DetailsMovie",
+                        params: { id: item.id },
                       })
                     }
                   >
                     <Image
                       style={[
                         tw`w-40 h-60 rounded-md m-4`,
-                        { resizeMode: 'cover' },
+                        { resizeMode: "cover" },
                       ]}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
@@ -79,16 +79,16 @@ const Trending = () => {
                 <View style={tw`flex-col justify-between`}>
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate('DetailsSerie', {
-                        id: item.id,
-                        title: item.name,
+                      navigation.navigate("SeriesTab", {
+                        screen: "DetailsSerie",
+                        params: { id: item.id },
                       })
                     }
                   >
                     <Image
                       style={[
                         tw`w-40 h-60 rounded-md m-4`,
-                        { resizeMode: 'cover' },
+                        { resizeMode: "cover" },
                       ]}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
