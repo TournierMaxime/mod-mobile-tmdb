@@ -8,6 +8,7 @@ import {
   movieWatchProvidersReducer,
   trendingReducer,
   movieRecommendationReducer,
+  topRatedReducer,
 } from "./reducers/movies"
 import {
   detailsPeopleReducer,
@@ -38,6 +39,7 @@ const movieTmdbReducer = {
   releaseDates: releaseDatesReducer,
   movieWatchProviders: movieWatchProvidersReducer,
   movieRecommendation: movieRecommendationReducer,
+  topRated: topRatedReducer,
 }
 
 const serieTmdbReducer = {

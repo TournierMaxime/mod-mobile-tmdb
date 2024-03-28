@@ -7,21 +7,22 @@ import {
   MovieTrailer,
   Trending,
   Upcoming,
-  RecommendationMovie
-} from '../../../../services/tmdb'
+  RecommendationMovie,
+  TopRated,
+} from "../../../../services/tmdb"
 
 const movieRecommendation = (id) => async (dispatch) => {
   try {
-    dispatch({type: 'MOVIE_RECOMMENDATION_REQUEST'})
+    dispatch({ type: "MOVIE_RECOMMENDATION_REQUEST" })
     const response = await RecommendationMovie(id)
     dispatch({
-      type: 'MOVIE_RECOMMENDATION_SUCCESS',
+      type: "MOVIE_RECOMMENDATION_SUCCESS",
       payload: response.data,
     })
     return response.data
   } catch (error) {
     dispatch({
-      type: 'MOVIE_RECOMMENDATION_FAILURE',
+      type: "MOVIE_RECOMMENDATION_FAILURE",
       payload: error.message,
     })
     console.log(error)
@@ -30,55 +31,55 @@ const movieRecommendation = (id) => async (dispatch) => {
 }
 
 const resetRecommendation = () => ({
-  type: 'RESET_RECOMMENDATION',
+  type: "RESET_RECOMMENDATION",
 })
 
 const movieDetails = (id, language) => async (dispatch) => {
   try {
-    dispatch({type: 'MOVIE_DETAILS_REQUEST'})
+    dispatch({ type: "MOVIE_DETAILS_REQUEST" })
     const response = await MovieDetails(id, language)
-    dispatch({ type: 'MOVIE_DETAILS_SUCCESS', payload: response.data })
+    dispatch({ type: "MOVIE_DETAILS_SUCCESS", payload: response.data })
     return response.data
   } catch (error) {
-    dispatch({ type: 'MOVIE_DETAILS_FAILURE', payload: error.message })
+    dispatch({ type: "MOVIE_DETAILS_FAILURE", payload: error.message })
     console.log(error)
     throw error
   }
 }
 
 const resetMovieDetails = () => ({
-  type: 'RESET_MOVIE_DETAILS',
+  type: "RESET_MOVIE_DETAILS",
 })
 
 const movieCrew = (id, language) => async (dispatch) => {
   try {
-    dispatch({type: 'MOVIE_CREW_REQUEST'})
+    dispatch({ type: "MOVIE_CREW_REQUEST" })
     const response = await MovieCrew(id, language)
-    dispatch({ type: 'MOVIE_CREW_SUCCESS', payload: response.data })
+    dispatch({ type: "MOVIE_CREW_SUCCESS", payload: response.data })
     return response.data
   } catch (error) {
-    dispatch({ type: 'MOVIE_CREW_FAILURE', payload: error.message })
+    dispatch({ type: "MOVIE_CREW_FAILURE", payload: error.message })
     console.log(error)
     throw error
   }
 }
 
 const resetMovieCrew = () => ({
-  type: 'RESET_MOVIE_CREW',
+  type: "RESET_MOVIE_CREW",
 })
 
 const movieWatchProviders = (id) => async (dispatch) => {
   try {
-    dispatch({type: 'MOVIE_WATCH_PROVIDERS_REQUEST'})
+    dispatch({ type: "MOVIE_WATCH_PROVIDERS_REQUEST" })
     const response = await MovieWatchProviders(id)
     dispatch({
-      type: 'MOVIE_WATCH_PROVIDERS_SUCCESS',
+      type: "MOVIE_WATCH_PROVIDERS_SUCCESS",
       payload: response.data,
     })
     return response.data
   } catch (error) {
     dispatch({
-      type: 'MOVIE_WATCH_PROVIDERS_FAILURE',
+      type: "MOVIE_WATCH_PROVIDERS_FAILURE",
       payload: error.message,
     })
     console.log(error)
@@ -87,94 +88,113 @@ const movieWatchProviders = (id) => async (dispatch) => {
 }
 
 const resetMovieWatchProviders = () => ({
-  type: 'RESET_MOVIE_WATCH_PROVIDERS',
+  type: "RESET_MOVIE_WATCH_PROVIDERS",
 })
 
 const nowPlaying =
-  (page, target = 'nowPlaying', language) =>
+  (page, target = "nowPlaying", language) =>
   async (dispatch) => {
     try {
-      dispatch({ type: 'NOW_PLAYING_REQUEST', target })
+      dispatch({ type: "NOW_PLAYING_REQUEST", target })
       const response = await NowPlaying(page, language)
-      dispatch({ type: 'NOW_PLAYING_SUCCESS', payload: response.data, target })
+      dispatch({ type: "NOW_PLAYING_SUCCESS", payload: response.data, target })
       return response.data
     } catch (error) {
-      dispatch({ type: 'NOW_PLAYING_FAILURE', payload: error.message, target })
+      dispatch({ type: "NOW_PLAYING_FAILURE", payload: error.message, target })
       console.log(error)
       throw error
     }
   }
 
 const resetNowPlaying = () => ({
-  type: 'RESET_NOW_PLAYING',
+  type: "RESET_NOW_PLAYING",
+})
+
+const topRated =
+  (page, target = "topRated", language) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: "TOP_RATED_REQUEST", target })
+      const response = await TopRated(page, language)
+      dispatch({ type: "TOP_RATED_SUCCESS", payload: response.data, target })
+      return response.data
+    } catch (error) {
+      dispatch({ type: "TOP_RATED_FAILURE", payload: error.message, target })
+      console.log(error)
+      throw error
+    }
+  }
+
+const resetTopRated = () => ({
+  type: "RESET_TOP_RATED",
 })
 
 const releaseDates = (id) => async (dispatch) => {
   try {
-    dispatch({type: 'RELEASE_DATES_REQUEST'})
+    dispatch({ type: "RELEASE_DATES_REQUEST" })
     const response = await ReleaseDates(id)
-    dispatch({ type: 'RELEASE_DATES_SUCCESS', payload: response.data })
+    dispatch({ type: "RELEASE_DATES_SUCCESS", payload: response.data })
     return response.data
   } catch (error) {
-    dispatch({ type: 'RELEASE_DATES_FAILURE', payload: error.message })
+    dispatch({ type: "RELEASE_DATES_FAILURE", payload: error.message })
     console.log(error)
     throw error
   }
 }
 
 const resetReleaseDates = () => ({
-  type: 'RESET_RELEASE_DATES',
+  type: "RESET_RELEASE_DATES",
 })
 
 const movieTrailer = (id, language) => async (dispatch) => {
   try {
-    dispatch({type: 'MOVIE_TRAILER_REQUEST'})
+    dispatch({ type: "MOVIE_TRAILER_REQUEST" })
     const response = await MovieTrailer(id, language)
-    dispatch({ type: 'MOVIE_TRAILER_SUCCESS', payload: response.data })
+    dispatch({ type: "MOVIE_TRAILER_SUCCESS", payload: response.data })
     return response.data
   } catch (error) {
-    dispatch({ type: 'MOVIE_TRAILER_FAILURE', payload: error.message })
+    dispatch({ type: "MOVIE_TRAILER_FAILURE", payload: error.message })
     console.log(error)
     throw error
   }
 }
 
 const trending =
-  (page, target = 'trending', language) =>
+  (page, target = "trending", language) =>
   async (dispatch) => {
     try {
-      dispatch({ type: 'TRENDING_REQUEST', target })
+      dispatch({ type: "TRENDING_REQUEST", target })
       const response = await Trending(page, language)
-      dispatch({ type: 'TRENDING_SUCCESS', payload: response.data, target })
+      dispatch({ type: "TRENDING_SUCCESS", payload: response.data, target })
       return response.data
     } catch (error) {
-      dispatch({ type: 'TRENDING_FAILURE', payload: error.message })
+      dispatch({ type: "TRENDING_FAILURE", payload: error.message })
       console.log(error)
       throw error
     }
   }
 
 const resetTrending = () => ({
-  type: 'RESET_TRENDING',
+  type: "RESET_TRENDING",
 })
 
 const upcoming =
-  (page, target = 'upcoming', language) =>
+  (page, target = "upcoming", language) =>
   async (dispatch) => {
     try {
-      dispatch({ type: 'UPCOMING_REQUEST', target })
+      dispatch({ type: "UPCOMING_REQUEST", target })
       const response = await Upcoming(page, language)
-      dispatch({ type: 'UPCOMING_SUCCESS', payload: response.data, target })
+      dispatch({ type: "UPCOMING_SUCCESS", payload: response.data, target })
       return response.data
     } catch (error) {
-      dispatch({ type: 'UPCOMING_FAILURE', payload: error.message })
+      dispatch({ type: "UPCOMING_FAILURE", payload: error.message })
       console.log(error)
       throw error
     }
   }
 
 const resetUpcoming = () => ({
-  type: 'RESET_UPCOMING',
+  type: "RESET_UPCOMING",
 })
 
 export {
@@ -194,5 +214,7 @@ export {
   upcoming,
   resetUpcoming,
   movieRecommendation,
-  resetRecommendation
+  resetRecommendation,
+  topRated,
+  resetTopRated,
 }

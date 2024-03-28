@@ -5,9 +5,10 @@ import {
   MovieWatchProviders,
   MovieTrailer,
   NowPlaying,
+  TopRated,
   Trending,
-  Upcoming
-} from '../../../services/tmdb'
+  Upcoming,
+} from "../../../services/tmdb"
 
 const movieDetails = async (id, language) => {
   try {
@@ -69,6 +70,16 @@ const nowPlaying = async (page, language) => {
   }
 }
 
+const topRated = async (page, language) => {
+  try {
+    const response = await TopRated(page, language)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 const trending = async (page, language) => {
   try {
     const response = await Trending(page, language)
@@ -79,16 +90,15 @@ const trending = async (page, language) => {
   }
 }
 
-const upcoming =
-  async (page, language) => {
-    try {
-      const response = await Upcoming(page, language)
-      return response.data
-    } catch (error) {
-      console.log(error)
-      throw error
-    }
+const upcoming = async (page, language) => {
+  try {
+    const response = await Upcoming(page, language)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
   }
+}
 
 export {
   movieDetails,
@@ -97,6 +107,7 @@ export {
   movieWatchProviders,
   movieTrailer,
   nowPlaying,
+  topRated,
   trending,
-  upcoming
+  upcoming,
 }
