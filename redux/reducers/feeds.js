@@ -1,4 +1,4 @@
-const initialState = {
+/* const initialState = {
   data: {},
   loading: false,
   error: null,
@@ -31,3 +31,4 @@ const searchFeedsReducer = (state = initialState, action) => {
 }
 
 export { searchFeedsReducer }
+ */

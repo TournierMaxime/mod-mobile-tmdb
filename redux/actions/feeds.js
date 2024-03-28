@@ -1,4 +1,4 @@
-import { SearchFeeds } from "../../../../services/feeds"
+/* import { SearchFeeds } from "../../../../services/feeds"
 
 const searchFeeds = () => async (dispatch) => {
   try {
@@ -18,3 +18,4 @@ const resetSearchFeeds = () => ({
 })
 
 export { searchFeeds, resetSearchFeeds }
+ */
