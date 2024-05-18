@@ -27,7 +27,7 @@ import {
   serieRecommendationReducer,
 } from "./reducers/series"
 import searchReducer from "./reducers/search"
-/* import { searchFeedsReducer } from "./reducers/feeds" */
+import { searchArticlesReducer, oneArticleReducer } from "./reducers/articles"
 
 const movieTmdbReducer = {
   nowPlaying: nowPlayingReducer,
@@ -64,14 +64,15 @@ const searchTmdbReducer = {
   search: searchReducer,
 }
 
-/* const feedsReducer = {
-  searchFeeds: searchFeedsReducer,
-} */
+const articlesReducer = {
+  searchArticles: searchArticlesReducer,
+  oneArticle: oneArticleReducer,
+}
 
 export {
   movieTmdbReducer,
   serieTmdbReducer,
   peopleTmdbReducer,
   searchTmdbReducer,
-  /*   feedsReducer, */
+  articlesReducer,
 }
