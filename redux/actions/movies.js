@@ -42,7 +42,7 @@ const movieDetails = (id, language) => async (dispatch) => {
     return response.data
   } catch (error) {
     dispatch({ type: "MOVIE_DETAILS_FAILURE", payload: error.message })
-    console.log(error)
+    console.log("movieDetails", error)
     throw error
   }
 }
@@ -59,7 +59,7 @@ const movieCrew = (id, language) => async (dispatch) => {
     return response.data
   } catch (error) {
     dispatch({ type: "MOVIE_CREW_FAILURE", payload: error.message })
-    console.log(error)
+    console.log("movieCrew", error)
     throw error
   }
 }

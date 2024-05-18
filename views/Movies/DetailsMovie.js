@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, memo } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import {
   View,
   Text,
@@ -22,6 +22,7 @@ import { useIsFocused } from "@react-navigation/native"
 
 const DetailsMovie = ({ route }) => {
   const { id } = route.params
+
   const isFocused = useIsFocused()
 
   const [selectedTab, setSelectedTab] = useState("about")
@@ -132,4 +133,4 @@ const DetailsMovie = ({ route }) => {
   )
 }
 
-export default memo(DetailsMovie)
+export default DetailsMovie
