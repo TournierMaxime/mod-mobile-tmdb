@@ -48,7 +48,7 @@ const ComingSoon = () => {
     .slice(0, 8)
 
   return (
-    <View style={tw`${background} items-center justify-between`}>
+    <View style={tw`${background} flex-1 items-center justify-between`}>
       <FlatList
         data={filter}
         keyExtractor={(item, index) => `${item.id}-${index}`}
