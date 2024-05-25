@@ -1,9 +1,9 @@
 import { SearchArticles, GetOneArticle } from "../../../../services/articles"
 
-const searchArticles = () => async (dispatch) => {
+const searchArticles = (lang) => async (dispatch) => {
   try {
     dispatch({ type: "SEARCH_ARTICLES_REQUEST" })
-    const response = await SearchArticles()
+    const response = await SearchArticles(lang)
     dispatch({ type: "SEARCH_ARTICLES_SUCCESS", payload: response.data })
     return response.data
   } catch (error) {
