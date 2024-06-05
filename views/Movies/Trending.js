@@ -13,9 +13,13 @@ import tw from "twrnc"
 import { useInfiniteQuery } from "react-query"
 import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
 import { useSelector } from "react-redux"
+import Utils from "@mod/mobile-common/lib/class/Utils"
+import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
 
 const Trending = () => {
   const navigation = useNavigation()
+
+  const { imagePoster } = useResponsive()
 
   const { i18n } = useTranslation()
   const language = i18n.language
@@ -65,10 +69,7 @@ const Trending = () => {
                     }
                   >
                     <Image
-                      style={[
-                        tw`w-40 h-60 rounded-md m-4`,
-                        { resizeMode: "cover" },
-                      ]}
+                      style={imagePoster()}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
                       }}
@@ -86,10 +87,7 @@ const Trending = () => {
                     }
                   >
                     <Image
-                      style={[
-                        tw`w-40 h-60 rounded-md m-4`,
-                        { resizeMode: "cover" },
-                      ]}
+                      style={imagePoster()}
                       source={{
                         uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
                       }}
