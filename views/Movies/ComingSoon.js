@@ -15,9 +15,12 @@ import { upcoming } from "../../react-query/movies"
 import moment from "moment"
 import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
 import { useSelector } from "react-redux"
+import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
 
 const ComingSoon = () => {
   const navigation = useNavigation()
+
+  const { imagePoster } = useResponsive()
 
   const { t, i18n } = useTranslation()
   const language = i18n.language
@@ -81,10 +84,7 @@ const ComingSoon = () => {
                 }
               >
                 <Image
-                  style={[
-                    tw`w-40 h-60 rounded-md m-4`,
-                    { resizeMode: "cover" },
-                  ]}
+                  style={imagePoster()}
                   source={{
                     uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
                   }}

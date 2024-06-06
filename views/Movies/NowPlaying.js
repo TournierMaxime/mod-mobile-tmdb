@@ -1,21 +1,24 @@
-import React, { memo } from 'react'
+import React, { memo } from "react"
 import {
   View,
   FlatList,
   Image,
   TouchableOpacity,
   ActivityIndicator,
-} from 'react-native'
-import { nowPlaying } from '../../react-query/movies'
-import { useNavigation } from '@react-navigation/native'
-import { useTranslation } from 'react-i18next'
-import tw from 'twrnc'
-import { useInfiniteQuery } from 'react-query'
-import { useSelector } from 'react-redux'
-import { useDynamicThemeStyles } from '@mod/mobile-common/styles/theme'
+} from "react-native"
+import { nowPlaying } from "../../react-query/movies"
+import { useNavigation } from "@react-navigation/native"
+import { useTranslation } from "react-i18next"
+import tw from "twrnc"
+import { useInfiniteQuery } from "react-query"
+import { useSelector } from "react-redux"
+import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
+import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
 
 const NowPlaying = () => {
   const navigation = useNavigation()
+
+  const { imagePoster } = useResponsive()
 
   const { i18n } = useTranslation()
   const language = i18n.language
@@ -23,21 +26,16 @@ const NowPlaying = () => {
   const darkMode = useSelector((state) => state.theme.darkMode)
   const { background } = useDynamicThemeStyles(darkMode)
 
-  const {
-    data,
-    isLoading,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery(
-    ['nowPlaying', language],
-    ({ pageParam = 1 }) => nowPlaying(pageParam, language),
-    {
-      getNextPageParam: (lastPage) => lastPage.page + 1,
-    }
-  )
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery(
+      ["nowPlaying", language],
+      ({ pageParam = 1 }) => nowPlaying(pageParam, language),
+      {
+        getNextPageParam: (lastPage) => lastPage.page + 1,
+      },
+    )
 
-  const allResults = data?.pages.flatMap(page => page.results) || [];
+  const allResults = data?.pages.flatMap((page) => page.results) || []
 
   return (
     <View style={tw`${background} items-center justify-between`}>
@@ -53,24 +51,21 @@ const NowPlaying = () => {
         onEndReachedThreshold={0.5}
         ListFooterComponent={
           isLoading || isFetchingNextPage ? (
-            <ActivityIndicator size='large' color='#0000ff' />
+            <ActivityIndicator size="large" color="#0000ff" />
           ) : null
         }
         renderItem={({ item }) => (
           <View style={tw`flex-col justify-between`}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('DetailsMovie', {
+                navigation.navigate("DetailsMovie", {
                   id: item.id,
                   title: item.title,
                 })
               }
             >
               <Image
-                style={[
-                  tw`w-40 h-60 rounded-md m-4`,
-                  { resizeMode: 'cover' },
-                ]}
+                style={imagePoster()}
                 source={{
                   uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
                 }}

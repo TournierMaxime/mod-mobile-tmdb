@@ -13,9 +13,12 @@ import tw from "twrnc"
 import { useInfiniteQuery } from "react-query"
 import { useSelector } from "react-redux"
 import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
+import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
 
 const TopRated = () => {
   const navigation = useNavigation()
+
+  const { imagePoster } = useResponsive()
 
   const { i18n } = useTranslation()
   const language = i18n.language
@@ -62,7 +65,7 @@ const TopRated = () => {
               }
             >
               <Image
-                style={[tw`w-40 h-60 rounded-md m-4`, { resizeMode: "cover" }]}
+                style={imagePoster()}
                 source={{
                   uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
                 }}

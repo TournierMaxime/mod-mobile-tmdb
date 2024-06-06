@@ -1,21 +1,24 @@
-import React, { memo } from 'react'
+import React, { memo } from "react"
 import {
   View,
   FlatList,
   Image,
   TouchableOpacity,
   ActivityIndicator,
-} from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { useTranslation } from 'react-i18next'
-import tw from 'twrnc'
-import { useInfiniteQuery } from 'react-query'
-import { upcoming } from '../../react-query/movies'
-import { useSelector } from 'react-redux'
-import { useDynamicThemeStyles } from '@mod/mobile-common/styles/theme'
+} from "react-native"
+import { useNavigation } from "@react-navigation/native"
+import { useTranslation } from "react-i18next"
+import tw from "twrnc"
+import { useInfiniteQuery } from "react-query"
+import { upcoming } from "../../react-query/movies"
+import { useSelector } from "react-redux"
+import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
+import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
 
 const Upcoming = () => {
   const navigation = useNavigation()
+
+  const { imagePoster } = useResponsive()
 
   const { i18n } = useTranslation()
   const language = i18n.language
@@ -25,11 +28,11 @@ const Upcoming = () => {
 
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery(
-      ['upcoming', language],
+      ["upcoming", language],
       ({ pageParam = 1 }) => upcoming(pageParam, language),
       {
         getNextPageParam: (lastPage) => lastPage.page + 1,
-      }
+      },
     )
 
   const allResults = data?.pages.flatMap((page) => page.results) || []
@@ -48,7 +51,7 @@ const Upcoming = () => {
         onEndReachedThreshold={0.5}
         ListFooterComponent={
           isLoading || isFetchingNextPage ? (
-            <ActivityIndicator size='large' color='#0000ff' />
+            <ActivityIndicator size="large" color="#0000ff" />
           ) : null
         }
         renderItem={({ item }) => {
@@ -56,17 +59,14 @@ const Upcoming = () => {
             <View style={tw`flex-col justify-between`}>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate('DetailsMovie', {
+                  navigation.navigate("DetailsMovie", {
                     id: item.id,
                     title: item.original_title,
                   })
                 }
               >
                 <Image
-                  style={[
-                    tw`w-40 h-60 rounded-md m-4`,
-                    { resizeMode: 'cover' },
-                  ]}
+                  style={imagePoster()}
                   source={{
                     uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
                   }}
