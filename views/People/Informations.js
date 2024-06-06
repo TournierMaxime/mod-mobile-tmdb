@@ -6,10 +6,13 @@ import Utils from "@mod/mobile-common/lib/class/Utils"
 import tw from "twrnc"
 import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
 import { useSelector } from "react-redux"
+import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
 
 const Informations = ({ externalIds, t, people }) => {
   const darkMode = useSelector((state) => state.theme.darkMode)
   const { background, text, borderColor } = useDynamicThemeStyles(darkMode)
+
+  const { accordionContent, plotAndBio } = useResponsive()
 
   const socialMedia = (data) => {
     const openLink = (url) => {
@@ -23,12 +26,7 @@ const Informations = ({ externalIds, t, people }) => {
             onPress={() => openLink(`https://twitter.com/${data.twitter_id}`)}
           >
             <View style={tw`flex-col justify-between`}>
-              <Text
-                style={[
-                  tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
-                  { color: "#495057", backgroundColor: "#dee2e6" },
-                ]}
-              >
+              <Text style={accordionContent()}>
                 <AntDesign
                   name="twitter"
                   size={Utils.moderateScale(24)}
@@ -47,12 +45,7 @@ const Informations = ({ externalIds, t, people }) => {
             }
           >
             <View style={tw`flex-col justify-between`}>
-              <Text
-                style={[
-                  tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
-                  { color: "#495057", backgroundColor: "#dee2e6" },
-                ]}
-              >
+              <Text style={accordionContent()}>
                 <AntDesign
                   name="facebook-square"
                   size={Utils.moderateScale(24)}
@@ -71,12 +64,7 @@ const Informations = ({ externalIds, t, people }) => {
             }
           >
             <View style={tw`flex-col justify-between`}>
-              <Text
-                style={[
-                  tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
-                  { color: "#495057", backgroundColor: "#dee2e6" },
-                ]}
-              >
+              <Text style={accordionContent()}>
                 <AntDesign
                   name="instagram"
                   size={Utils.moderateScale(24)}
@@ -95,12 +83,7 @@ const Informations = ({ externalIds, t, people }) => {
             }
           >
             <View style={tw`flex-col justify-between`}>
-              <Text
-                style={[
-                  tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
-                  { color: "#495057", backgroundColor: "#dee2e6" },
-                ]}
-              >
+              <Text style={accordionContent()}>
                 <FontAwesome5
                   name="tiktok"
                   size={Utils.moderateScale(24)}
@@ -119,12 +102,7 @@ const Informations = ({ externalIds, t, people }) => {
             }
           >
             <View style={tw`flex-col justify-between`}>
-              <Text
-                style={[
-                  tw`font-medium text-lg ml-4 mr-auto my-2 w-auto py-2 px-4 text-center leading-7`,
-                  { color: "#495057", backgroundColor: "#dee2e6" },
-                ]}
-              >
+              <Text style={accordionContent()}>
                 <AntDesign
                   name="youtube"
                   size={Utils.moderateScale(24)}
@@ -146,11 +124,7 @@ const Informations = ({ externalIds, t, people }) => {
         <Accordion title={t("utils.biography")}>
           <View style={tw`flex flex-col`}>
             <View style={tw`flex-col justify-between`}>
-              <Text
-                style={tw`font-medium text-lg rounded-md mr-auto my-2 w-auto py-2 px-4 text-justify leading-7 ${text}`}
-              >
-                {data}
-              </Text>
+              <Text style={plotAndBio(text)}>{data}</Text>
             </View>
           </View>
         </Accordion>

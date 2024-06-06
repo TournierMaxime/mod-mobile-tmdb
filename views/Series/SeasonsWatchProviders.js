@@ -9,10 +9,14 @@ import Series from "../../lib/class/Series"
 import { useQuery } from "react-query"
 import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
 import { useSelector } from "react-redux"
+import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
+import Utils from "@mod/mobile-common/lib/class/Utils"
 
 const SeasonsWatchProviders = ({ id, item, language, t }) => {
   const navigation = useNavigation()
   const lang = language.toUpperCase()
+
+  const { imageDetails, plotAndBio, fontSize } = useResponsive()
 
   const seasonNumber = item.season_number
 
@@ -38,30 +42,32 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
         <View style={tw`items-center`}>
           {item.poster_path ? (
             <ImageBackground
-              style={[
-                tw`w-20 h-30 rounded-md ml-4 mb-2`,
-                { resizeMode: "cover" },
-              ]}
+              style={imageDetails()}
               source={{
                 uri: `https://image.tmdb.org/t/p/original/${item.poster_path}`,
               }}
             />
           ) : (
             <ImageBackground
-              style={[
-                tw`w-20 h-30 rounded-md ml-4 mb-2`,
-                { resizeMode: "cover" },
-              ]}
+              style={imageDetails()}
               source={require("../../../../assets/images/No_Image_Available.jpg")}
             />
           )}
         </View>
         <View style={tw`flex-1 w-full`}>
-          <Text style={tw`font-medium text-lg ml-4 ${text}`}>{item.name}</Text>
-          <Text style={tw`font-medium text-base ml-4 ${text}`}>
+          <Text
+            style={[fontSize(text), { marginLeft: Utils.moderateScale(8) }]}
+          >
+            {item.name}
+          </Text>
+          <Text
+            style={[fontSize(text), { marginLeft: Utils.moderateScale(8) }]}
+          >
             {item.episode_count} {t("episodes")}
           </Text>
-          <Text style={tw`font-medium text-base ml-4 ${text}`}>
+          <Text
+            style={[fontSize(text), { marginLeft: Utils.moderateScale(8) }]}
+          >
             {moment(item.air_date).format("LL")}
           </Text>
           <View style={tw`ml-4 mt-2`}>
@@ -69,9 +75,7 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
           </View>
         </View>
       </View>
-      <Text style={tw`font-medium text-lg p-4 text-justify leading-7 ${text}`}>
-        {item.overview}
-      </Text>
+      <Text style={plotAndBio(text)}>{item.overview}</Text>
       {Series.providersByCountry(providers?.[lang], lang, t, text)}
     </TouchableOpacity>
   )

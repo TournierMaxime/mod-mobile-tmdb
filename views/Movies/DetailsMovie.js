@@ -19,11 +19,14 @@ import { useQuery } from "react-query"
 import Movies from "../../lib/class/Movies"
 import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
 import { useIsFocused } from "@react-navigation/native"
+import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
 
 const DetailsMovie = ({ route }) => {
   const { id } = route.params
 
   const isFocused = useIsFocused()
+
+  const { backDropPoster, mediaTitle } = useResponsive()
 
   const [selectedTab, setSelectedTab] = useState("about")
 
@@ -70,7 +73,7 @@ const DetailsMovie = ({ route }) => {
       ) : (
         movie && (
           <Fragment>
-            <View style={tw`flex relative w-full h-50`}>
+            <View style={backDropPoster()}>
               <LinearGradient
                 colors={["rgba(0,0,0,0.8)", "rgba(0,0,0,0.8)"]}
                 style={tw`w-full h-full relative flex`}
@@ -107,9 +110,7 @@ const DetailsMovie = ({ route }) => {
                   { bottom: 10 },
                 ]}
               >
-                <Text
-                  style={tw`font-medium text-lg text-white py-2 px-4 w-full`}
-                >
+                <Text style={mediaTitle()}>
                   {movie.title}
                   <Runtime time={movie?.runtime} isMovie={true} t={t} />
                   {Movies.genres(movie)}

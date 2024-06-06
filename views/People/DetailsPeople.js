@@ -23,12 +23,15 @@ import {
 } from "../../react-query/people"
 import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
 import { useIsFocused } from "@react-navigation/native"
+import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
 
 const DetailsPeople = ({ route }) => {
   const { id } = route.params
   const isFocused = useIsFocused()
 
   const [selectedTab, setSelectedTab] = useState("about")
+
+  const { backDropPoster, mediaTitle } = useResponsive()
 
   const { i18n, t } = useTranslation()
   const language = i18n.language
@@ -76,7 +79,7 @@ const DetailsPeople = ({ route }) => {
       ) : (
         people && (
           <Fragment>
-            <View style={tw`flex relative w-full h-50`}>
+            <View style={backDropPoster()}>
               <LinearGradient
                 colors={["rgba(0,0,0,0.8)", "rgba(0,0,0,0.8)"]}
                 style={tw`w-full h-full relative flex`}
@@ -114,9 +117,7 @@ const DetailsPeople = ({ route }) => {
                   { bottom: 10 },
                 ]}
               >
-                <Text
-                  style={tw`font-medium text-lg text-white py-2 px-4 w-full`}
-                >
+                <Text style={mediaTitle()}>
                   {people.name}
                   {People.birth(people, t, i18n)}
 

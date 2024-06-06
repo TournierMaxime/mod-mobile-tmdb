@@ -19,10 +19,13 @@ import { useQuery } from "react-query"
 import Series from "../../lib/class/Series"
 import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
 import { useIsFocused } from "@react-navigation/native"
+import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
 
 const DetailsSerie = ({ route }) => {
   const { id } = route.params
   const isFocused = useIsFocused()
+
+  const { backDropPoster, mediaTitle } = useResponsive()
 
   const { i18n, t } = useTranslation()
   const language = i18n.language
@@ -70,7 +73,7 @@ const DetailsSerie = ({ route }) => {
       ) : (
         serie && (
           <Fragment>
-            <View style={tw`flex relative w-full h-50`}>
+            <View style={backDropPoster()}>
               <LinearGradient
                 colors={["rgba(0,0,0,0.8)", "rgba(0,0,0,0.8)"]}
                 style={tw`flex w-full h-full relative`}
@@ -107,9 +110,7 @@ const DetailsSerie = ({ route }) => {
                   { bottom: 10 },
                 ]}
               >
-                <Text
-                  style={tw`font-medium text-lg text-white py-2 px-4 w-full`}
-                >
+                <Text style={mediaTitle()}>
                   {serie.name}
                   <Runtime
                     time={serie?.episode_run_time}
