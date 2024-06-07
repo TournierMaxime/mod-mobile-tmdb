@@ -77,9 +77,9 @@ const ComingSoon = () => {
             <View style={tw`flex-col justify-between`}>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate("DetailsMovie", {
-                    id: item.id,
-                    title: item.original_title,
+                  navigation.navigate("MoviesTab", {
+                    screen: "DetailsMovie",
+                    params: { id: item.id },
                   })
                 }
               >
