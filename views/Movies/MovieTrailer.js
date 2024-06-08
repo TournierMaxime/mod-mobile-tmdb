@@ -1,10 +1,7 @@
 import React, { Fragment } from "react"
 import { movieTrailer } from "../../react-query/movies"
-import { Linking, TouchableOpacity } from "react-native"
+import { Linking } from "react-native"
 import { useTranslation } from "react-i18next"
-import { MaterialIcons } from "@expo/vector-icons"
-import Utils from "@mod/mobile-common/lib/class/Utils"
-import tw from "twrnc"
 import { useQuery } from "react-query"
 
 const extractFirstTrailerResult = (trailer) => {
