@@ -25,8 +25,7 @@ const movieRecommendation = (id) => async (dispatch) => {
       type: "MOVIE_RECOMMENDATION_FAILURE",
       payload: error.message,
     })
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -82,8 +81,7 @@ const movieWatchProviders = (id) => async (dispatch) => {
       type: "MOVIE_WATCH_PROVIDERS_FAILURE",
       payload: error.message,
     })
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -137,8 +135,7 @@ const releaseDates = (id) => async (dispatch) => {
     return response.data
   } catch (error) {
     dispatch({ type: "RELEASE_DATES_FAILURE", payload: error.message })
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -154,8 +151,7 @@ const movieTrailer = (id, language) => async (dispatch) => {
     return response.data
   } catch (error) {
     dispatch({ type: "MOVIE_TRAILER_FAILURE", payload: error.message })
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 

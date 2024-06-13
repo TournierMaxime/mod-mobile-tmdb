@@ -8,8 +8,7 @@ const searchArticles = (lang) => async (dispatch) => {
     return response.data
   } catch (error) {
     dispatch({ type: "SEARCH_ARTICLES_FAILURE", payload: error.message })
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -21,8 +20,7 @@ const getOneArticle = (articleId) => async (dispatch) => {
     return response.data
   } catch (error) {
     dispatch({ type: "GET_ONE_ARTICLE_FAILURE", payload: error.message })
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 

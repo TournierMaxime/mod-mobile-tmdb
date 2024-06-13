@@ -16,13 +16,18 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
   const navigation = useNavigation()
   const lang = language.toUpperCase()
 
+  let providerLang
+
+  if (lang === "EN") {
+    providerLang = "US"
+  }
+
   const { imageDetails, plotAndBio, fontSize } = useResponsive()
 
   const seasonNumber = item.season_number
 
-  const { data: providers } = useQuery(
-    ["providers", id, seasonNumber, lang],
-    () => updateSeasonWatchProviders(id, seasonNumber, lang),
+  const { data: providers } = useQuery(["providers", id, seasonNumber], () =>
+    updateSeasonWatchProviders(id, seasonNumber),
   )
 
   const darkMode = useSelector((state) => state.theme.darkMode)
@@ -76,7 +81,7 @@ const SeasonsWatchProviders = ({ id, item, language, t }) => {
         </View>
       </View>
       <Text style={plotAndBio(text)}>{item.overview}</Text>
-      {Series.providersByCountry(providers?.[lang], lang, t, text)}
+      {Series.providersByCountry(providers?.[providerLang], lang, t, text)}
     </TouchableOpacity>
   )
 }

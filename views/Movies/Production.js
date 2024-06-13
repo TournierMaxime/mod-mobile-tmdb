@@ -12,6 +12,10 @@ const Production = ({ movie, t, language }) => {
   moment.locale(language)
   const lang = language.toUpperCase()
 
+  let providerLang
+
+  if (lang === "EN") providerLang = "US"
+
   const { id, budget, revenue, production_companies, production_countries } =
     movie
 
@@ -26,10 +30,10 @@ const Production = ({ movie, t, language }) => {
   return (
     <View style={tw`${background} h-full`}>
       {Movies.plot(movie?.overview, t, borderColor, text)}
-      {Movies.releaseByCountry(releases, lang, t)}
+      {Movies.releaseByCountry(releases, providerLang, t)}
       {Movies.budget(budget, t)}
       {Movies.revenue(revenue, t)}
-      {Movies.providersByCountry(providers, lang, t, text)}
+      {Movies.providersByCountry(providers, providerLang, t, text)}
       {Movies.productionCompanies(production_companies, t)}
       {Movies.productionCountries(production_countries, t)}
     </View>

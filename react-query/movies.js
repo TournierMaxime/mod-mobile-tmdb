@@ -15,8 +15,7 @@ const movieDetails = async (id, language) => {
     const response = await MovieDetails(id, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -25,8 +24,7 @@ const movieCrew = async (id, language) => {
     const response = await MovieCrew(id, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -35,8 +33,7 @@ const releaseDates = async (id) => {
     const response = await ReleaseDates(id)
     return response.data.results
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -45,8 +42,7 @@ const movieWatchProviders = async (id) => {
     const response = await MovieWatchProviders(id)
     return response.data.results
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -55,8 +51,7 @@ const movieTrailer = async (id, language) => {
     const response = await MovieTrailer(id, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -65,8 +60,7 @@ const nowPlaying = async (page, language) => {
     const response = await NowPlaying(page, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -75,8 +69,7 @@ const topRated = async (page, language) => {
     const response = await TopRated(page, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -85,8 +78,7 @@ const trending = async (page, language) => {
     const response = await Trending(page, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -95,8 +87,7 @@ const upcoming = async (page, language) => {
     const response = await Upcoming(page, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 

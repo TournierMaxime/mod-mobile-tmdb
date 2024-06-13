@@ -5,9 +5,8 @@ const search = async (page, query, language) => {
     const response = await Search(page, query, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
-};
+}
 
 export { search }

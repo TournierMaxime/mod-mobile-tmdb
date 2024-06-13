@@ -7,117 +7,114 @@ import {
   SerieCrew,
   SerieTrailer,
   TrendingTV,
-  RecommendationSerie
-} from '../../../../services/tmdb'
+  RecommendationSerie,
+} from "../../../../services/tmdb"
 
 const serieRecommendation = (id) => async (dispatch) => {
   try {
-    dispatch({type: 'SERIE_RECOMMENDATION_REQUEST'})
+    dispatch({ type: "SERIE_RECOMMENDATION_REQUEST" })
     const response = await RecommendationSerie(id)
     dispatch({
-      type: 'SERIE_RECOMMENDATION_SUCCESS',
+      type: "SERIE_RECOMMENDATION_SUCCESS",
       payload: response.data,
     })
     return response.data
   } catch (error) {
     dispatch({
-      type: 'SERIE_RECOMMENDATION_FAILURE',
+      type: "SERIE_RECOMMENDATION_FAILURE",
       payload: error.message,
     })
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
 const resetRecommendation = () => ({
-  type: 'RESET_RECOMMENDATION',
+  type: "RESET_RECOMMENDATION",
 })
 
 const seasonDetails = (id, seasonNumber, language) => async (dispatch) => {
   try {
-    dispatch({type: 'SEASON_DETAILS_REQUEST'})
+    dispatch({ type: "SEASON_DETAILS_REQUEST" })
     const response = await SeasonDetails(id, seasonNumber, language)
-    dispatch({ type: 'SEASON_DETAILS_SUCCESS', payload: response.data })
+    dispatch({ type: "SEASON_DETAILS_SUCCESS", payload: response.data })
     return response.data
   } catch (error) {
-    dispatch({ type: 'SEASON_DETAILS_FAILURE', payload: error.message })
-    console.log(error)
-    throw error
+    dispatch({ type: "SEASON_DETAILS_FAILURE", payload: error.message })
+    throw new Error(error)
   }
 }
 
 const resetSeasonDetails = () => ({
-  type: 'RESET_SEASON_DETAILS',
+  type: "RESET_SEASON_DETAILS",
 })
 
 const serieDetails = (id, language) => async (dispatch) => {
   try {
-    dispatch({type: 'SERIE_DETAILS_REQUEST'})
+    dispatch({ type: "SERIE_DETAILS_REQUEST" })
     const response = await SerieDetails(id, language)
-    dispatch({ type: 'SERIE_DETAILS_SUCCESS', payload: response.data })
+    dispatch({ type: "SERIE_DETAILS_SUCCESS", payload: response.data })
     return response.data
   } catch (error) {
-    dispatch({ type: 'SERIE_DETAILS_FAILURE', payload: error.message })
-    console.log(error)
-    throw error
+    dispatch({ type: "SERIE_DETAILS_FAILURE", payload: error.message })
+    throw new Error(error)
   }
 }
 
 const resetSerieDetails = () => ({
-  type: 'RESET_SERIE_DETAILS',
+  type: "RESET_SERIE_DETAILS",
 })
 
 const onTheAir =
-  (page, target = 'onTheAir', language) =>
+  (page, target = "onTheAir", language) =>
   async (dispatch) => {
     try {
-      dispatch({type: 'ON_THE_AIR_REQUEST', target})
+      dispatch({ type: "ON_THE_AIR_REQUEST", target })
       const response = await OnTheAir(page, language)
-      dispatch({ type: 'ON_THE_AIR_SUCCESS', payload: response.data, target })
+      dispatch({ type: "ON_THE_AIR_SUCCESS", payload: response.data, target })
       return response.data
     } catch (error) {
-      dispatch({ type: 'ON_THE_AIR_FAILURE', payload: error.message })
+      dispatch({ type: "ON_THE_AIR_FAILURE", payload: error.message })
       console.log(error)
       throw error
     }
   }
 
 const resetOnTheAir = () => ({
-  type: 'RESET_ON_THE_AIR',
+  type: "RESET_ON_THE_AIR",
 })
 
 const popular =
-  (page, target = 'popular', language) =>
+  (page, target = "popular", language) =>
   async (dispatch) => {
     try {
-      dispatch({type: 'POPULAR_REQUEST', target})
+      dispatch({ type: "POPULAR_REQUEST", target })
       const response = await Popular(page, language)
-      dispatch({ type: 'POPULAR_SUCCESS', payload: response.data, target })
+      dispatch({ type: "POPULAR_SUCCESS", payload: response.data, target })
       return response.data
     } catch (error) {
-      dispatch({ type: 'POPULAR_FAILURE', payload: error.message })
+      dispatch({ type: "POPULAR_FAILURE", payload: error.message })
       console.log(error)
       throw error
     }
   }
 
 const resetPopular = () => ({
-  type: 'RESET_POPULAR',
+  type: "RESET_POPULAR",
 })
 
 const seasonWatchProviders =
   (id, seasonNumber, language) => async (dispatch) => {
     try {
-      dispatch({type: 'SEASON_WATCH_PROVIDERS_REQUEST'})
+      dispatch({ type: "SEASON_WATCH_PROVIDERS_REQUEST" })
       const response = await SeasonWatchProviders(id, seasonNumber, language)
       dispatch({
-        type: 'SEASON_WATCH_PROVIDERS_SUCCESS',
+        type: "SEASON_WATCH_PROVIDERS_SUCCESS",
         payload: response.data,
       })
       return response.data
     } catch (error) {
       dispatch({
-        type: 'SEASON_WATCH_PROVIDERS_FAILURE',
+        type: "SEASON_WATCH_PROVIDERS_FAILURE",
         payload: error.message,
       })
       console.log(error)
@@ -128,10 +125,10 @@ const seasonWatchProviders =
 const updateSeasonWatchProviders =
   (id, seasonNumber, language) => async (dispatch) => {
     try {
-      dispatch({type: 'UPDATE_SEASON_WATCH_REQUEST'})
+      dispatch({ type: "UPDATE_SEASON_WATCH_REQUEST" })
       const response = await SeasonWatchProviders(id, seasonNumber, language)
       dispatch({
-        type: 'UPDATE_SEASON_WATCH_PROVIDERS',
+        type: "UPDATE_SEASON_WATCH_PROVIDERS",
         payload: {
           seasonNumber,
           watchProviders: response.data,
@@ -139,7 +136,7 @@ const updateSeasonWatchProviders =
       })
     } catch (error) {
       dispatch({
-        type: 'SEASON_WATCH_PROVIDERS_FAILURE',
+        type: "SEASON_WATCH_PROVIDERS_FAILURE",
         payload: error.message,
       })
       console.log(error)
@@ -148,56 +145,54 @@ const updateSeasonWatchProviders =
   }
 
 const resetSeasonWatchProviders = () => ({
-  type: 'RESET_SEASON_WATCH_PROVIDERS',
+  type: "RESET_SEASON_WATCH_PROVIDERS",
 })
 
 const serieCrew = (id, language) => async (dispatch) => {
   try {
-    dispatch({type: 'SERIE_CREW_REQUEST'})
+    dispatch({ type: "SERIE_CREW_REQUEST" })
     const response = await SerieCrew(id, language)
-    dispatch({ type: 'SERIE_CREW_SUCCESS', payload: response.data })
+    dispatch({ type: "SERIE_CREW_SUCCESS", payload: response.data })
     return response.data
   } catch (error) {
-    dispatch({ type: 'SERIE_CREW_FAILURE', payload: error.message })
-    console.log(error)
-    throw error
+    dispatch({ type: "SERIE_CREW_FAILURE", payload: error.message })
+    throw new Error(error)
   }
 }
 
 const resetSerieCrew = () => ({
-  type: 'RESET_SERIE_CREW',
+  type: "RESET_SERIE_CREW",
 })
 
 const serieTrailer = (id, language) => async (dispatch) => {
   try {
-    dispatch({type: 'SERIE_TRAILER_REQUEST'})
+    dispatch({ type: "SERIE_TRAILER_REQUEST" })
     const response = await SerieTrailer(id, language)
-    dispatch({ type: 'SERIE_TRAILER_SUCCESS', payload: response.data })
+    dispatch({ type: "SERIE_TRAILER_SUCCESS", payload: response.data })
     return response.data
   } catch (error) {
-    dispatch({ type: 'SERIE_TRAILER_FAILURE', payload: error.message })
-    console.log(error)
-    throw error
+    dispatch({ type: "SERIE_TRAILER_FAILURE", payload: error.message })
+    throw new Error(error)
   }
 }
 
 const trendingTV =
-  (page, target = 'trendingTV', language) =>
+  (page, target = "trendingTV", language) =>
   async (dispatch) => {
     try {
-      dispatch({ type: 'TRENDING_TV_REQUEST', target })
+      dispatch({ type: "TRENDING_TV_REQUEST", target })
       const response = await TrendingTV(page, language)
-      dispatch({ type: 'TRENDING_TV_SUCCESS', payload: response.data, target })
+      dispatch({ type: "TRENDING_TV_SUCCESS", payload: response.data, target })
       return response.data
     } catch (error) {
-      dispatch({ type: 'TRENDING_TV_FAILURE', payload: error.message })
+      dispatch({ type: "TRENDING_TV_FAILURE", payload: error.message })
       console.log(error)
       throw error
     }
   }
 
 const resetTrending = () => ({
-  type: 'RESET_TRENDING_TV',
+  type: "RESET_TRENDING_TV",
 })
 
 export {
@@ -218,5 +213,5 @@ export {
   trendingTV,
   resetTrending,
   serieRecommendation,
-  resetRecommendation
+  resetRecommendation,
 }

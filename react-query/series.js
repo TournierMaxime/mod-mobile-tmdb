@@ -7,15 +7,14 @@ import {
   Popular,
   SeasonDetails,
   SeasonWatchProviders,
-} from '../../../services/tmdb'
+} from "../../../services/tmdb"
 
 const serieDetails = async (id, language) => {
   try {
     const response = await SerieDetails(id, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -24,8 +23,7 @@ const serieCrew = async (id, language) => {
     const response = await SerieCrew(id, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -34,8 +32,7 @@ const serieTrailer = async (id, language) => {
     const response = await SerieTrailer(id, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -44,8 +41,7 @@ const trendingTV = async (page, language) => {
     const response = await TrendingTV(page, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -54,8 +50,7 @@ const onTheAir = async (page, language) => {
     const response = await OnTheAir(page, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -64,8 +59,7 @@ const popular = async (page, language) => {
     const response = await Popular(page, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
@@ -74,28 +68,25 @@ const seasonDetails = async (id, seasonNumber, language) => {
     const response = await SeasonDetails(id, seasonNumber, language)
     return response.data
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
-const seasonWatchProviders = async (id, seasonNumber, language) => {
+const seasonWatchProviders = async (id, seasonNumber) => {
   try {
-    const response = await SeasonWatchProviders(id, seasonNumber, language)
+    const response = await SeasonWatchProviders(id, seasonNumber)
     return response.data.results
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
-const updateSeasonWatchProviders = async (id, seasonNumber, language) => {
+const updateSeasonWatchProviders = async (id, seasonNumber) => {
   try {
-    const response = await SeasonWatchProviders(id, seasonNumber, language)
+    const response = await SeasonWatchProviders(id, seasonNumber)
     return response.data.results
   } catch (error) {
-    console.log(error)
-    throw error
+    throw new Error(error)
   }
 }
 
