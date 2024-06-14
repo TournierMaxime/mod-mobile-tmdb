@@ -1,21 +1,22 @@
 import React, { memo } from "react"
-import { View } from "react-native"
-import tw from "twrnc"
-import TMDB from "../../lib/class/TMDB"
-import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
-import { useSelector } from "react-redux"
+import { FlatList, View } from "react-native"
+import RenderItemCastCrew from "../../lib/components/RenderItemCastCrew"
+import Utils from "@mod/mobile-common/lib/class/Utils"
 
 const CastSerie = ({ credits }) => {
-  const darkMode = useSelector((state) => state.theme.darkMode)
-  const { borderColor } = useDynamicThemeStyles(darkMode)
+  const data = credits?.cast.slice(0, 20)
 
   return (
-    <View
-      style={[tw`flex-1 flex flex-col ${borderColor}`, { borderTopWidth: 2 }]}
-    >
-      {credits?.cast
-        ?.map((item, idx) => TMDB.renderItemCastCrew(item, idx))
-        .slice(0, 20)}
+    <View>
+      <FlatList
+        getItemLayout={Utils.getItemLayoutCastCrew}
+        horizontal
+        data={data}
+        renderItem={({ item, idx }) => (
+          <RenderItemCastCrew item={item} idx={idx} />
+        )}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
+      />
     </View>
   )
 }

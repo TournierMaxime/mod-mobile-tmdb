@@ -1,25 +1,15 @@
 import React, { memo } from "react"
-import {
-  View,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native"
-import { useNavigation } from "@react-navigation/native"
+import { View, FlatList, ActivityIndicator } from "react-native"
 import { useTranslation } from "react-i18next"
 import tw from "twrnc"
 import { useInfiniteQuery } from "react-query"
 import { upcoming } from "../../react-query/movies"
 import { useSelector } from "react-redux"
 import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
-import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
+import FlatListItem from "../../lib/components/FlatListItem"
+import Utils from "@mod/mobile-common/lib/class/Utils"
 
 const Upcoming = () => {
-  const navigation = useNavigation()
-
-  const { imagePoster } = useResponsive()
-
   const { i18n } = useTranslation()
   const language = i18n.language
 
@@ -40,6 +30,7 @@ const Upcoming = () => {
   return (
     <View style={tw`${background} items-center justify-between`}>
       <FlatList
+        getItemLayout={Utils.getItemLayout}
         data={allResults}
         keyExtractor={(item, index) => `${item.id}-${index}`}
         numColumns={2}
@@ -54,27 +45,9 @@ const Upcoming = () => {
             <ActivityIndicator size="large" color="#0000ff" />
           ) : null
         }
-        renderItem={({ item }) => {
-          return (
-            <View style={tw`flex-col justify-between`}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("DetailsMovie", {
-                    id: item.id,
-                    title: item.original_title,
-                  })
-                }
-              >
-                <Image
-                  style={imagePoster()}
-                  source={{
-                    uri: `https://image.tmdb.org/t/p/original${item.poster_path}`,
-                  }}
-                />
-              </TouchableOpacity>
-            </View>
-          )
-        }}
+        renderItem={({ item, idx }) => (
+          <FlatListItem item={item} idx={idx} type={"movie"} />
+        )}
       />
     </View>
   )
