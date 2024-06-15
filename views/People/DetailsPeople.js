@@ -20,7 +20,7 @@ import {
   peopleCareer,
   peopleDetails,
   peopleExternalIds,
-} from "../../react-query/people"
+} from "../../react-query/people.ts"
 import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
 import { useIsFocused } from "@react-navigation/native"
 import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
