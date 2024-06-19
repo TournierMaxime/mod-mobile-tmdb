@@ -39,7 +39,7 @@ const AllEpisodes: React.FC<AllEpisodesProps> = ({ route }) => {
 
   const season = useSelector((state: RootState) => state.seasonDetails.data)
 
-  const { imageDetails, fontSize, plotAndBio } = useResponsive()
+  const { episodeDetails, fontSize, plotAndBio } = useResponsive()
 
   const { i18n, t } = useTranslation()
   const language = i18n.language
@@ -57,20 +57,23 @@ const AllEpisodes: React.FC<AllEpisodesProps> = ({ route }) => {
     }
   }, [])
 
+  const { episodes } = season
+
   const renderItem = (item: Item, index: number) => {
+    const { still_path, episode_number, name, overview } = item
     return (
       <View key={index} style={[tw`${borderColor}`, { borderBottomWidth: 2 }]}>
         <View style={tw`flex flex-row justify-start ${background} p-4`}>
-          {item.still_path ? (
+          {still_path ? (
             <Image
-              style={imageDetails()}
+              style={episodeDetails()}
               source={{
-                uri: `https://image.tmdb.org/t/p/original/${item.still_path}`,
+                uri: `https://image.tmdb.org/t/p/original${item.still_path}`,
               }}
             />
           ) : (
             <Image
-              style={imageDetails()}
+              style={episodeDetails()}
               source={require("../../../../assets/images/No_Image_Available.jpg")}
             />
           )}
@@ -79,21 +82,11 @@ const AllEpisodes: React.FC<AllEpisodesProps> = ({ route }) => {
             <Text
               style={[fontSize(text), { marginLeft: Utils.moderateScale(8) }]}
             >
-              {t("Episode")} {item.episode_number}
+              {name} - {t("Episode")} {episode_number}
             </Text>
-            <Text
-              style={[fontSize(text), { marginLeft: Utils.moderateScale(8) }]}
-            >
-              {item.name}
-            </Text>
-            <Text
-              style={[fontSize(text), { marginLeft: Utils.moderateScale(8) }]}
-            >
-              {moment(item.air_date).format("LL")}
-            </Text>
+            <Text style={plotAndBio(text)}>{overview}</Text>
           </View>
         </View>
-        <Text style={plotAndBio(text)}>{item.overview}</Text>
       </View>
     )
   }
@@ -106,7 +99,7 @@ const AllEpisodes: React.FC<AllEpisodesProps> = ({ route }) => {
       ]}
     >
       <FlatList
-        data={season?.episodes}
+        data={episodes}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item, index }) => renderItem(item, index)}
       />

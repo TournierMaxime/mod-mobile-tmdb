@@ -45,14 +45,22 @@ const RenderItemCastCrew = ({ item, index }: Props) => {
       }
     >
       <View style={tw`flex flex-col ${background} p-4`}>
-        {profile_path ? (
+        {item ? (
           <View>
-            <Image
-              style={imageDetails()}
-              source={{
-                uri: `https://image.tmdb.org/t/p/original/${profile_path}`,
-              }}
-            />
+            {profile_path ? (
+              <Image
+                style={imageDetails()}
+                source={{
+                  uri: `https://image.tmdb.org/t/p/original/${profile_path}`,
+                }}
+              />
+            ) : (
+              <Image
+                style={imageDetails()}
+                source={require("../../../../assets/images/No_Image_Available.jpg")}
+              />
+            )}
+
             <View style={cardDetails()}>
               <Text
                 style={[
@@ -70,10 +78,7 @@ const RenderItemCastCrew = ({ item, index }: Props) => {
               </Text>
               {character ? (
                 <Text
-                  style={[
-                    detailsRole(text),
-                    { maxWidth: Utils.moderateScale(120) },
-                  ]}
+                  style={detailsRole(text)}
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -82,10 +87,7 @@ const RenderItemCastCrew = ({ item, index }: Props) => {
               ) : null}
               {job ? (
                 <Text
-                  style={[
-                    detailsRole(text),
-                    { maxWidth: Utils.moderateScale(120) },
-                  ]}
+                  style={detailsRole(text)}
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -94,10 +96,7 @@ const RenderItemCastCrew = ({ item, index }: Props) => {
               ) : null}
               {department ? (
                 <Text
-                  style={[
-                    detailsRole(text),
-                    { maxWidth: Utils.moderateScale(120) },
-                  ]}
+                  style={detailsRole(text)}
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -106,66 +105,7 @@ const RenderItemCastCrew = ({ item, index }: Props) => {
               ) : null}
             </View>
           </View>
-        ) : (
-          <View>
-            <Image
-              style={imageDetails()}
-              source={require("../../../../assets/images/No_Image_Available.jpg")}
-            />
-            <View style={cardDetails()}>
-              <Text
-                style={[
-                  fontSize(text),
-                  {
-                    marginLeft: Utils.moderateScale(8),
-                    marginTop: Utils.moderateScale(10),
-                    maxWidth: Utils.moderateScale(100),
-                  },
-                ]}
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {name}
-              </Text>
-              {character ? (
-                <Text
-                  style={[
-                    detailsRole(text),
-                    { maxWidth: Utils.moderateScale(120) },
-                  ]}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {character}
-                </Text>
-              ) : null}
-              {job ? (
-                <Text
-                  style={[
-                    detailsRole(text),
-                    { maxWidth: Utils.moderateScale(120) },
-                  ]}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {job}
-                </Text>
-              ) : null}
-              {department ? (
-                <Text
-                  style={[
-                    detailsRole(text),
-                    { maxWidth: Utils.moderateScale(120) },
-                  ]}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {department}
-                </Text>
-              ) : null}
-            </View>
-          </View>
-        )}
+        ) : null}
       </View>
     </TouchableOpacity>
   )
