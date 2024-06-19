@@ -69,11 +69,40 @@ const RenderItemCastCrew = ({ item, index }: Props) => {
                 {name}
               </Text>
               {character ? (
-                <Text style={detailsRole(text)}>{character}</Text>
+                <Text
+                  style={[
+                    detailsRole(text),
+                    { maxWidth: Utils.moderateScale(120) },
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {character}
+                </Text>
               ) : null}
-              {job ? <Text style={detailsRole(text)}>{job}</Text> : null}
+              {job ? (
+                <Text
+                  style={[
+                    detailsRole(text),
+                    { maxWidth: Utils.moderateScale(120) },
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {job}
+                </Text>
+              ) : null}
               {department ? (
-                <Text style={detailsRole(text)}>{department}</Text>
+                <Text
+                  style={[
+                    detailsRole(text),
+                    { maxWidth: Utils.moderateScale(120) },
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {department}
+                </Text>
               ) : null}
             </View>
           </View>
@@ -99,11 +128,40 @@ const RenderItemCastCrew = ({ item, index }: Props) => {
                 {name}
               </Text>
               {character ? (
-                <Text style={detailsRole(text)}>{character}</Text>
+                <Text
+                  style={[
+                    detailsRole(text),
+                    { maxWidth: Utils.moderateScale(120) },
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {character}
+                </Text>
               ) : null}
-              {job ? <Text style={detailsRole(text)}>{job}</Text> : null}
+              {job ? (
+                <Text
+                  style={[
+                    detailsRole(text),
+                    { maxWidth: Utils.moderateScale(120) },
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {job}
+                </Text>
+              ) : null}
               {department ? (
-                <Text style={detailsRole(text)}>{department}</Text>
+                <Text
+                  style={[
+                    detailsRole(text),
+                    { maxWidth: Utils.moderateScale(120) },
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {department}
+                </Text>
               ) : null}
             </View>
           </View>

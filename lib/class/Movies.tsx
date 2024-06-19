@@ -137,31 +137,38 @@ class Movies {
         language = "KR"
         break
     }
+    let available = false
     return (
-      <Accordion title={t("utils.release")}>
-        <View style={tw`flex flex-col`}>
-          {data?.map((releaseDate, index) => {
-            const { accordionContent } = useResponsive()
-            if (releaseDate.iso_3166_1 !== language) return null
-            return (
-              <View key={index}>
-                {releaseDate.release_dates.map((releaseDate, index) => {
-                  return (
-                    <View style={tw`flex-col justify-between`} key={index}>
-                      <Text style={accordionContent()}>
-                        {moment(releaseDate.release_date).format("L")}{" "}
-                        {releaseDate.note
-                          ? `- ${releaseDate.note}`
-                          : `- ${t("utils.nationalRelease")}`}
-                      </Text>
-                    </View>
-                  )
-                })}
-              </View>
-            )
-          })}
-        </View>
-      </Accordion>
+      <Fragment>
+        {available ? (
+          <Accordion title={t("utils.release")}>
+            <View style={tw`flex flex-col`}>
+              {data?.map((releaseDate, index) => {
+                const { accordionContent } = useResponsive()
+                if (releaseDate.iso_3166_1 !== language) {
+                  available = false
+                }
+                return (
+                  <View key={index}>
+                    {releaseDate.release_dates.map((releaseDate, index) => {
+                      return (
+                        <View style={tw`flex-col justify-between`} key={index}>
+                          <Text style={accordionContent()}>
+                            {moment(releaseDate.release_date).format("L")}{" "}
+                            {releaseDate.note
+                              ? `- ${releaseDate.note}`
+                              : `- ${t("utils.nationalRelease")}`}
+                          </Text>
+                        </View>
+                      )
+                    })}
+                  </View>
+                )
+              })}
+            </View>
+          </Accordion>
+        ) : null}
+      </Fragment>
     )
   }
 
@@ -367,7 +374,7 @@ class Movies {
 
     const { fontSize } = useResponsive()
 
-    return Object.keys(providers).length === 0 ? null : (
+    return providers?.[language] ? (
       <Accordion title={t("utils.available")}>
         <View style={tw`flex flex-col`}>
           <Text
@@ -386,7 +393,7 @@ class Movies {
           {this.rent({ providers, languageKey: language, t, text })}
         </View>
       </Accordion>
-    )
+    ) : null
   }
 
   static directors = ({ data }: DirectorProps) => {

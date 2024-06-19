@@ -91,8 +91,8 @@ const SeasonsWatchProviders = ({ id, item, language, t }: Props) => {
       </View>
       <Text style={plotAndBio(text)}>{item.overview}</Text>
       {Series.providersByCountry({
-        providers: providers?.[providerLang],
-        languageKey: lang,
+        providers,
+        languageKey: providerLang,
         t,
         text,
       })}

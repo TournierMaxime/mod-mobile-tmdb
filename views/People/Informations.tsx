@@ -34,15 +34,30 @@ const Informations = ({ externalIds, t, people }: Props) => {
   const { accordionContent, plotAndBio } = useResponsive()
 
   const socialMedia = (data: ExternalIds) => {
+    if (!data) return null
+
+    const { twitter_id, facebook_id, instagram_id, tiktok_id, youtube_id } =
+      data
+
+    let socialMedia = {
+      twitter_id,
+      facebook_id,
+      instagram_id,
+      tiktok_id,
+      youtube_id,
+    }
+
     const openLink = (url: string) => {
       Linking.openURL(url)
     }
 
-    return (
+    return Object.values(socialMedia).every(
+      (value) => value === null,
+    ) ? null : (
       <Accordion title={t("utils.socialMedias")}>
-        {data?.twitter_id && (
+        {twitter_id && (
           <TouchableOpacity
-            onPress={() => openLink(`https://twitter.com/${data.twitter_id}`)}
+            onPress={() => openLink(`https://twitter.com/${twitter_id}`)}
           >
             <View style={tw`flex-col justify-between`}>
               <Text style={accordionContent()}>
@@ -52,16 +67,14 @@ const Informations = ({ externalIds, t, people }: Props) => {
                   color="#00acee"
                 />
                 &nbsp;
-                {data.twitter_id}
+                {twitter_id}
               </Text>
             </View>
           </TouchableOpacity>
         )}
-        {data?.facebook_id && (
+        {facebook_id && (
           <TouchableOpacity
-            onPress={() =>
-              openLink(`https://www.facebook.com/${data.facebook_id}`)
-            }
+            onPress={() => openLink(`https://www.facebook.com/${facebook_id}`)}
           >
             <View style={tw`flex-col justify-between`}>
               <Text style={accordionContent()}>
@@ -71,15 +84,15 @@ const Informations = ({ externalIds, t, people }: Props) => {
                   color="#3b5998"
                 />
                 &nbsp;
-                {data.facebook_id}
+                {facebook_id}
               </Text>
             </View>
           </TouchableOpacity>
         )}
-        {data?.instagram_id && (
+        {instagram_id && (
           <TouchableOpacity
             onPress={() =>
-              openLink(`https://www.instagram.com/${data.instagram_id}`)
+              openLink(`https://www.instagram.com/${instagram_id}`)
             }
           >
             <View style={tw`flex-col justify-between`}>
@@ -90,16 +103,14 @@ const Informations = ({ externalIds, t, people }: Props) => {
                   color="#3f729b"
                 />
                 &nbsp;
-                {data.instagram_id}
+                {instagram_id}
               </Text>
             </View>
           </TouchableOpacity>
         )}
-        {data?.tiktok_id && (
+        {tiktok_id && (
           <TouchableOpacity
-            onPress={() =>
-              openLink(`https://www.tiktok.com/@${data.tiktok_id}`)
-            }
+            onPress={() => openLink(`https://www.tiktok.com/@${tiktok_id}`)}
           >
             <View style={tw`flex-col justify-between`}>
               <Text style={accordionContent()}>
@@ -109,16 +120,14 @@ const Informations = ({ externalIds, t, people }: Props) => {
                   color="#ff0050"
                 />
                 &nbsp;
-                {data.tiktok_id}
+                {tiktok_id}
               </Text>
             </View>
           </TouchableOpacity>
         )}
-        {data?.youtube_id && (
+        {youtube_id && (
           <TouchableOpacity
-            onPress={() =>
-              openLink(`https://www.youtube.com/@${data.youtube_id}`)
-            }
+            onPress={() => openLink(`https://www.youtube.com/@${youtube_id}`)}
           >
             <View style={tw`flex-col justify-between`}>
               <Text style={accordionContent()}>
@@ -128,7 +137,7 @@ const Informations = ({ externalIds, t, people }: Props) => {
                   color="#c4302b"
                 />
                 &nbsp;
-                {data.youtube_id}
+                {youtube_id}
               </Text>
             </View>
           </TouchableOpacity>
@@ -138,6 +147,7 @@ const Informations = ({ externalIds, t, people }: Props) => {
   }
 
   const plot = (data: string) => {
+    if (!data) return null
     return (
       <View style={[tw`${borderColor}`, { borderTopWidth: 2 }]}>
         <Accordion title={t("utils.biography")}>

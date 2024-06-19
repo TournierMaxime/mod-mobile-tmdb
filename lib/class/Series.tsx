@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import tw from "twrnc"
 import { Text, View } from "react-native"
 import Accordion from "@mod/mobile-common/lib/components/utils/Accordion"
@@ -16,10 +16,14 @@ interface ProviderData {
 }
 
 interface ProvidersProps {
-  providers: ProviderData
+  providers: Providers
   languageKey: string
   t: (key: string) => string
   text: string
+}
+
+interface Providers {
+  [key: string]: ProviderData
 }
 
 interface Director {
@@ -123,12 +127,7 @@ class Series {
     )
   }
 
-  static flatrate = ({
-    providers: data,
-    languageKey,
-    t,
-    text,
-  }: ProvidersProps) => {
+  static flatrate = ({ providers, languageKey, t, text }: ProvidersProps) => {
     let language = languageKey
 
     switch (language) {
@@ -146,7 +145,7 @@ class Series {
         break
     }
 
-    if (!data?.flatrate) {
+    if (!providers?.[language]?.flatrate) {
       return null
     }
     const { accordionContent, fontSize } = useResponsive()
@@ -162,7 +161,7 @@ class Series {
         >
           {t("utils.flatrate")}
         </Text>
-        {data?.flatrate?.map((provider, index) => {
+        {providers?.[language]?.flatrate?.map((provider, index) => {
           return (
             <Text style={accordionContent()} key={index}>
               {provider.provider_name}
@@ -173,7 +172,7 @@ class Series {
     )
   }
 
-  static buy = ({ providers: data, languageKey, t, text }: ProvidersProps) => {
+  static buy = ({ providers, languageKey, t, text }: ProvidersProps) => {
     let language = languageKey
 
     switch (language) {
@@ -190,7 +189,7 @@ class Series {
         language = "KR"
         break
     }
-    if (!data?.buy) {
+    if (!providers?.[language]?.buy) {
       return null
     }
     const { accordionContent, fontSize } = useResponsive()
@@ -206,7 +205,7 @@ class Series {
         >
           {t("utils.buy")}
         </Text>
-        {data?.buy?.map((provider, index) => {
+        {providers?.[language]?.buy?.map((provider, index) => {
           return (
             <Text style={accordionContent()} key={index}>
               {provider.provider_name}
@@ -218,23 +217,29 @@ class Series {
   }
 
   static providersByCountry = ({
-    providers: data,
-    languageKey: lang,
+    providers,
+    languageKey,
     t,
     text,
   }: ProvidersProps) => {
-    switch (lang) {
+    if (!providers) {
+      return null
+    }
+
+    let language = languageKey
+
+    switch (language) {
       case "EN-GB":
-        lang = "US"
+        language = "US"
         break
       case "ZH-CN":
-        lang = "CN"
+        language = "CN"
         break
       case "JA":
-        lang = "JP"
+        language = "JP"
         break
       case "KO":
-        lang = "KR"
+        language = "KR"
         break
     }
 
@@ -242,21 +247,23 @@ class Series {
 
     return (
       <View>
-        {data ? (
-          <Text
-            style={[
-              fontSize(text),
-              {
-                marginBottom: Utils.moderateScale(15),
-                marginLeft: Utils.moderateScale(8),
-              },
-            ]}
-          >
-            {t("utils.contentPoweredByJustWatch")}
-          </Text>
+        {providers?.[language] ? (
+          <Fragment>
+            <Text
+              style={[
+                fontSize(text),
+                {
+                  marginBottom: Utils.moderateScale(15),
+                  marginLeft: Utils.moderateScale(8),
+                },
+              ]}
+            >
+              {t("utils.contentPoweredByJustWatch")}
+            </Text>
+            {this.flatrate({ providers, languageKey: language, t, text })}
+            {this.buy({ providers, languageKey: language, t, text })}
+          </Fragment>
         ) : null}
-        {this.flatrate({ providers: data, languageKey: lang, t, text })}
-        {this.buy({ providers: data, languageKey: lang, t, text })}
       </View>
     )
   }
