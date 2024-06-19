@@ -13,13 +13,8 @@ const serieDetails = async (id: number, language: string) => {
   try {
     const response = await SerieDetails(id, language)
     return response.data
-  } catch (error) {
-    let errorMessage: string
-    if (error instanceof Error) {
-      errorMessage = error.message
-    } else {
-      errorMessage = String(error)
-    }
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 }
 
@@ -27,13 +22,8 @@ const serieCrew = async (id: number, language: string) => {
   try {
     const response = await SerieCrew(id, language)
     return response.data
-  } catch (error) {
-    let errorMessage: string
-    if (error instanceof Error) {
-      errorMessage = error.message
-    } else {
-      errorMessage = String(error)
-    }
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 }
 
@@ -41,13 +31,8 @@ const serieTrailer = async (id: number, language: string) => {
   try {
     const response = await SerieTrailer(id, language)
     return response.data
-  } catch (error) {
-    let errorMessage: string
-    if (error instanceof Error) {
-      errorMessage = error.message
-    } else {
-      errorMessage = String(error)
-    }
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 }
 
@@ -55,13 +40,8 @@ const trendingTV = async (page: number, language: string) => {
   try {
     const response = await TrendingTV(page, language)
     return response.data
-  } catch (error) {
-    let errorMessage: string
-    if (error instanceof Error) {
-      errorMessage = error.message
-    } else {
-      errorMessage = String(error)
-    }
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 }
 
@@ -69,13 +49,8 @@ const onTheAir = async (page: number, language: string) => {
   try {
     const response = await OnTheAir(page, language)
     return response.data
-  } catch (error) {
-    let errorMessage: string
-    if (error instanceof Error) {
-      errorMessage = error.message
-    } else {
-      errorMessage = String(error)
-    }
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 }
 
@@ -83,13 +58,8 @@ const popular = async (page: number, language: string) => {
   try {
     const response = await Popular(page, language)
     return response.data
-  } catch (error) {
-    let errorMessage: string
-    if (error instanceof Error) {
-      errorMessage = error.message
-    } else {
-      errorMessage = String(error)
-    }
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 }
 
@@ -101,13 +71,8 @@ const seasonDetails = async (
   try {
     const response = await SeasonDetails(id, seasonNumber, language)
     return response.data
-  } catch (error) {
-    let errorMessage: string
-    if (error instanceof Error) {
-      errorMessage = error.message
-    } else {
-      errorMessage = String(error)
-    }
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 }
 
@@ -115,13 +80,8 @@ const seasonWatchProviders = async (id: number, seasonNumber: number) => {
   try {
     const response = await SeasonWatchProviders(id, seasonNumber)
     return response.data.results
-  } catch (error) {
-    let errorMessage: string
-    if (error instanceof Error) {
-      errorMessage = error.message
-    } else {
-      errorMessage = String(error)
-    }
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 }
 
@@ -129,13 +89,8 @@ const updateSeasonWatchProviders = async (id: number, seasonNumber: number) => {
   try {
     const response = await SeasonWatchProviders(id, seasonNumber)
     return response.data.results
-  } catch (error) {
-    let errorMessage: string
-    if (error instanceof Error) {
-      errorMessage = error.message
-    } else {
-      errorMessage = String(error)
-    }
+  } catch (error: any) {
+    throw new Error(error.message)
   }
 }
 

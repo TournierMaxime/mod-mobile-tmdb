@@ -1,10 +1,6 @@
-// src/redux/actions/articles.ts
-
-import { ThunkAction } from "redux-thunk"
-import { RootState } from "../../../../redux/store"
 import { SearchArticles, GetOneArticle } from "../../../../services/articles"
+import { AppThunk } from "../../../../store"
 
-// Définir les types d'action
 export const SEARCH_ARTICLES_REQUEST = "SEARCH_ARTICLES_REQUEST"
 export const SEARCH_ARTICLES_SUCCESS = "SEARCH_ARTICLES_SUCCESS"
 export const SEARCH_ARTICLES_FAILURE = "SEARCH_ARTICLES_FAILURE"
@@ -46,7 +42,6 @@ interface GetOneArticleFailureAction {
   payload: string
 }
 
-// Union des types d'actions
 type ArticleActionTypes =
   | SearchArticlesRequestAction
   | SearchArticlesSuccessAction
@@ -56,9 +51,8 @@ type ArticleActionTypes =
   | GetOneArticleSuccessAction
   | GetOneArticleFailureAction
 
-// Thunk typé
 export const searchArticles =
-  (lang: string): ThunkAction<void, RootState, unknown, ArticleActionTypes> =>
+  (lang: string): AppThunk<Promise<any>> =>
   async (dispatch) => {
     try {
       dispatch({ type: SEARCH_ARTICLES_REQUEST })
@@ -72,9 +66,7 @@ export const searchArticles =
   }
 
 export const getOneArticle =
-  (
-    articleId: string,
-  ): ThunkAction<void, RootState, unknown, ArticleActionTypes> =>
+  (articleId: string): AppThunk<Promise<any>> =>
   async (dispatch) => {
     try {
       dispatch({ type: GET_ONE_ARTICLE_REQUEST })
