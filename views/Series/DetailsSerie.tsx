@@ -50,7 +50,9 @@ const DetailsSerie = ({ route }: DetailsSerieProps) => {
 
   const [selectedTab, setSelectedTab] = useState("about")
 
-  const favorites = useSelector((state: RootState) => state.favorites.data)
+  const favorites = useSelector(
+    (state: RootState) => state.favorites.data,
+  ).filter(Boolean)
 
   const { setItem, handleFavorite, isFavorite } = useHandleFavorites({
     favorites,

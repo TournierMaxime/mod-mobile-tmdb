@@ -18,7 +18,7 @@ interface ExternalIds {
 }
 
 interface Props {
-  externalIds: ExternalIds
+  externalIds?: ExternalIds
   t: (key: string) => string
   people: {
     biography: string
@@ -28,6 +28,8 @@ interface Props {
 const Informations = ({ externalIds, t, people }: Props) => {
   const darkMode = useSelector((state: RootState) => state.theme.darkMode)
   const { background, text, borderColor } = useDynamicThemeStyles(darkMode)
+
+  if (!externalIds) return null
 
   const { accordionContent, plotAndBio } = useResponsive()
 

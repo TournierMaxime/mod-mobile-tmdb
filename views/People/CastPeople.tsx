@@ -9,7 +9,7 @@ interface Cast {
 }
 
 interface Props {
-  career: Cast
+  career?: Cast
 }
 
 interface Item {
@@ -29,6 +29,8 @@ interface Items {
 }
 
 const CastPeople = ({ career }: Props) => {
+  if (!career) return null
+
   const data = career?.cast?.sort((a, b) => {
     const dateA = moment(a.release_date || a.first_air_date)
     const dateB = moment(b.release_date || b.first_air_date)

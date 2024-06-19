@@ -11,9 +11,10 @@ interface Props {
 const Rate = ({ rate }: Props) => {
   const { fontSize } = useResponsive()
 
-  const rating = (percent: number) => {
-    const outHundread = (percent * 10).toFixed(0)
+  const percent = (rate * 10).toFixed(0)
+  const score = Number(percent)
 
+  const rating = (percent: number) => {
     if (percent > 1 && percent <= 50) {
       return (
         <View
@@ -22,7 +23,7 @@ const Rate = ({ rate }: Props) => {
             { width: Utils.moderateScale(25), height: Utils.moderateScale(25) },
           ]}
         >
-          <Text style={fontSize(`text-white`)}>{outHundread}</Text>
+          <Text style={fontSize(`text-white`)}>{percent}</Text>
         </View>
       )
     } else if (percent > 50 && percent <= 70) {
@@ -33,7 +34,7 @@ const Rate = ({ rate }: Props) => {
             { width: Utils.moderateScale(25), height: Utils.moderateScale(25) },
           ]}
         >
-          <Text style={fontSize(`text-white`)}>{outHundread}</Text>
+          <Text style={fontSize(`text-white`)}>{percent}</Text>
         </View>
       )
     } else if (percent > 70 && percent <= 100) {
@@ -44,14 +45,14 @@ const Rate = ({ rate }: Props) => {
             { width: Utils.moderateScale(25), height: Utils.moderateScale(25) },
           ]}
         >
-          <Text style={fontSize(`text-white`)}>{outHundread}</Text>
+          <Text style={fontSize(`text-white`)}>{percent}</Text>
         </View>
       )
     } else {
-      return <Text style={fontSize(`text-white`)}>{outHundread}</Text>
+      return <Text style={fontSize(`text-white`)}>{percent}</Text>
     }
   }
-  return rating(rate)
+  return rating(score)
 }
 
 export default Rate

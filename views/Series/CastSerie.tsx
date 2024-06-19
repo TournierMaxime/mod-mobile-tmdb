@@ -8,7 +8,7 @@ interface Cast {
 }
 
 interface Props {
-  credits: Cast
+  credits?: Cast
 }
 
 interface Item {
@@ -26,6 +26,8 @@ interface Items {
 }
 
 const CastSerie = ({ credits }: Props) => {
+  if (!credits) return null
+
   const data = credits?.cast.slice(0, 20)
 
   return (

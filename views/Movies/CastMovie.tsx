@@ -22,10 +22,12 @@ interface Cast {
 }
 
 interface Props {
-  credits: Cast
+  credits?: Cast
 }
 
 const CastMovie = ({ credits }: Props) => {
+  if (!credits) return null
+
   const data = credits?.cast?.slice(0, 20)
 
   return (

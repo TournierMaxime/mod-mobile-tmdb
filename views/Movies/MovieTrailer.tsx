@@ -1,8 +1,10 @@
 import React, { Fragment } from "react"
 import { movieTrailer } from "../../react-query/movies"
-import { Linking, Button } from "react-native"
+import { Linking, TouchableOpacity, Text } from "react-native"
 import { useTranslation } from "react-i18next"
 import { useQuery } from "react-query"
+import tw from "twrnc"
+import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
 
 interface Props {
   id: number
@@ -46,13 +48,21 @@ const Trailer = ({ id }: Props) => {
     }
   }
 
+  const { btnSubmit } = useResponsive()
+
   return (
     <Fragment>
       {mvTrailer?.results?.length > 0 ? (
-        <Button title="Trailer" onPress={handleLinkToMovieTrailer} />
+        <TouchableOpacity
+          style={tw`flex-row justify-center mt-4 mb-8 
+            bg-indigo-600
+           rounded-lg`}
+          onPress={() => handleLinkToMovieTrailer()}
+        >
+          <Text style={btnSubmit()}>Trailer</Text>
+        </TouchableOpacity>
       ) : null}
     </Fragment>
   )
 }
-
 export default Trailer

@@ -1,8 +1,10 @@
 import React, { Fragment } from "react"
 import { serieTrailer } from "../../react-query/series"
-import { Linking, Button } from "react-native"
+import { Linking, TouchableOpacity, Text } from "react-native"
 import { useTranslation } from "react-i18next"
 import { useQuery } from "react-query"
+import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
+import tw from "twrnc"
 
 interface Props {
   id: number
@@ -44,10 +46,19 @@ const SerieTrailer = ({ id }: Props) => {
     Linking.openURL(url)
   }
 
+  const { btnSubmit } = useResponsive()
+
   return (
     <Fragment>
       {srTrailer?.results?.length > 0 ? (
-        <Button title="Trailer" onPress={handleLinkToSerieTrailer} />
+        <TouchableOpacity
+          style={tw`flex-row justify-center mt-4 mb-8 
+            bg-indigo-600
+           rounded-lg`}
+          onPress={() => handleLinkToSerieTrailer()}
+        >
+          <Text style={btnSubmit()}>Trailer</Text>
+        </TouchableOpacity>
       ) : null}
     </Fragment>
   )
