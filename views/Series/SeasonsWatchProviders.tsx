@@ -1,11 +1,8 @@
 import React from "react"
-import { updateSeasonWatchProviders } from "../../react-query/series"
 import { Text, View, TouchableOpacity, Image } from "react-native"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import Rate from "../../lib/components/Rate"
 import moment from "moment"
 import tw from "twrnc"
-import { useQuery } from "react-query"
 import { useDynamicThemeStyles } from "@mod/mobile-common/styles/theme"
 import { useSelector } from "react-redux"
 import useResponsive from "@mod/mobile-common/lib/hooks/utils/useResponsive"
@@ -34,10 +31,6 @@ const SeasonsWatchProviders = ({ id, item, index, language, t }: Props) => {
   const { imageDetails, fontSize, cardDetails } = useResponsive()
 
   const seasonNumber = item.season_number
-
-  const { data: providers } = useQuery(["providers", id, seasonNumber], () =>
-    updateSeasonWatchProviders(id, seasonNumber),
-  )
 
   const darkMode = useSelector((state: RootState) => state.theme.darkMode)
   const { text, borderColor } = useDynamicThemeStyles(darkMode)

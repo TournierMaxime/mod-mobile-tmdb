@@ -1,7 +1,6 @@
 import React, { useEffect } from "react"
 import { Text, View, FlatList, Image } from "react-native"
 import { useSelector, useDispatch } from "react-redux"
-import moment from "moment"
 import { seasonDetails, reset } from "../../redux/actions/series"
 import { useTranslation } from "react-i18next"
 import tw from "twrnc"
@@ -82,11 +81,16 @@ const AllEpisodes: React.FC<AllEpisodesProps> = ({ route }) => {
             <Text
               style={[fontSize(text), { marginLeft: Utils.moderateScale(8) }]}
             >
-              {name} - {t("Episode")} {episode_number}
+              {t("Episode")} {episode_number}
             </Text>
-            <Text style={plotAndBio(text)}>{overview}</Text>
+            <Text
+              style={[fontSize(text), { marginLeft: Utils.moderateScale(8) }]}
+            >
+              {name}
+            </Text>
           </View>
         </View>
+        <Text style={plotAndBio(text)}>{overview}</Text>
       </View>
     )
   }
