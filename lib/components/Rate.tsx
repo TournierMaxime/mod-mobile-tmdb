@@ -19,8 +19,8 @@ const Rate = ({ rate }: Props) => {
       return (
         <View
           style={[
-            tw`text-center justify-center items-center rounded-md bg-red-500`,
-            { width: Utils.moderateScale(25), height: Utils.moderateScale(25) },
+            tw`text-center justify-center items-center rounded-full bg-red-500`,
+            { width: Utils.moderateScale(35), height: Utils.moderateScale(35) },
           ]}
         >
           <Text style={fontSize(`text-white`)}>{percent}</Text>
@@ -30,8 +30,8 @@ const Rate = ({ rate }: Props) => {
       return (
         <View
           style={[
-            tw`text-center justify-center items-center rounded-md bg-orange-500`,
-            { width: Utils.moderateScale(25), height: Utils.moderateScale(25) },
+            tw`text-center justify-center items-center rounded-full bg-orange-500`,
+            { width: Utils.moderateScale(35), height: Utils.moderateScale(35) },
           ]}
         >
           <Text style={fontSize(`text-white`)}>{percent}</Text>
@@ -41,8 +41,8 @@ const Rate = ({ rate }: Props) => {
       return (
         <View
           style={[
-            tw`text-center justify-center items-center rounded-md bg-green-500`,
-            { width: Utils.moderateScale(25), height: Utils.moderateScale(25) },
+            tw`text-center justify-center items-center rounded-full bg-green-500`,
+            { width: Utils.moderateScale(35), height: Utils.moderateScale(35) },
           ]}
         >
           <Text style={fontSize(`text-white`)}>{percent}</Text>
