@@ -25,6 +25,7 @@ interface Item {
   name: string
   air_date: string
   overview: string
+  runtime: string | number
 }
 
 interface Season {
@@ -38,7 +39,7 @@ const AllEpisodes: React.FC<AllEpisodesProps> = ({ route }) => {
 
   const season = useSelector((state: RootState) => state.seasonDetails.data)
 
-  const { episodeDetails, fontSize, plotAndBio } = useResponsive()
+  const { episodeDetails, fontSize, overView } = useResponsive()
 
   const { i18n, t } = useTranslation()
   const language = i18n.language
@@ -59,10 +60,10 @@ const AllEpisodes: React.FC<AllEpisodesProps> = ({ route }) => {
   const { episodes } = season
 
   const renderItem = (item: Item, index: number) => {
-    const { still_path, episode_number, name, overview } = item
+    const { still_path, episode_number, name, overview, runtime } = item
     return (
       <View key={index} style={[tw`${borderColor}`, { borderBottomWidth: 2 }]}>
-        <View style={tw`flex flex-row justify-start ${background} p-4`}>
+        <View style={tw`flex flex-col justify-start ${background} p-4`}>
           {still_path ? (
             <Image
               style={episodeDetails()}
@@ -79,18 +80,19 @@ const AllEpisodes: React.FC<AllEpisodesProps> = ({ route }) => {
 
           <View style={tw`flex-1 w-full`}>
             <Text
-              style={[fontSize(text), { marginLeft: Utils.moderateScale(8) }]}
+              style={[fontSize(text), { marginTop: Utils.moderateScale(8) }]}
             >
               {t("Episode")} {episode_number}
             </Text>
+            <Text style={fontSize(text)}>{runtime} min</Text>
             <Text
-              style={[fontSize(text), { marginLeft: Utils.moderateScale(8) }]}
+              style={[fontSize(text), { marginTop: Utils.moderateScale(8) }]}
             >
               {name}
             </Text>
+            <Text style={overView(text)}>{overview}</Text>
           </View>
         </View>
-        <Text style={plotAndBio(text)}>{overview}</Text>
       </View>
     )
   }

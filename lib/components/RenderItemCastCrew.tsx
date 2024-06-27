@@ -30,14 +30,13 @@ const RenderItemCastCrew = ({ item, index }: Props) => {
   const { id, name, profile_path, character, job, department } = item
 
   const darkMode = useSelector((state: RootState) => state.theme.darkMode)
-  const { borderColor, background, text } = useDynamicThemeStyles(darkMode)
+  const { background, text } = useDynamicThemeStyles(darkMode)
 
   const { imageDetails, fontSize, detailsRole, cardDetails } = useResponsive()
 
   return (
     <TouchableOpacity
       key={index}
-      style={[tw`${borderColor}`, { borderBottomWidth: 2 }]}
       onPress={() =>
         navigation.navigate("DetailsPeople", {
           id,
@@ -68,40 +67,17 @@ const RenderItemCastCrew = ({ item, index }: Props) => {
                   {
                     marginLeft: Utils.moderateScale(8),
                     marginTop: Utils.moderateScale(10),
-                    maxWidth: Utils.moderateScale(100),
                   },
                 ]}
-                numberOfLines={1}
-                ellipsizeMode="tail"
               >
                 {name}
               </Text>
               {character ? (
-                <Text
-                  style={detailsRole(text)}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {character}
-                </Text>
+                <Text style={detailsRole(text)}>{character}</Text>
               ) : null}
-              {job ? (
-                <Text
-                  style={detailsRole(text)}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {job}
-                </Text>
-              ) : null}
+              {job ? <Text style={detailsRole(text)}>{job}</Text> : null}
               {department ? (
-                <Text
-                  style={detailsRole(text)}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {department}
-                </Text>
+                <Text style={detailsRole(text)}>{department}</Text>
               ) : null}
             </View>
           </View>

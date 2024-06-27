@@ -42,9 +42,9 @@ const RenderItemPeople = ({ item, index }: Props) => {
   } = item
 
   const darkMode = useSelector((state: RootState) => state.theme.darkMode)
-  const { borderColor, background, text } = useDynamicThemeStyles(darkMode)
+  const { background, text } = useDynamicThemeStyles(darkMode)
 
-  const { imageDetails, detailsRole, fontSize, cardDetails } = useResponsive()
+  const { imageDetails, detailsRole, cardDetails, fontSize } = useResponsive()
 
   const handlePress = () => {
     const screen = original_title ? "MoviesTab" : "SeriesTab"
@@ -52,27 +52,10 @@ const RenderItemPeople = ({ item, index }: Props) => {
     navigation.navigate(screen, { screen: detailsScreen, params: { id } })
   }
 
-  const renderText = (content: string, marginTop = Utils.moderateScale(10)) => (
-    <Text
-      style={[
-        fontSize(text),
-        {
-          marginLeft: Utils.moderateScale(8),
-          marginTop,
-          maxWidth: Utils.moderateScale(100),
-        },
-      ]}
-      numberOfLines={1}
-      ellipsizeMode="tail"
-    >
-      {content}
-    </Text>
-  )
-
   const renderItemContent = (titleOrName: string, date: string) => (
     <View>
       <Image
-        style={imageDetails()}
+        style={[imageDetails(), { marginBottom: Utils.moderateScale(8) }]}
         source={
           poster_path
             ? { uri: `https://image.tmdb.org/t/p/original/${poster_path}` }
@@ -80,23 +63,17 @@ const RenderItemPeople = ({ item, index }: Props) => {
         }
       />
       <View style={cardDetails()}>
-        {renderText(titleOrName)}
-        {renderText(moment(date).format("YYYY"))}
+        <Text style={detailsRole(text)}>{titleOrName}</Text>
         <Text style={detailsRole(text)}>{character}</Text>
+        <Text style={detailsRole(text)}>{moment(date).format("YYYY")}</Text>
       </View>
     </View>
   )
 
   return (
-    <TouchableOpacity
-      key={index}
-      style={[tw`${borderColor}`, { borderBottomWidth: 2 }]}
-      onPress={handlePress}
-    >
+    <TouchableOpacity key={index} onPress={handlePress}>
       <View style={tw`flex flex-col p-4 ${background}`}>
-        {original_title
-          ? renderItemContent(title, release_date)
-          : renderItemContent(name, first_air_date)}
+        {renderItemContent(title ?? name, release_date ?? first_air_date)}
       </View>
     </TouchableOpacity>
   )
